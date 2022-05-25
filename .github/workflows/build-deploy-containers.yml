@@ -13,9 +13,9 @@ on:
 
 # Repository specific variables
 env:
-  ecr_repository: kidsloop-cms-frontend
-  argocd_app_chart_tag_path: cmsFrontend.tag
-  argocd_app_component: cms-frontend
+  ecr_repository: kidsloop-assessment-frontend
+  argocd_app_chart_tag_path: assessmentFrontend.tag
+  argocd_app_component: assessment-frontend
 
 jobs:
   install:
@@ -92,7 +92,7 @@ jobs:
       matrix:
         include:
           - environment: landingzone
-            url: https://cms.landing-zone.kidsloop.live
+            url: https://assessment.landing-zone.kidsloop.live
             region: uk
     environment:
       url: ${{ matrix.url }}
