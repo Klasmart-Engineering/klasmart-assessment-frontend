@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import assessments from "./assessments";
+import common from "./common";
 import confirm from "./confirm";
 import loading, { actSetLoading } from "./loading";
 import { createLoadingMiddleware } from "./middleware/loadingMiddleware";
@@ -20,6 +21,7 @@ export const store = configureStore({
     outcome,
     assessments,
     milestone,
+    common,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(loadingMiddleware),
 });
