@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client";
 import { LinkedMockOptionsItem } from "@reducers/contentEdit/programsHandler";
+import { store } from "@reducers/index";
 import { FileLike } from "@rpldy/shared";
 import Cookies from "js-cookie";
 import uniq from "lodash/uniq";
@@ -148,7 +149,7 @@ export const apiDownloadPageUrl = (href?: string, fileName?: string) => {
 
 export const apiOrganizationOfPage = () => {
   const searchParams = new URLSearchParams(window.location.search);
-  return searchParams.get(ORG_ID_KEY);
+  return store.getState().common.organization_id || searchParams.get(ORG_ID_KEY);
 };
 
 export const getDocumentUrl = (router: string) => {
