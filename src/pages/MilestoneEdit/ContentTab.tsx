@@ -4,7 +4,7 @@ import clsx from "clsx";
 import React, { Children, ReactNode } from "react";
 import { FieldError } from "react-hook-form";
 import { d } from "../../locale/LocaleManager";
-import { TabValue } from "../ContentPreview/type";
+import { TabValue } from "./type";
 const useStyles = makeStyles((theme: Theme) => ({
   tab: {
     width: "100%",

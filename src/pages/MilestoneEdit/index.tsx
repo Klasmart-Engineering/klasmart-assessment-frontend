@@ -11,7 +11,7 @@ import {
   onLoadMilestoneEdit,
   onLoadOutcomeList,
   saveMilestone,
-  updateMilestone,
+  updateMilestone
 } from "@reducers/milestone";
 import { AsyncTrunkReturned } from "@reducers/type";
 import { PayloadAction } from "@reduxjs/toolkit";
@@ -31,7 +31,6 @@ import { ModelMilestoneOptions } from "../../models/ModelMilestone";
 import { RootState } from "../../reducers";
 import { actSuccess } from "../../reducers/notify";
 import LayoutPair from "../ContentEdit/Layout";
-import { TabValue } from "../ContentPreview/type";
 import MilestoneList from "../MilestoneList";
 import { UNPUB } from "../OutcomeList/ThirdSearchHeader";
 import ContainedOutcomeList, { AddOutcomes, ContainedOutcomeListProps } from "./ContainedOutcomeList";
@@ -40,7 +39,7 @@ import MilestoneForm from "./MilestoneForm";
 import { GENERALMILESTONE, MilestoneHeader, MilestoneHeaderProps } from "./MilestoneHeader";
 import { Outcomes, OutcomesProps } from "./Outcomes";
 import { OutcomeSearchProps } from "./OutcomeSearch";
-import { Regulation } from "./type";
+import { Regulation, TabValue } from "./type";
 interface RouteParams {
   tab: "details" | "leaningoutcomes";
 }

@@ -2,13 +2,19 @@ import { Box, BoxProps, Typography } from "@material-ui/core";
 import React from "react";
 import { apiResourcePathById } from "../../../api/extra";
 import { d } from "../../../locale/LocaleManager";
-import { fileFormat } from "../../../pages/ContentEdit/MediaAssetsEdit";
 import AssetAudio from "./AssetAudio";
 import AssetFile from "./AssetFile";
 import AssetImg from "./AssetImg";
 import AssetPdf from "./AssetPdf";
 import AssetVideo from "./AssetVideo";
 
+export const fileFormat = {
+  video: [".avi", ".mp4"],
+  image: [".jpg", ".jpeg", ".png", ".gif", ".bmp"],
+  document: [".ppt", ".pptx"],
+  audio: [".mp3", ".wav"],
+  pdf: [".pdf"],
+};
 interface PreviewProps extends BoxProps {
   resourceId: string | undefined;
   isHideFileType?: boolean;

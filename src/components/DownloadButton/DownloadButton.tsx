@@ -1,13 +1,12 @@
 import { d } from "@locale/LocaleManager";
+import { actCreateDownload, checkResourceExist } from "@reducers/assessments";
 import { actError } from "@reducers/notify";
-import { checkResourceExist } from "@reducers/schedule";
 import { AsyncTrunkReturned } from "@reducers/type";
 import { PayloadAction, unwrapResult } from "@reduxjs/toolkit";
 import React, { DOMAttributes, ReactNode, RefObject, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { apiDownloadPageUrl } from "../../api/extra";
 import { AppDispatch } from "../../reducers";
-import { actCreateDownload } from "../../reducers/content";
 
 interface DownloadButtonProps {
   resourceId?: string;

@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core";
-import { getDownloadPath } from "@reducers/content";
+import { getDownloadPath } from "@reducers/assessments";
 import { AsyncTrunkReturned } from "@reducers/type";
 import { PayloadAction } from "@reduxjs/toolkit";
 import React, { useEffect, useState } from "react";

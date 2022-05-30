@@ -1,4 +1,4 @@
-import { getContentResourceUploadPath } from "@reducers/content";
+import { getContentResourceUploadPath } from "@reducers/assessments";
 import { AsyncTrunkReturned } from "@reducers/type";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { BatchItem, FileLike } from "@rpldy/shared";

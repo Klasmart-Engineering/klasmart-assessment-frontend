@@ -4,12 +4,12 @@ import PermissionType from "@api/PermissionType";
 import { NoOutcome } from "@components/TipImages";
 import { usePermission } from "@hooks/usePermission";
 import useQueryCms from "@hooks/useQueryCms";
-import { setQuery } from "@models/ModelContentDetailForm";
 import { getContentResourceUploadPath, getDetailAssessmentV2, updateAssessmentV2 } from "@reducers/assessments";
 import { actAsyncConfirm } from "@reducers/confirm";
 import { actSuccess, actWarning } from "@reducers/notify";
 import { AsyncTrunkReturned } from "@reducers/type";
 import { PayloadAction, unwrapResult } from "@reduxjs/toolkit";
+import { setQuery } from "@utilities/urlUtilities";
 import { cloneDeep } from "lodash";
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -29,6 +29,16 @@ import { Dimension, MultiSelect, MultiSelectProps, Subtitle } from "./MultiSelec
 import { OverallOutcomes, OverallOutcomesProps } from "./OverallOutcomes";
 import { StudentView } from "./StudentView";
 import { OutcomeStatus, StudentParticipate, StudentProps, StudentViewItemsProps, SubDimensionOptions, UpdateAssessmentDataOmitAction } from "./type";
+
+// export const setQuery = (search: string, hash: Record<string, string | number | boolean>): string => {
+//   const query = new URLSearchParams(search);
+//   Object.keys(hash).forEach((key) => query.set(key, String(hash[key])));
+//   return query.toString();
+// };
+// export const toQueryString = (hash: Record<string, any>): string => {
+//   const search = new URLSearchParams(hash);
+//   return `?${search.toString()}`;
+// };
 
 const useQuery = () => {
   const { id, editindex, querys } = useQueryCms();

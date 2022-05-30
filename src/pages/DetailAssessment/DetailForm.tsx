@@ -1,9 +1,9 @@
 import { Box, makeStyles, Paper, TextField, Typography, useMediaQuery, useTheme } from "@material-ui/core";
+import { formattedTime } from "@models/ModelOutcomeDetailForm";
 import React, { useMemo } from "react";
 import { UseFormMethods } from "react-hook-form";
 import { AssessmentTypeValues } from "../../components/AssessmentType";
 import { d } from "../../locale/LocaleManager";
-import { formattedTime } from "../../models/ModelContentDetailForm";
 import { DetailAssessmentResult } from "../ListAssessment/types";
 import { MaterialEdit } from "./MaterialEdit";
 import { StudentEdit } from "./StudentEdit";
