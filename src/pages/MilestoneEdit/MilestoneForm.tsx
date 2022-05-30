@@ -10,7 +10,7 @@ import { GENERALMILESTONE } from "../MilestoneList/MilestoneTable";
 const useStyles = makeStyles(({ palette }) => ({
   fieldset: {
     marginTop: 32,
-    "& .MuiInputBase-input": {
+    "& .assessment-MuiInputBase-input": {
       color: "rgba(0,0,0,1)",
     },
   },

@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
   },
   searchText: {
-    "& .MuiOutlinedInput-notchedOutline": {
+    "& .assessment-MuiOutlinedInput-notchedOutline": {
       border: 0,
       borderRadius: 0,
     },
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     height: 40,
     boxSizing: "border-box",
     background: "#F0F0F0",
-    "& .MuiOutlinedInput-notchedOutline": {
+    "& .assessment-MuiOutlinedInput-notchedOutline": {
       border: 0,
     },
   },

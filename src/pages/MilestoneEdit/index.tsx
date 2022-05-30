@@ -334,6 +334,6 @@ export default function MilestoneEdit() {
   return <MilestoneEditForm />;
 }
 
-MilestoneEdit.routeBasePath = "/milestone/milestone-edit";
-MilestoneEdit.routeMatchPath = "/milestone/milestone-edit/tab/:tab";
-MilestoneEdit.routeRedirectDefault = `/milestone/milestone-edit/tab/details`;
+MilestoneEdit.routeBasePath = "/assessments/milestone-edit";
+MilestoneEdit.routeMatchPath = "/assessments/milestone-edit/tab/:tab";
+MilestoneEdit.routeRedirectDefault = `/assessments/milestone-edit/tab/details`;

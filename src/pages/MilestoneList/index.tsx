@@ -80,7 +80,6 @@ export default function MilestonesList() {
       pathname: MilestoneEdit.routeRedirectDefault,
       search: toQueryString(clearNull({ id: milestone_id, is_unpub: condition.is_unpub })),
     });
-    // history.push(`/milestone/milestone-edit/tab/details?id=${milestone_id}`);
   };
   const handleReject: MilestoneTableProps["onReject"] = (id) => {
     return refreshWithDispatch(dispatch(bulkReject([id])).then(unwrapResult));
@@ -156,5 +155,5 @@ export default function MilestonesList() {
     </>
   );
 }
-MilestonesList.routeBasePath = "/milestone/milestone-list";
-MilestonesList.routeRedirectDefault = `/milestone/milestone-list?status=${MilestoneStatus.published}&page=1&order_by=${MilestoneOrderBy._created_at}`;
+MilestonesList.routeBasePath = "/assessments/milestone-list";
+MilestonesList.routeRedirectDefault = `/assessments/milestone-list?status=${MilestoneStatus.published}&page=1&order_by=${MilestoneOrderBy._created_at}`;

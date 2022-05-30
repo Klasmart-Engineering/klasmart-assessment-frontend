@@ -22,7 +22,7 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
     justifyContent: "space-between",
   },
   fieldset: {
-    "& .MuiInputBase-input": {
+    "& .assessment-MuiInputBase-input": {
       color: "rgba(0,0,0,1)",
     },
     "&:not(:first-child)": {

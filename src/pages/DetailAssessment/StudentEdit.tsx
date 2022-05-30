@@ -28,7 +28,7 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
     position: "relative",
   },
   fieldset: {
-    "& .MuiInputBase-input": {
+    "& .assessment-MuiInputBase-input": {
       color: "rgba(0,0,0,1)",
     },
     "&:not(:first-child)": {
@@ -41,7 +41,7 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
     textOverflow: "ellipsis",
   },
   editStudentBox: {
-    "& .MuiInputBase-input": {
+    "& .assessment-MuiInputBase-input": {
       width: "calc(100% - 78px)",
     },
   },
@@ -55,7 +55,7 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
     },
   },
   title: {
-    "& .MuiTypography-root": {
+    "& .assessment-MuiTypography-root": {
       fontSize: "24px !important",
       fontWeight: 700,
     },

@@ -33,6 +33,7 @@ const useStyles = makeStyles({
     cursor: "pointer",
     backgroundColor: "#F2F5F7",
     height: 48,
+    boxSizing: "content-box",
     "& div": {
       display: "flex",
       justifyContent: "space-between",
