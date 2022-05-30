@@ -58,7 +58,6 @@ export function ListAssessment() {
     perm.view_school_in_progress_assessments_427;
 
   const { assessmentListV2, total, teacherList } = useSelector<RootState, RootState["assessments"]>((state) => state.assessments);
-  const { organization_id } = useSelector<RootState, RootState["common"]>(state => state.common);
   const condition = useQuery();
   const formMethods = useForm<SearchListForm>();
   const { reset } = formMethods;
