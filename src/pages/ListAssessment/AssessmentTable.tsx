@@ -1,12 +1,12 @@
 import { AssessmentTypeValues } from "@components/AssessmentType";
 import { createStyles, makeStyles, Table, TableBody, TableCell, TableContainer, TableRow, Tooltip } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
+import { formattedDate, formattedTime } from "@models/ModelOutcomeDetailForm";
 import clsx from "clsx";
 import React, { useMemo } from "react";
 import LayoutBox from "../../components/LayoutBox";
 import { PLTableHeader } from "../../components/PLTable";
 import { d } from "../../locale/LocaleManager";
-import { formattedDate, formattedTime } from "../../models/ModelContentDetailForm";
 import { assessmentHeader } from "./computed";
 import { AssessmentListResult, AssessmentQueryCondition, AssessmentStatus } from "./types";
 

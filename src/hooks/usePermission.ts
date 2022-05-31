@@ -8,6 +8,7 @@ function usePermission(perms: PermissionType[]) {
       const permsData = await permissionCache.usePermission(perms);
       setState(permsData);
     })();
+    return () => {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

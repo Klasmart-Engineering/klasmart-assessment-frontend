@@ -2,15 +2,15 @@ import { MilestoneDetailResult, MilestoneStatus } from "@api/type";
 import { decodeOneItemArray, encodeOneItemArray, FormattedTextField, frontTrim } from "@components/FormattedTextField";
 import { d } from "@locale/LocaleManager";
 import React, { Box, Grid, makeStyles, MenuItem, TextField } from "@material-ui/core";
-import { formattedTime } from "@models/ModelContentDetailForm";
 import { CreateDefaultValueAndKeyResult } from "@models/ModelMilestone";
+import { formattedTime } from "@models/ModelOutcomeDetailForm";
 import { LinkedMockOptions, LinkedMockOptionsItem } from "@reducers/contentEdit/programsHandler";
 import { Controller, UseFormMethods } from "react-hook-form";
 import { GENERALMILESTONE } from "../MilestoneList/MilestoneTable";
 const useStyles = makeStyles(({ palette }) => ({
   fieldset: {
     marginTop: 32,
-    "& .MuiInputBase-input": {
+    "& .assessment-MuiInputBase-input": {
       color: "rgba(0,0,0,1)",
     },
   },

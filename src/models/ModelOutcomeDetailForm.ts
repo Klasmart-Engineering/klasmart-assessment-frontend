@@ -86,3 +86,59 @@ export const timestampToTime = (timestamp: number | undefined, type: string = "d
   ];
   return `${Y}-${M}-${D} ${h}:${m}`;
 };
+
+export function formattedTime(value: number | undefined): string {
+  if (value) {
+    let date = new Date(Number(value) * 1000);
+    let y = date.getFullYear();
+    let MM = date.getMonth() + 1;
+    const MMs = MM < 10 ? `0${MM}` : MM;
+    let d = date.getDate();
+    const ds = d < 10 ? `0${d}` : d;
+    let h = date.getHours();
+    const dayType = h > 12 ? "PM" : "AM";
+    h = h > 12 ? h - 12 : h;
+    const hs = h < 10 ? `0${h}` : h;
+    let m = date.getMinutes();
+    const ms = m < 10 ? `0${m}` : m;
+    return `${y}/${MMs}/${ds}  ${hs}:${ms}${dayType}`;
+  }
+  return "";
+}
+
+enum Type {
+  date = "date",
+  time = "time",
+}
+
+export function formatTimeToEng(seconds: number, type?: string) {
+  if (!seconds) return "";
+  const date = new Date(seconds * 1000);
+  const year = date.getFullYear();
+  const monthArr = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Spt", "Oct", "Nov", "Dec"];
+  const month = monthArr[date.getMonth()];
+  const day = date.getDate();
+  const h = date.getHours();
+  const dayType = h > 12 ? "PM" : "AM";
+  const hour = h > 12 ? h - 12 : h;
+  const min = date.getMinutes();
+  if (type === Type.date) {
+    return `${month}  ${day},  ${year}`;
+  }
+  if (type === Type.time) {
+    return `${hour.toString().padStart(2, "0")}:${min.toString().padStart(2, "0")} ${dayType}`;
+  }
+}
+
+export function formattedDate(value: number | undefined): string {
+  if (value) {
+    let date = new Date(Number(value) * 1000);
+    let y = date.getFullYear();
+    let MM = date.getMonth() + 1;
+    const MMs = MM < 10 ? `0${MM}` : MM;
+    let d = date.getDate();
+    const ds = d < 10 ? `0${d}` : d;
+    return `${y}/${MMs}/${ds}`;
+  }
+  return "";
+}

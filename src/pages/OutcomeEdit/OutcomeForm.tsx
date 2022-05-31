@@ -45,19 +45,19 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0.5),
   },
   outcomesetCon: {
-    "& .MuiInputAdornment-root": {
+    "& .assessment-MuiInputAdornment-root": {
       display: "flex",
       flexWrap: "wrap",
       height: "auto",
       maxHeight: "fit-content",
       padding: "8px 0",
     },
-    "& .MuiInputBase-input": {
+    "& .assessment-MuiInputBase-input": {
       width: 0,
     },
   },
   milestoneCon: {
-    "& .MuiInputBase-input": {
+    "& .assessment-MuiInputBase-input": {
       wordBreak: "break-all",
     },
   },

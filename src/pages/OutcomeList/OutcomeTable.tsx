@@ -17,6 +17,7 @@ import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import DoneIcon from "@material-ui/icons/Done";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { Pagination } from "@material-ui/lab";
+import { formattedTime, formatTimeToEng } from "@models/ModelOutcomeDetailForm";
 import clsx from "clsx";
 import React, { useMemo } from "react";
 import { Controller, UseFormMethods } from "react-hook-form";
@@ -27,8 +28,6 @@ import LayoutBox from "../../components/LayoutBox";
 import { LButton } from "../../components/LButton";
 import { Permission } from "../../components/Permission/Permission";
 import { d } from "../../locale/LocaleManager";
-import { formattedTime } from "../../models/ModelContentDetailForm";
-import { formatTimeToEng } from "../../models/ModelReports";
 import { isUnpublish } from "./ThirdSearchHeader";
 import { BulkListForm, BulkListFormKey, OutcomeQueryCondition } from "./types";
 const LightTooltip = withStyles((theme: Theme) => ({

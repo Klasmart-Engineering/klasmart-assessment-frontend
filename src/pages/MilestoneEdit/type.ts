@@ -6,3 +6,7 @@ export enum Regulation {
   // 用户修改 program 或 developmental 引起的其他input初始化规则, 计算时只考虑 下拉列表数量
   ByOptionCount = "ByOptionCount",
 }
+export enum TabValue {
+  details = "details",
+  leaningoutcomes = "learningoutcomes",
+}

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { OptionsObject, SnackbarKey, SnackbarMessage } from "notistack";
 
-type Equal<X1, X2, T, F> = (<X>() => X extends X1 ? 1 : 2) extends <X>() => X extends X2 ? 1 : 2 ? T : F;
+type Equal<X1, X2, T, F> = (<X>() => X extends X1 ? 1 : 2) extends (<X>() => X extends X2 ? 1 : 2) ? T : F;
 type NoneReadonlyKeysOf<T> = {
   [Key in keyof T]: Equal<{ [K in Key]: T[K] }, { -readonly [K in Key]: T[K] }, ReadonlyArray<any> extends T[Key] ? never : Key, never>;
 }[keyof T];

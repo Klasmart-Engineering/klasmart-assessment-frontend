@@ -33,12 +33,12 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
     position: "relative",
   },
   materialEditBox: {
-    "& .MuiOutlinedInput-multiline": {
+    "& .assessment-MuiOutlinedInput-multiline": {
       padding: "18.5px 14px 40px 14px",
     },
   },
   fieldset: {
-    "& .MuiInputBase-input": {
+    "& .assessment-MuiInputBase-input": {
       color: "rgba(0,0,0,1)",
     },
     "&:not(:first-child)": {
@@ -46,7 +46,7 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
     },
   },
   blockEle: {
-    "& .MuiInputBase-root": {
+    "& .assessment-MuiInputBase-root": {
       display: "block",
       minHeight: 120,
     },
@@ -102,7 +102,7 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
   commentCon: {
     marginLeft: 10,
     width: "100%",
-    "& .MuiInputBase-root": {
+    "& .assessment-MuiInputBase-root": {
       height: "100%",
     },
     "& .MuiOutlinedInput-notchedOutline": {

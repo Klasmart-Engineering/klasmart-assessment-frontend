@@ -220,6 +220,32 @@ export const getContentResourceUploadPath = createAsyncThunk<IGetContentsResours
     return api.contentsResources.getContentResourceUploadPath(query);
   }
 );
+
+type IGetDownloadPathParams = Parameters<typeof api.contentsResources.getDownloadPath>[0];
+type IGetDownloadPathResult = AsyncReturnType<typeof api.contentsResources.getDownloadPath>;
+export const getDownloadPath = createAsyncThunk<IGetDownloadPathResult, IGetDownloadPathParams>("content/getDownloadPath", (query) => {
+  return api.contentsResources.getDownloadPath(query);
+});
+
+interface ActCreateDownoadParams extends LoadingMetaPayload {
+  resourceId: string;
+}
+export const actCreateDownload = createAsyncThunk<IGetDownloadPathResult, ActCreateDownoadParams>(
+  "content/actCreateDownload",
+  ({ resourceId }) => api.contentsResources.getDownloadPath(resourceId)
+);
+
+interface checkResourceExistParams extends LoadingMetaPayload {
+  resource_id: string;
+}
+type checkResourceExistResult = ReturnType<typeof api.contentsResources.checkResourceExist>;
+export const checkResourceExist = createAsyncThunk<checkResourceExistResult, checkResourceExistParams>(
+  "content/checkResourceExist",
+  ({ resource_id }) => {
+    return api.contentsResources.checkResourceExist(resource_id);
+  }
+)
+
 const { reducer } = createSlice({
   name: "assessments",
   initialState,

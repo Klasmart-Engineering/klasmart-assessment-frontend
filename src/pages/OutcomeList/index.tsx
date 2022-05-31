@@ -94,7 +94,7 @@ export function OutcomeList() {
     dispatch(setSelectedIds(idsMap));
     return Object.keys(idsMap).filter(item => idsMap[item]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ids, outcomeList]);
+  }, [ids, outcomeList, dispatch]);
   const [initFields, setInitFields] = useState(["outcome_name", "shortcode", "score_threshold", "updated_at", "program", "subject", "category", "subcategory"]);
   const perm = usePermission([
     PermissionType.view_my_unpublished_learning_outcome_410,

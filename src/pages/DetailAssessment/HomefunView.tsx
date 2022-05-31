@@ -5,8 +5,8 @@ import { Box, Checkbox, Collapse, FormControl, FormControlLabel, FormGroup, Icon
 import { GetApp, SvgIconComponent } from "@material-ui/icons";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
+import { formattedTime } from "@models/ModelOutcomeDetailForm";
 // import FactCheckOutlinedIcon from '@material-ui/icons/FactCheckOutlined';
-import { formattedTime } from "@models/ModelContentDetailForm";
 import { DetailAssessmentResultAssignment, DetailAssessmentResultFeedback } from "@pages/ListAssessment/types";
 import { actAsyncConfirm } from "@reducers/confirm";
 import { AppDispatch } from "@reducers/index";
