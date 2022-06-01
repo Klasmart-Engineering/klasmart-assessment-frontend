@@ -251,7 +251,7 @@ function MilestoneEditForm() {
   };
 
   const handleClickOutcome: ContainedOutcomeListProps["onClickOutcome"] = (id: GetOutcomeDetail["outcome_id"]) => {
-    window.open(`${process.env.REACT_APP_REMOTE_DOMAIN}assessments/outcome-edit?org_id=${organization_id}&outcome_id=${id}&readonly=true`, "_blank");
+    window.open(`${process.env.REACT_APP_REMOTE_DOMAIN}/#/assessments/outcome-edit?org_id=${organization_id}&outcome_id=${id}&readonly=true`, "_blank");
   };
 
   useEffect(() => {
@@ -323,7 +323,7 @@ function MilestoneEditForm() {
         isMyself={isMyself}
         is_unpub={is_unpub === UNPUB}
       />
-      <LayoutPair breakpoint="md" leftWidth={703} rightWidth={1105} spacing={32} basePadding={0} padding={40}>
+      <LayoutPair breakpoint={1536} leftWidth={703} rightWidth={1105} spacing={32} basePadding={0} padding={40}>
         {leftside}
         {rightside}
       </LayoutPair>

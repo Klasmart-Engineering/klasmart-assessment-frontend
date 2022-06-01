@@ -516,7 +516,7 @@ export function DetailAssessment() {
         onSave={handleDetailSave}
         editable={editable}
       />
-      <LayoutPair breakpoint="md" leftWidth={603} rightWidth={1205} spacing={32} basePadding={0} padding={40}>
+      <LayoutPair breakpoint={1536} leftWidth={603} rightWidth={1205} spacing={32} basePadding={0} padding={40}>
         <DetailForm
           assessmentDetail={assessmentDetailV2}
           students={defaultStudents}
