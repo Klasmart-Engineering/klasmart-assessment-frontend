@@ -107,8 +107,9 @@ export default function CreateOutcomings() {
 
   React.useEffect(() => {
     if (outcome_id) {
-      dispatch(getOutcomeDetail({ id: outcome_id, metaLoading: true }));
       setShowEdit(true);
+      if(before) return;
+      dispatch(getOutcomeDetail({ id: outcome_id, metaLoading: true }));
     }
   }, [dispatch, outcome_id]);
 

@@ -127,6 +127,7 @@ function OutcomeHeader(props: OutcomeHeaderProps) {
     isSelf,
     is_unpub,
   } = props;
+  console.log(showEdit, before)
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down("sm"));
   // const size = sm ? "small" : "medium";
@@ -394,36 +395,64 @@ function OutcomeHeader(props: OutcomeHeaderProps) {
             )}
           </>
         )}
-        {publish_status === "published" && (
-          <>
-            <Permission
-              value={PermissionType.edit_published_learning_outcome_436}
-              render={(value) =>
-                value && (
-                  <Button
-                    variant="contained"
-                    endIcon={<Create />}
-                    color="primary"
-                    className={clsx(css.headerButton, css.editButton)}
-                    onClick={handleEdit}
-                    style={{ marginRight: "30px" }}
-                  >
-                    {d("Edit").t("library_label_edit")}
-                  </Button>
-                )
-              }
-            />
-            <Permission
-              value={PermissionType.delete_published_learning_outcome_448}
-              render={(value) =>
-                value && (
-                  <Button variant="outlined" endIcon={<Delete />} className={clsx(css.deleteButton)} onClick={handleDelete}>
-                    {d("Delete").t("assess_label_delete")}
-                  </Button>
-                )
-              }
-            />
-          </>
+        {publish_status === "published" && 
+        (showEdit ?
+          (
+            <>
+              <Permission
+                value={PermissionType.edit_published_learning_outcome_436}
+                render={(value) =>
+                  value && (
+                    <Button
+                      variant="contained"
+                      endIcon={<Create />}
+                      color="primary"
+                      className={clsx(css.headerButton, css.editButton)}
+                      onClick={handleEdit}
+                      style={{ marginRight: "30px" }}
+                    >
+                      {d("Edit").t("library_label_edit")}
+                    </Button>
+                  )
+                }
+              />
+              <Permission
+                value={PermissionType.delete_published_learning_outcome_448}
+                render={(value) =>
+                  value && (
+                    <Button variant="outlined" endIcon={<Delete />} className={clsx(css.deleteButton)} onClick={handleDelete}>
+                      {d("Delete").t("assess_label_delete")}
+                    </Button>
+                  )
+                }
+              />
+            </>
+          ) : (
+            <>
+              <Button variant="contained" endIcon={<Cancel />} className={clsx(css.headerButton, css.redButton)} onClick={handleReset}>
+                {d("Cancel").t("assess_label_cancel")}
+              </Button>
+              <LButton
+                variant="contained"
+                endIcon={<Save />}
+                color="primary"
+                className={css.headerButton}
+                onClick={handleSave}
+                disabled={!isDirty}
+              >
+                {d("Save").t("assess_label_save")}
+              </LButton>
+              <LButton
+                variant="contained"
+                endIcon={<Publish />}
+                className={clsx(css.headerButton, css.greenButton)}
+                onClick={handlePublish}
+                disabled={outcome_id ? isDirty : true}
+              >
+                {d("Publish").t("assess_label_publish")}
+              </LButton>
+            </>
+          )
         )}
       </>
     );
