@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) =>
       borderBottom: "none",
     },
     title: {
-      "& .MuiTypography-root": {
+      "& .assessment-MuiTypography-root": {
         fontSize: "24px !important",
         fontWeight: 700,
       },

@@ -72,7 +72,7 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
     },
   },
   title: {
-    "& .MuiTypography-root": {
+    "& .assessment-MuiTypography-root": {
       fontSize: "24px !important",
       fontWeight: 700,
     },
@@ -92,10 +92,10 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
     marginBottom: 10,
   },
   checkBoxCon: {
-    "& .MuiFormControlLabel-label": {
+    "& .assessment-MuiFormControlLabel-label": {
       fontSize: 18,
     },
-    "& .MuiTypography-root": {
+    "& .assessment-MuiTypography-root": {
       wordBreak: "break-all",
     },
   },
@@ -105,7 +105,7 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
     "& .assessment-MuiInputBase-root": {
       height: "100%",
     },
-    "& .MuiOutlinedInput-notchedOutline": {
+    "& .assessment-MuiOutlinedInput-notchedOutline": {
       border: "none",
     },
   },

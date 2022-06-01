@@ -69,6 +69,7 @@ function MilestoneEditForm() {
     RootState,
     RootState["milestone"]
   >((state) => state.milestone);
+  const { organization_id } = useSelector<RootState, RootState["common"]>(state => state.common)
   const isMyself = useMemo(() => milestoneDetail.author?.author_id === user_id, [milestoneDetail.author, user_id]);
   const [canEdit, setCanEdit] = useState(false);
   const [regulation, setRegulation] = useState<Regulation>(id ? Regulation.ByMilestoneDetail : Regulation.ByMilestoneDetailAndOptionCount);
@@ -250,7 +251,7 @@ function MilestoneEditForm() {
   };
 
   const handleClickOutcome: ContainedOutcomeListProps["onClickOutcome"] = (id: GetOutcomeDetail["outcome_id"]) => {
-    window.open(`#/assessments/outcome-edit?outcome_id=${id}&readonly=true`, "_blank");
+    window.open(`${process.env.REACT_APP_REMOTE_DOMAIN}assessments/outcome-edit?org_id=${organization_id}&outcome_id=${id}&readonly=true`, "_blank");
   };
 
   useEffect(() => {
