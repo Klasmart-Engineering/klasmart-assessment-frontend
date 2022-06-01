@@ -7,7 +7,6 @@ const path = require('path');
 const pkg = require("./package.json");
 
 function myOverrides(config) {
-  const dependencies = process.env.NODE_ENV !== 'development' ? pkg.dependencies : [];
   config.output = {
     ...config.output,
     path: path.resolve(process.env.BUILD_PATH || 'build'),
@@ -21,7 +20,6 @@ function myOverrides(config) {
         "./Assessment": "./src/main.tsx",
       },
       shared: {
-        ...dependencies,
         react: {
           eager: true,
           singleton: true,
