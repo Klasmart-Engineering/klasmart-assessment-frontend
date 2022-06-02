@@ -251,7 +251,7 @@ function MilestoneEditForm() {
   };
 
   const handleClickOutcome: ContainedOutcomeListProps["onClickOutcome"] = (id: GetOutcomeDetail["outcome_id"]) => {
-    window.open(`${process.env.REACT_APP_REMOTE_DOMAIN}/#/assessments/outcome-edit?org_id=${organization_id}&outcome_id=${id}&readonly=true`, "_blank");
+    window.open(`${process.env.REACT_APP_REMOTE_DOMAIN}#/assessments/outcome-edit?org_id=${organization_id}&outcome_id=${id}&readonly=true`, "_blank");
   };
 
   useEffect(() => {
