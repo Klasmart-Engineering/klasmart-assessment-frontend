@@ -126,10 +126,10 @@ function MilestoneEditForm() {
         >;
         if (payload === "ok") {
           if (perm.view_pending_milestone_486) {
-            history.push(`/milestone/milestone-list?status=${MilestoneStatus.pending}&page=1&order_by=${MilestoneOrderBy._created_at}`);
+            history.push(`/assessments/milestone-list?status=${MilestoneStatus.pending}&page=1&order_by=${MilestoneOrderBy._created_at}`);
           } else {
             history.push(
-              `/milestone/milestone-list?status=${MilestoneStatus.pending}&page=1&order_by=${MilestoneOrderBy._created_at}&is_unpub=UNPUB`
+              `/assessments/milestone-list?status=${MilestoneStatus.pending}&page=1&order_by=${MilestoneOrderBy._created_at}&is_unpub=UNPUB`
             );
           }
         }
@@ -140,7 +140,7 @@ function MilestoneEditForm() {
     if (milestoneDetail.status === MilestoneStatus.published) {
       const result: any = await dispatch(occupyMilestone({ id: milestoneDetail.milestone_id as string, metaLoading: true }));
       if (result && result.payload && result.payload.milestone_id) {
-        history.replace(`/milestone/milestone-edit/tab/details?id=${result.payload.milestone_id}&first_save=true`);
+        history.replace(`/assessments/milestone-edit/tab/details?id=${result.payload.milestone_id}&first_save=true`);
         setCanEdit(true);
       }
     } else {
@@ -159,7 +159,7 @@ function MilestoneEditForm() {
     >;
     if (payload === "ok") {
       dispatch(actSuccess("Reject Success"));
-      history.push(`/milestone/milestone-list?status=${MilestoneStatus.pending}&page=1&order_by=${MilestoneOrderBy._created_at}`);
+      history.push(`/assessments/milestone-list?status=${MilestoneStatus.pending}&page=1&order_by=${MilestoneOrderBy._created_at}`);
     }
   };
   const handleApprove: MilestoneHeaderProps["onApprove"] = async () => {
@@ -167,7 +167,7 @@ function MilestoneEditForm() {
       AsyncTrunkReturned<typeof bulkReject>
     >;
     if (payload === "ok") {
-      history.push(`/milestone/milestone-list?status=${MilestoneStatus.pending}&page=1&order_by=${MilestoneOrderBy._created_at}`);
+      history.push(`/assessments/milestone-list?status=${MilestoneStatus.pending}&page=1&order_by=${MilestoneOrderBy._created_at}`);
     }
   };
   const handleChangeTab = useMemo(
