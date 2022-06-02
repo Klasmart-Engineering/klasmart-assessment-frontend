@@ -111,7 +111,7 @@ export default function CreateOutcomings() {
       if(before) return;
       dispatch(getOutcomeDetail({ id: outcome_id, metaLoading: true }));
     }
-  }, [dispatch, outcome_id]);
+  }, [dispatch, outcome_id, before]);
 
   React.useEffect(() => {
     if (status || before) setShowEdit(false);
