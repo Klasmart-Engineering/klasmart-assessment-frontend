@@ -249,7 +249,6 @@ export const recursiveGetOutcomes = async (
         const start = (page!) * 50;
         const end = (page! + 1) * 50;
         // const end = pageEnd > length ? length : pageEnd;
-        console.log(start, end);
         return recursiveGetOutcomes({ ...query, page: (page! + 1), outcome_ids: oIds?.slice(start, end) }, downloadOutcomes, oIds)
       }
     }

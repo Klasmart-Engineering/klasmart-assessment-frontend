@@ -127,7 +127,6 @@ function OutcomeHeader(props: OutcomeHeaderProps) {
     isSelf,
     is_unpub,
   } = props;
-  console.log(showEdit, before)
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down("sm"));
   // const size = sm ? "small" : "medium";
