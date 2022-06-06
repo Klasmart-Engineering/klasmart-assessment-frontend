@@ -1,4 +1,3 @@
-import { apiOrganizationOfPage } from "@api/extra";
 import { GetOutcomeDetail, MilestoneDetailResult, MilestoneOrderBy, MilestoneStatus } from "@api/type";
 import useQueryCms from "@hooks/useQueryCms";
 import {
@@ -252,7 +251,7 @@ function MilestoneEditForm() {
   };
 
   const handleClickOutcome: ContainedOutcomeListProps["onClickOutcome"] = (id: GetOutcomeDetail["outcome_id"]) => {
-    window.open(`${process.env.REACT_APP_REMOTE_DOMAIN}?org_id=${apiOrganizationOfPage()}#/assessments/outcome-edit?outcome_id=${id}&readonly=true`, "_blank");
+    window.open(`#/assessments/outcome-edit?outcome_id=${id}&readonly=true`, "_blank");
   };
 
   useEffect(() => {
