@@ -1,6 +1,7 @@
 import { apiEmitter, ApiErrorEventData, ApiEvent, ApiInfoEventData, GraphQLErrorEventData } from "@api/emitter";
-import { LangRecordId } from "@locale/lang/type";
-import { t } from "@locale/LocaleManager";
+import { localeState, useGlobalStateValue } from "@kl-engineering/frontend-state";
+import { LangRecordId, shouldBeLangName } from "@locale/lang/type";
+import { localeManager, t } from "@locale/LocaleManager";
 import { setOrganizationId } from "@reducers/common";
 import { store } from "@reducers/index";
 import { actError, actInfo } from "@reducers/notify";
@@ -32,9 +33,9 @@ apiEmitter.on<GraphQLErrorEventData>(ApiEvent.GraphQLError, (e) => {
 });
 
 export default function Main(props: { organization_id?: string }) {
-  // const locale = useGlobalStateValue(localeState);
+  const locale = useGlobalStateValue(localeState);
   React.useEffect(() => {
-    // if (locale) localeManager.toggle(shouldBeLangName(locale.slice(0, 2) || "en"));
+    if (locale) localeManager.toggle(shouldBeLangName(locale.slice(0, 2) || "en"));
     if (props.organization_id) store.dispatch(setOrganizationId(props.organization_id));
   }, [props]);
   return <App />;
