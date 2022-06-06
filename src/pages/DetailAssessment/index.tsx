@@ -243,7 +243,9 @@ export function DetailAssessment() {
       );
     }
     setComputedStudentViewItems(selectedStudents);
-    setSubDimension(ModelAssessment.getInitSubDimension(dimension, selectedStudents));
+    const subDimension = ModelAssessment.getInitSubDimension(dimension, selectedStudents)
+    setSubDimension(subDimension);
+    setSelectedSubdimension(subDimension);
   };
   const handleChangeContents = (contents: DetailAssessmentResult["contents"]) => {
     contents && setContents([...contents]);
@@ -252,8 +254,9 @@ export function DetailAssessment() {
       contents
     );
     setComputedStudentViewItems(selectedContents);
-    setSubDimension(ModelAssessment.getInitSubDimension(dimension, selectedContents));
-    setSelectedSubdimension(ModelAssessment.getInitSubDimension(dimension, selectedContents));
+    const subDimension = ModelAssessment.getInitSubDimension(dimension, selectedContents)
+    setSubDimension(subDimension);
+    setSelectedSubdimension(subDimension);
   };
   const handleChangeComputedStudentViewItems = (studentViewItems?: StudentViewItemsProps[]) => {
     studentViewItems && setComputedStudentViewItems([...studentViewItems]);
