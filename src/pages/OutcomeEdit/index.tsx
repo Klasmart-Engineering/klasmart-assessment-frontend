@@ -148,7 +148,7 @@ export default function CreateOutcomings() {
           >;
           if (payload === "ok") {
             dispatch(actSuccess(d("Updated Successfully").t("assess_msg_updated_successfully")));
-            await dispatch(getOutcomeDetail({ id: outcome_id, metaLoading: true }));
+            // await dispatch(getOutcomeDetail({ id: outcome_id, metaLoading: true }));
             reset(value);
             setCondition("default");
           }
@@ -249,12 +249,15 @@ export default function CreateOutcomings() {
   };
 
   const handleEdit: OutcomeHeaderProps["handleEdit"] = async () => {
-    setShowEdit(!showEdit);
     if (outcomeDetail.publish_status === "published") {
       const result: any = await dispatch(lockOutcome({ id: outcome_id, metaLoading: true }));
+      if (result.label) return;
       if (result.payload.outcome_id) {
+        setShowEdit(!showEdit);
         history.push(`/assessments/outcome-edit?outcome_id=${result.payload.outcome_id}&before=published`);
       }
+    } else {
+      setShowEdit(!showEdit);
     }
   };
 
