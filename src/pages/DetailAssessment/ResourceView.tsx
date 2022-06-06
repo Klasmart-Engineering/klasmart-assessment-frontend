@@ -402,7 +402,7 @@ export function DrawingFeedback(props: DrawingFeedbackProps) {
       setPictureInitUrl(initPath)
     }
   })()
- }, [])
+ }, [resourceId, initResourceId])
 
   return (
     <Dialog open={open} fullWidth maxWidth={dialogType === "edit" ? "lg" : attachment?.review_attachment_id ? "lg" : "sm"}>

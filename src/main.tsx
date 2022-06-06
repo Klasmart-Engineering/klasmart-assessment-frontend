@@ -37,7 +37,7 @@ export default function Main(props: { organization_id?: string }) {
   React.useEffect(() => {
     if (locale) localeManager.toggle(shouldBeLangName(locale.slice(0, 2) || "en"));
     if (props.organization_id) store.dispatch(setOrganizationId(props.organization_id));
-  }, [props]);
+  }, [props, locale]);
   return <App />;
 }
 

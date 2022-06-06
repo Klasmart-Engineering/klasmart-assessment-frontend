@@ -76,7 +76,6 @@ export const apiResourcePathById = (resource_id?: string) => {
 };
 
 export const getPicRealPath = async (resource_id?: string) => {
-  let path: string | undefined = "";
   const res = await api.contentsResources.getDownloadPath(resource_id as string)
   return res.path;
 }
