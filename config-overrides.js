@@ -24,6 +24,10 @@ function myOverrides(config) {
         "./Assessment": "./src/main.tsx",
       },
       shared: {
+        '@kl-engineering/frontend-state': {
+          singleton: true,
+          requiredVersion: pkg.dependencies[`@kl-engineering/frontend-state`],
+        },
         react: {
           eager: true,
           singleton: true,
