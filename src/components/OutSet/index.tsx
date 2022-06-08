@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 5,
     background: "#fff",
 
-    "& .MuiFormControlLabel-root": {
+    "& .assessment-MuiFormControlLabel-root": {
       marginTop: 10,
       fontSize: 16,
       lineHeight: "19px",
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     borderTop: "1px solid #eeeeee",
     height: 56,
     lineHeight: "56px",
-    "& .MuiButton-containedPrimary": {
+    "& .assessment-MuiButton-containedPrimary": {
       marginRight: 10,
     },
   },

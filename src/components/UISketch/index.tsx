@@ -1,22 +1,22 @@
-import React, { useRef, forwardRef, useImperativeHandle, useMemo } from "react";
-import { SketchField, Tools } from "react-sketch-master";
 import { Box } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Slider from "@material-ui/core/Slider";
-import CreateIcon from "@material-ui/icons/Create";
-import DeleteIcon from "@material-ui/icons/Delete";
-import TouchAppIcon from "@material-ui/icons/TouchApp";
-import RedoIcon from "@material-ui/icons/Redo";
-import UndoIcon from "@material-ui/icons/Undo";
-import OpenWithIcon from "@material-ui/icons/OpenWith";
-import TextFieldsIcon from "@material-ui/icons/TextFields";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import Divider from "@material-ui/core/Divider";
+import Slider from "@material-ui/core/Slider";
+import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Tooltip from "@material-ui/core/Tooltip";
+import Typography from "@material-ui/core/Typography";
 import CheckIcon from "@material-ui/icons/Check";
 import CloseIcon from "@material-ui/icons/Close";
-import Tooltip from "@material-ui/core/Tooltip";
-import TextField from "@material-ui/core/TextField";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import CreateIcon from "@material-ui/icons/Create";
+import DeleteIcon from "@material-ui/icons/Delete";
+import OpenWithIcon from "@material-ui/icons/OpenWith";
+import RedoIcon from "@material-ui/icons/Redo";
+import TextFieldsIcon from "@material-ui/icons/TextFields";
+import TouchAppIcon from "@material-ui/icons/TouchApp";
+import UndoIcon from "@material-ui/icons/Undo";
+import React, { forwardRef, useImperativeHandle, useMemo, useRef } from "react";
+import { SketchField, Tools } from "react-sketch-master";
 
 const useStyles = makeStyles(({ shadows }) => ({
   sliderBox: {
@@ -104,7 +104,7 @@ export function getImageDimension(pictureUrl: string, initHeight: number): Promi
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.src = (pictureUrl + `?timestamp= ${Date.now()}`) as string;
-    img.crossOrigin = "anonymous";
+    img.crossOrigin = "use-credentials";
     img.onload = () => {
       const coefficient = initHeight / img.height;
       const widthImg = img.width * coefficient;

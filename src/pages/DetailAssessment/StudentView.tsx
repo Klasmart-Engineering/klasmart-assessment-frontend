@@ -54,11 +54,11 @@ const useStyles = makeStyles({
     alignItems: "flex-start",
     textAlign: "left",
     wordBreak: "break-all",
-    "& .MuiFormControlLabel-root": {
+    "& .assessment-MuiFormControlLabel-root": {
       display: "flex",
       alignItems: "flex-start",
       paddingTop: 9,
-      "& .MuiIconButton-root": {
+      "& .assessment-MuiIconButton-root": {
         paddingTop: 0,
       },
     },

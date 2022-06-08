@@ -243,7 +243,9 @@ export function DetailAssessment() {
       );
     }
     setComputedStudentViewItems(selectedStudents);
-    setSubDimension(ModelAssessment.getInitSubDimension(dimension, selectedStudents));
+    const subDimension = ModelAssessment.getInitSubDimension(dimension, selectedStudents)
+    setSubDimension(subDimension);
+    setSelectedSubdimension(subDimension);
   };
   const handleChangeContents = (contents: DetailAssessmentResult["contents"]) => {
     contents && setContents([...contents]);
@@ -252,8 +254,9 @@ export function DetailAssessment() {
       contents
     );
     setComputedStudentViewItems(selectedContents);
-    setSubDimension(ModelAssessment.getInitSubDimension(dimension, selectedContents));
-    setSelectedSubdimension(ModelAssessment.getInitSubDimension(dimension, selectedContents));
+    const subDimension = ModelAssessment.getInitSubDimension(dimension, selectedContents)
+    setSubDimension(subDimension);
+    setSelectedSubdimension(subDimension);
   };
   const handleChangeComputedStudentViewItems = (studentViewItems?: StudentViewItemsProps[]) => {
     studentViewItems && setComputedStudentViewItems([...studentViewItems]);
@@ -516,7 +519,7 @@ export function DetailAssessment() {
         onSave={handleDetailSave}
         editable={editable}
       />
-      <LayoutPair breakpoint="md" leftWidth={603} rightWidth={1205} spacing={32} basePadding={0} padding={40}>
+      <LayoutPair breakpoint={1536} leftWidth={603} rightWidth={1205} spacing={32} basePadding={0} padding={40}>
         <DetailForm
           assessmentDetail={assessmentDetailV2}
           students={defaultStudents}

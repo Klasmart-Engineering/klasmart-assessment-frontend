@@ -1,4 +1,4 @@
-import { apiResourcePathById } from "@api/extra";
+import { getPicRealPath } from "@api/extra";
 import { audioClient } from "@api/index";
 import { ApolloProvider } from "@apollo/client";
 import AssetImg from "@components/UIAssetPreview/AssetPreview/AssetImg";
@@ -29,7 +29,7 @@ import {
 } from "@material-ui/icons";
 import BorderColorIcon from "@material-ui/icons/BorderColor";
 import { DetailAssessmentResultAssignment, DetailAssessmentResultFeedback } from "@pages/ListAssessment/types";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { d } from "../../locale/LocaleManager";
 import AudioView from "./AudioView";
@@ -363,8 +363,10 @@ export function DrawingFeedback(props: DrawingFeedbackProps) {
   const sketchRef = useRef<any>(null);
   const [hasTraces, setHasTraces] = useState<boolean>(false);
   const [hasSaved, setHasSaved] = useState<boolean>(false);
-  const pictureUrl = apiResourcePathById(attachment?.review_attachment_id ? attachment.review_attachment_id : attachment?.attachment_id);
-  const pictureInitUrl = apiResourcePathById(attachment?.attachment_id);
+  const resourceId = attachment?.review_attachment_id ? attachment.review_attachment_id : attachment?.attachment_id;
+  const initResourceId = attachment?.attachment_id;
+  const [pictureUrl, setPictureUrl] = useState<string | undefined>();
+  const [pictureInitUrl, setPictureInitUrl] = useState<string | undefined>();
   const { breakpoints } = useTheme();
   const mobile = useMediaQuery(breakpoints.down(900));
 
@@ -388,6 +390,19 @@ export function DrawingFeedback(props: DrawingFeedbackProps) {
   const handleClickExit = () => {
     onClickExit && onClickExit(hasSaved ? false : hasTraces);
   };
+
+ useEffect(() => {
+   (async() => {
+    if (resourceId) {
+      const path = await getPicRealPath(resourceId);
+      setPictureUrl(path);
+    }
+    if (initResourceId) {
+      const initPath = await getPicRealPath(initResourceId);
+      setPictureInitUrl(initPath)
+    }
+  })()
+ }, [resourceId, initResourceId])
 
   return (
     <Dialog open={open} fullWidth maxWidth={dialogType === "edit" ? "lg" : attachment?.review_attachment_id ? "lg" : "sm"}>

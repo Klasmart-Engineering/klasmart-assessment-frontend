@@ -72,8 +72,13 @@ const DOMAIN = getWebsocketApi();
 
 export const apiResourcePathById = (resource_id?: string) => {
   if (!resource_id) return;
-  return `${process.env.REACT_APP_BASE_API}/contents_resources/${resource_id}`;
+  return `${process.env.REACT_APP_BASE_DOMAIN}/v1/contents_resources/${resource_id}`;
 };
+
+export const getPicRealPath = async (resource_id?: string) => {
+  const res = await api.contentsResources.getDownloadPath(resource_id as string)
+  return res.path;
+}
 
 export const apiWebSocketValidatePDFById = (source: string, onChangePercentage?: (percentage: number) => any) => {
   return new Promise((resolve: (data: ValidationStatus) => any, reject: () => any) => {

@@ -15,7 +15,6 @@ import MilestoneEdit from "./pages/MilestoneEdit";
 import MilestonesList from "./pages/MilestoneList";
 import { default as CreateOutcome, default as CreateOutcomings } from "./pages/OutcomeEdit";
 import { OutcomeList } from "./pages/OutcomeList";
-// import { StudyAssessmentList } from "./pages/StudyAssessmentList";
 import { store } from "./reducers";
 import theme from "./theme";
 const generateClassName = createGenerateClassName({   

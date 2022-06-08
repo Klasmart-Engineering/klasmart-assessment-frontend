@@ -5,6 +5,7 @@ const aliasMap = configPaths('./tsconfig.paths.json') // or jsconfig.paths.json
 const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin')
 const path = require('path');
 const pkg = require("./package.json");
+const webpack = require("webpack");
 
 function myOverrides(config) {
   config.output = {
@@ -13,6 +14,9 @@ function myOverrides(config) {
     publicPath: process.env.REACT_APP_REMOTE_DOMAIN,
   }
   config.plugins = (config.plugins || []).concat([
+    new webpack.ProvidePlugin({
+      Buffer: ["buffer", "Buffer"]
+    }),
     new ModuleFederationPlugin({
       "name": "assessment",
       filename: `remoteEntry.js`,
@@ -20,6 +24,10 @@ function myOverrides(config) {
         "./Assessment": "./src/main.tsx",
       },
       shared: {
+        '@kl-engineering/frontend-state': {
+          singleton: true,
+          requiredVersion: pkg.dependencies[`@kl-engineering/frontend-state`],
+        },
         react: {
           eager: true,
           singleton: true,
@@ -36,6 +44,7 @@ function myOverrides(config) {
   config.resolve.fallback = {
     ...config.resolve.fallback,
     crypto: require.resolve("crypto-browserify"),
+    buffer: require.resolve("buffer"),
     stream: require.resolve("stream-browserify")
   }
   const scopePluginIndex = config.resolve.plugins.findIndex(

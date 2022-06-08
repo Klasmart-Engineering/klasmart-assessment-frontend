@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) =>
       marginTop: 30,
     },
     tableCell: {
-      width: 115,
+      // width: 115,
       minWidth: 104,
       maxWidth: 200,
     },

@@ -1,7 +1,7 @@
-import React from "react";
 import { Checkbox, FormControlLabel, makeStyles, Tooltip } from "@material-ui/core";
+import { Theme, withStyles } from "@material-ui/core/styles";
 import { InfoOutlined } from "@material-ui/icons";
-import { withStyles, Theme } from "@material-ui/core/styles";
+import React from "react";
 import { d } from "../../locale/LocaleManager";
 
 interface AchievedTooltipsProps {
@@ -13,13 +13,13 @@ const useStyles = makeStyles({
     fontSize: 14,
     display: "flex",
     flexDirection: "column",
-    "& .MuiFormControlLabel-root": {
+    "& .assessment-MuiFormControlLabel-root": {
       marginRight: 0,
-      "& .MuiCheckbox-root": {
+      "& .assessment-MuiCheckbox-root": {
         padding: "5px 9px",
       },
     },
-    "& .MuiTypography-root": {
+    "& .assessment-MuiTypography-root": {
       fontSize: 14,
     },
   },

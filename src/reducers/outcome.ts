@@ -249,7 +249,6 @@ export const recursiveGetOutcomes = async (
         const start = (page!) * 50;
         const end = (page! + 1) * 50;
         // const end = pageEnd > length ? length : pageEnd;
-        console.log(start, end);
         return recursiveGetOutcomes({ ...query, page: (page! + 1), outcome_ids: oIds?.slice(start, end) }, downloadOutcomes, oIds)
       }
     }
@@ -562,9 +561,9 @@ const { actions, reducer } = createSlice({
     [getOutcomeDetail.fulfilled.type]: (state, { payload }: PayloadAction<any>) => {
       state.outcomeDetail = payload;
     },
-    // [getOutcomeDetail.pending.type]: (state, { payload }: PayloadAction<any>) => {
-    //   state.outcomeDetail = initialState.outcomeDetail;
-    // },
+    [getOutcomeDetail.pending.type]: (state, { payload }: PayloadAction<any>) => {
+      state.outcomeDetail = initialState.outcomeDetail;
+    },
     [getOutcomeDetail.rejected.type]: (state, { error }: any) => {
       throw error;
     },

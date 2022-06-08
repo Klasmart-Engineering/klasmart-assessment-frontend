@@ -74,6 +74,7 @@ export function formattedNowOrTime(value?: number): string {
 }
 
 export const timestampToTime = (timestamp: number | undefined, type: string = "default") => {
+  if(!timestamp) return ``;
   const date = new Date(Number(timestamp) * 1000);
   const dateNumFun = (num: number) => (num < 10 ? `0${num}` : num);
   const [Y, M, D, h, m] = [

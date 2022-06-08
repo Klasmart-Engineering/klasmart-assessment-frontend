@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: "100%",
     backgroundColor: "#f0f0f0",
     fontSize: "18px",
-    "& .MuiTabs-indicator": {
+    "& .assessment-MuiTabs-indicator": {
       width: 0,
     },
   },
