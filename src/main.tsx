@@ -35,7 +35,10 @@ apiEmitter.on<GraphQLErrorEventData>(ApiEvent.GraphQLError, (e) => {
 export default function Main() {
   const locale = useGlobalStateValue(localeState);
   const currentOrganization = useGlobalStateValue(currentOrganizationState);
-  const organizationId = currentOrganization.id ?? ``;
+  let organizationId: string = "";
+  if(currentOrganization) {
+    organizationId = currentOrganization.id ?? ``;
+  }
   React.useEffect(() => {
     if (locale) localeManager.toggle(shouldBeLangName(locale.slice(0, 2) || "en"));
     if (organizationId) store.dispatch(setOrganizationId(organizationId));
