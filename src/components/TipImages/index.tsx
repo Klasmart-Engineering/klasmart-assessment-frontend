@@ -13,6 +13,7 @@ const useStyles = makeStyles(({ breakpoints }) => ({
   emptyImage: {
     marginTop: 200,
     marginBottom: 40,
+    display: "inline-block",
     [breakpoints.down("md")]: {
       marginTop: 40,
       marginBottom: 20,
