@@ -132,7 +132,7 @@ export default function CreateOutcomings() {
   const handleSave = React.useMemo(
     () =>
       handleSubmit(async (value: ModelOutcomeCreateView) => {
-        if (value.shortcode && !value.shortcode.trim()) {
+        if (!value.shortcode || (value.shortcode && !value.shortcode.trim())) {
           const resultInfo = (await dispatch(generateShortcode({ kind: "outcomes" }))) as unknown as PayloadAction<
             AsyncTrunkReturned<typeof generateShortcode>
           >;
