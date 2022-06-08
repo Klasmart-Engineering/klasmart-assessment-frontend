@@ -32,7 +32,7 @@ apiEmitter.on<GraphQLErrorEventData>(ApiEvent.GraphQLError, (e) => {
   if (message) store.dispatch(actError(message));
 });
 
-export default function Main(props: { organization_id?: string }) {
+export default function Main() {
   const locale = useGlobalStateValue(localeState);
   const currentOrganization = useGlobalStateValue(currentOrganizationState);
   const organizationId = currentOrganization.id ?? ``;
