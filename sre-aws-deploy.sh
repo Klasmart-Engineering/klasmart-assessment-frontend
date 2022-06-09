@@ -6,8 +6,8 @@ set -Eeuo pipefail
 trap cleanup SIGINT SIGTERM ERR EXIT
 
 # CHANGE ALLOWED TARGETS to deploy to a new region/environment combination
-allowed_target_environment=("stage" "prod" "alpha" "sso" "loadtest" "onboarding" "nextgen" "research" "showroom" "uat")
-allowed_target_region=("in" "pk" "global" "uk" "lk" "th" "mb")
+allowed_target_environment=("stage" "prod" "alpha")
+allowed_target_region=("in" "global")
 
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
@@ -90,28 +90,10 @@ parse_params() {
 setup_colors
 parse_params "$@"
 
-allowed_target_environment=("stage" "prod" "alpha" "sso" "loadtest" "onboarding" "nextgen" "research" "showroom" "uat")
-allowed_target_region=("in" "pk" "global" "uk" "lk" "th" "mb")
 
 if [ $env == "prod" ] && [ $region == "in" ]
 then
   S3_ENDPOINT=s3://klindia-prod-assessment
-  CLOUDFRONT_ID=TBD
-elif [ $env == "prod" ] && [ $region == "lk"  ]
-then
-  S3_ENDPOINT=s3://kllk-prod-assessment
-  CLOUDFRONT_ID=TBD
-elif [ $env == "prod" ] && [ $region == "pk"  ]
-then
-  S3_ENDPOINT=s3://klpk-prod-assessment
-  CLOUDFRONT_ID=TBD
-elif [ $env == "prod" ] && [ $region == "uk"  ]
-then
-  S3_ENDPOINT=s3://kluk-prod-assessment
-  CLOUDFRONT_ID=TBD
-elif [ $env == "prod" ] && [ $region == "th"  ]
-then
-  S3_ENDPOINT=s3://klth-prod-assessment
   CLOUDFRONT_ID=TBD
 elif [ $env == "prod" ] && [ $region == "global"  ]
 then
@@ -120,35 +102,11 @@ then
 elif [ $env == "stage" ] && [ $region == "global"  ]
 then
   S3_ENDPOINT=s3://klglobal-stage-assessment
-  CLOUDFRONT_ID=TBD
-elif [ $env == "sso" ] && [ $region == "global"  ]
-then
-  S3_ENDPOINT=s3://klglobal-sso-assessment
-  CLOUDFRONT_ID=TBD
+  CLOUDFRONT_ID=E3R5TURC7BP9JH
 elif [ $env == "alpha" ] && [ $region == "global"  ]
 then
   S3_ENDPOINT=s3://klglobal-alpha-assessment
-  CLOUDFRONT_ID=TBD
-elif [ $env == "research" ] && [ $region == "global"  ]
-then
-  S3_ENDPOINT=s3://klglobal-research-assessment
-  CLOUDFRONT_ID=TBD
-elif [ $env == "nextgen" ] && [ $region == "global"  ]
-then
-  S3_ENDPOINT=s3://klglobal-nextgen-assessment
-  CLOUDFRONT_ID=TBD
-elif [ $env == "uat" ] && [ $region == "mb"  ]
-then
-  S3_ENDPOINT=s3://klmumbai-uat-assessment
-  CLOUDFRONT_ID=TBD
-elif [ $env == "showroom" ] && [ $region == "global"  ]
-then
-  S3_ENDPOINT=s3://klglobal-showroom-assessment
-  CLOUDFRONT_ID=TBD
-elif [ $env == "loadtest" ] && [ $region == "global"  ]
-then
-  S3_ENDPOINT=s3://klglobal-loadtest-assessment
-  CLOUDFRONT_ID=TBD
+  CLOUDFRONT_ID=EYKR72TH5MC6C
 fi
 
 # script logic here
