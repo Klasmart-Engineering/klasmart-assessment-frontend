@@ -2331,10 +2331,10 @@
   "resolved" "https://registry.npmjs.org/@jsdevtools/ono/-/ono-7.1.3.tgz"
   "version" "7.1.3"
 
-"@kl-engineering/frontend-state@^1.1.0":
-  "integrity" "sha512-flMbAtveJfZPegdtFQ+JZDAUux9zBLPBusY/nbErcGHiFkSnN2WJl/fpAAKQjPbx/V5NQLV8l0EUq6RLSgC85Q=="
-  "resolved" "https://npm.pkg.github.com/download/@kl-engineering/frontend-state/1.1.0/1f18381d9005848a3d7037cb1a90cecada82992b602dc404d630293fb1c1fce6"
-  "version" "1.1.0"
+"@kl-engineering/frontend-state@^1.1.1":
+  "integrity" "sha512-HL0VQjP9jRgOh9Q73zGXWtAbNZNnmmMnDRG0Ke0Tg9vDXFh51QxFbhv1oKtVRHiP7q/UwwRBkg//2klkhnGdbA=="
+  "resolved" "https://npm.pkg.github.com/download/@kl-engineering/frontend-state/1.1.1/cc55cb8cafa41924651da10566149e08191dbe2a42e97d14f013745794fd300c"
+  "version" "1.1.1"
   dependencies:
     "react-cookie" "^4.1.1"
     "recoil" "^0.6.1"
