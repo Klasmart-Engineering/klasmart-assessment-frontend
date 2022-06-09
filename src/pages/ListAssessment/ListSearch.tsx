@@ -146,6 +146,7 @@ export function ListSearch(props: SearchComProps) {
     }
     setSelectAction(false);
     setShowMask(false);
+    document.getElementsByTagName("main")[0].style.overflow = "auto";
     setIsfocus(false);
   };
   const handleKeyPress: TextFieldProps["onKeyPress"] = (event) => {
@@ -160,6 +161,7 @@ export function ListSearch(props: SearchComProps) {
       }
       setSelectAction(false);
       setShowMask(false);
+      document.getElementsByTagName("main")[0].style.overflow = "auto";
     }
   };
   // const handleKeyUp: TextFieldProps["onKeyUp"] = () => {
@@ -178,6 +180,7 @@ export function ListSearch(props: SearchComProps) {
 
   const handleOnFocus = () => {
     setShowMask(true);
+    document.getElementsByTagName("main")[0].style.overflow = "hidden";
     setIsfocus(true);
     if(searchTextDefaultValue) {
       setValue(SEARCHINPUT, "")
@@ -187,6 +190,7 @@ export function ListSearch(props: SearchComProps) {
 
   const handleHideMask = () => {
     setShowMask(false);
+    document.getElementsByTagName("main")[0].style.overflow = "auto";
     setIsfocus(false);
     setValue(SEARCHINPUT, defaultTeacherName)
   }
