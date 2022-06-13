@@ -627,6 +627,7 @@ const { actions, reducer } = createSlice({
     },
     [generateShortcode.fulfilled.type]: (state, { payload }: PayloadAction<AsyncTrunkReturned<typeof generateShortcode>>) => {
       state.shortCode = payload.shortcode || "";
+      state.outcomeDetail.shortcode = payload.shortcode;
     },
     [exportOutcomes.fulfilled.type]: (state, { payload }: PayloadAction<AsyncTrunkReturned<typeof exportOutcomes>>) => {
       state.downloadOutcomes = payload;
