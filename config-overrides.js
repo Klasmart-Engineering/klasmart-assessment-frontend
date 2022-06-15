@@ -8,6 +8,7 @@ const pkg = require("./package.json");
 const webpack = require("webpack");
 
 function myOverrides(config) {
+  const dependencies = process.env.NODE_ENV !== 'development' ? pkg.dependencies : [];
   config.output = {
     ...config.output,
     path: path.resolve(process.env.BUILD_PATH || 'build'),
@@ -24,10 +25,7 @@ function myOverrides(config) {
         "./Assessment": "./src/main.tsx",
       },
       shared: {
-        '@kl-engineering/frontend-state': {
-          singleton: true,
-          requiredVersion: pkg.dependencies[`@kl-engineering/frontend-state`],
-        },
+        ...dependencies,
         react: {
           eager: true,
           singleton: true,
