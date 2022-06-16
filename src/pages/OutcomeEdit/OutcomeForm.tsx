@@ -106,7 +106,7 @@ export function OutcomeForm(props: OutcomeFormProps) {
     outcomeSetList,
     onDeleteSet,
     defaultSelectOutcomeset,
-    shortCode,
+    // shortCode,
     onInputChange,
   } = props;
   const classes = useStyles();
@@ -149,7 +149,7 @@ export function OutcomeForm(props: OutcomeFormProps) {
   const handleDelete = (set_id: string) => {
     onDeleteSet(set_id);
   };
-  const defaultShortCode = outcomeDetail.shortcode ? outcomeDetail.shortcode : shortCode;
+  const defaultShortCode = outcomeDetail.shortcode ? outcomeDetail.shortcode : "";
   return (
     <Box className={classes.outcomings_container}>
       <div className={classes.middleBox}>

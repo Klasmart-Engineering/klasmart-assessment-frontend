@@ -26,7 +26,11 @@ function myOverrides(config) {
       shared: {
         '@kl-engineering/frontend-state': {
           singleton: true,
-          requiredVersion: pkg.dependencies[`@kl-engineering/frontend-state`],
+          requiredVersion: pkg.dependencies['@kl-engineering/frontend-state'],
+        },
+        'fetch-intercept': {
+          singleton: true,
+          requiredVersion: pkg.dependencies['fetch-intercept'],
         },
         react: {
           eager: true,
