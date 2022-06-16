@@ -6,7 +6,7 @@ import { Controller, useForm, UseFormMethods } from "react-hook-form";
 import { d } from "../../locale/LocaleManager";
 import { SearchListForm, UserEntity } from "./types";
 
-const SEARCHINPUT="SEARCH_NAME"
+const SEARCHINPUT = "SEARCH_NAME";
 
 const useStyles = makeStyles((theme) => ({
   searchText: {
@@ -122,9 +122,9 @@ export function ListSearch(props: SearchComProps) {
     if (!teacher.id && !teacherNameValues) {
       return false;
     }
-    if(teacherNameValues) {
-      if(usersList?.length) {
-        if(selectAction) {
+    if (teacherNameValues) {
+      if (usersList?.length) {
+        if (selectAction) {
           return false;
         } else {
           return true;
@@ -133,15 +133,15 @@ export function ListSearch(props: SearchComProps) {
         return true;
       }
     }
-  }, [selectAction, teacher.id, usersList?.length, teacherNameValues])
+  }, [selectAction, teacher.id, usersList?.length, teacherNameValues]);
   const handleClickSearch = () => {
-    if(!teacherNameValues) {
-      onSearch(searchFieldDefaultValue!, {id: "", name: ""})
+    if (!teacherNameValues) {
+      onSearch(searchFieldDefaultValue!, { id: "", name: "" });
     } else {
-      if(teacherNameValues === teacher.name) {
+      if (teacherNameValues === teacher.name) {
         onSearch(searchFieldDefaultValue!, teacher);
       } else {
-        onSearch(searchFieldDefaultValue!, {id: searchTextDefaultValue!, name: teacherNameValues})
+        onSearch(searchFieldDefaultValue!, { id: searchTextDefaultValue!, name: teacherNameValues });
       }
     }
     setSelectAction(false);
@@ -154,8 +154,8 @@ export function ListSearch(props: SearchComProps) {
       if (disableSearchBtn) {
         return;
       }
-      if(!teacherNameValues) {
-        onSearch(searchFieldDefaultValue!, {id: "", name: ""})
+      if (!teacherNameValues) {
+        onSearch(searchFieldDefaultValue!, { id: "", name: "" });
       } else {
         onSearch(searchFieldDefaultValue!, teacher);
       }
@@ -170,9 +170,9 @@ export function ListSearch(props: SearchComProps) {
   //   setIsfocus(true);
   //   setSelectAction(false);
   // }
-  
-  const handleSelectTeacher = (teacher: UserEntity)  => {
-    setValue(SEARCHINPUT, teacher.name)
+
+  const handleSelectTeacher = (teacher: UserEntity) => {
+    setValue(SEARCHINPUT, teacher.name);
     setTeacher(teacher);
     setIsfocus(false);
     setSelectAction(true);
@@ -182,8 +182,8 @@ export function ListSearch(props: SearchComProps) {
     setShowMask(true);
     document.getElementsByTagName("main")[0].style.overflow = "hidden";
     setIsfocus(true);
-    if(searchTextDefaultValue) {
-      setValue(SEARCHINPUT, "")
+    if (searchTextDefaultValue) {
+      setValue(SEARCHINPUT, "");
       onSearchTeacherName("");
     }
   };
@@ -192,8 +192,8 @@ export function ListSearch(props: SearchComProps) {
     setShowMask(false);
     document.getElementsByTagName("main")[0].style.overflow = "auto";
     setIsfocus(false);
-    setValue(SEARCHINPUT, defaultTeacherName)
-  }
+    setValue(SEARCHINPUT, defaultTeacherName);
+  };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.persist();
@@ -230,36 +230,39 @@ export function ListSearch(props: SearchComProps) {
         >
           {menuItemList(searchFieldList)}
         </Controller> */}
-        <Controller
-          style={{
-            borderLeft: 0,
-          }}
-          as={TextField}
-          name={SEARCHINPUT}
-          control={control}
-          size="small"
-          onFocusCapture={handleOnFocus}
-          className={css.searchText}
-          onKeyPress={handleKeyPress}
-          // onKeyUp={debounce(handleKeyUp, 500)}
-          onChangeCapture={handleChange}
-          defaultValue={defaultTeacherName}
-          placeholder={d("Teacher's given or family name").t("assessment_search_teacher_tips")}
-        />
-      </div>
-      <Button variant="contained" color="primary" disabled={disableSearchBtn} className={css.searchBtn} onClick={handleClickSearch}>
-        <Search /> {d("Search").t("assess_label_search")}
-      </Button>
-      {
-        showList &&
+          <Controller
+            style={{
+              borderLeft: 0,
+            }}
+            as={TextField}
+            name={SEARCHINPUT}
+            control={control}
+            size="small"
+            onFocusCapture={handleOnFocus}
+            className={css.searchText}
+            onKeyPress={handleKeyPress}
+            // onKeyUp={debounce(handleKeyUp, 500)}
+            onChangeCapture={handleChange}
+            defaultValue={defaultTeacherName}
+            placeholder={d("Teacher's given or family name").t("assessment_search_teacher_tips")}
+          />
+        </div>
+        <Button variant="contained" color="primary" disabled={disableSearchBtn} className={css.searchBtn} onClick={handleClickSearch}>
+          <Search /> {d("Search").t("assess_label_search")}
+        </Button>
+        {showList && (
           <div className={css.teacherListCon}>
-            {usersList?.length ? usersList?.map(item => 
-              <div className={css.teacherItemCon} key={item.id} onClick={e => handleSelectTeacher(item)}>
-                {item.name}
-              </div>
-            ) : <div className={css.nullCon}>{d("No Matching Result").t("assessment_search_no_matching_result")}</div>} 
+            {usersList?.length ? (
+              usersList?.map((item) => (
+                <div className={css.teacherItemCon} key={item.id} onClick={(e) => handleSelectTeacher(item)}>
+                  {item.name}
+                </div>
+              ))
+            ) : (
+              <div className={css.nullCon}>{d("No Matching Result").t("assessment_search_no_matching_result")}</div>
+            )}
           </div>
-        }
+        )}
       </div>
     </div>
   );

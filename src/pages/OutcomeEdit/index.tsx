@@ -20,7 +20,7 @@ import {
   reject,
   resetShortCode,
   save,
-  updateOutcome
+  updateOutcome,
 } from "@reducers/outcome";
 import { AsyncTrunkReturned } from "@reducers/type";
 import { PayloadAction } from "@reduxjs/toolkit";
@@ -68,7 +68,7 @@ export default function CreateOutcomings() {
     getValues,
     formState: { isDirty },
     setValue,
-    watch
+    watch,
   } = formMethods;
 
   const handleChangeProgram = React.useMemo(
@@ -358,7 +358,7 @@ export default function CreateOutcomings() {
       if (condition === "default") {
         // const detail = shortCode ? { ...outcomeDetail, shortcode: shortCode } : outcomeDetail;
         const finalShortCode = watch()["shortcode"];
-        const detail = { ...outcomeDetail, shortcode: finalShortCode  } 
+        const detail = { ...outcomeDetail, shortcode: finalShortCode };
         const { program, subject, developmental } = outcomeDetail;
         const _program = program?.filter((pItem) => newOptions.program.find((item) => item.id === pItem.program_id));
         const _subject = subject ? subject?.filter((sItem) => newOptions.subject.find((item) => item.id === sItem.subject_id)) : [];

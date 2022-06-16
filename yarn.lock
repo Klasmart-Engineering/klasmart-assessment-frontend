@@ -2340,10 +2340,10 @@
     "recoil" "^0.6.1"
     "recoil-persist" "^4.1.0"
 
-"@kl-engineering/kidsloop-media-hooks@^0.2.5":
-  "integrity" "sha512-Hv8lRsfCs4N8jPk+BVNMV0TzeC6hWHtEtBaKgws0lTyGZyAEG510WXRNADm2yXlLDRRV6eyX5CSWGY9KpE9Xgw=="
-  "resolved" "https://npm.pkg.github.com/download/@kl-engineering/kidsloop-media-hooks/0.2.5/648b59531aeee00bbace1b19b1e79b8322be661b44af191873250fa71e8b2bb5"
-  "version" "0.2.5"
+"@kl-engineering/kidsloop-media-hooks@^0.2.6":
+  "integrity" "sha512-5iURs6g7c3VG05UpS0r/tmrJhBnMdAop62h8AtO+lRVpxf0Yq6lNb5nYvltw30WuQ8mkUFmYDTCLErT1+wfvwA=="
+  "resolved" "https://npm.pkg.github.com/download/@kl-engineering/kidsloop-media-hooks/0.2.6/45595edd2a4c11408d03e2a0eaa230491dc46b50a5bc16cec5f5edd324f8b660"
+  "version" "0.2.6"
   dependencies:
     "graphql" "^15.5.2"
     "tweetnacl" "^1.0.3"
