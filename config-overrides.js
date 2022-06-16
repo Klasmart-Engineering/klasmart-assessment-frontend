@@ -37,7 +37,11 @@ function myOverrides(config) {
         '@kl-engineering/frontend-state': {
           singleton: true,
           requiredVersion: pkg.dependencies[`@kl-engineering/frontend-state`],
-        }
+        },
+        'fetch-intercept': {
+          singleton: true,
+          requiredVersion: pkg.dependencies['fetch-intercept'],
+        },
       },
     }),
   ]);
