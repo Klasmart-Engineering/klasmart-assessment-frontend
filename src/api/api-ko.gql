@@ -810,3 +810,52 @@ query getUsersByName($filter: UserFilter,$directionArgs:ConnectionsDirectionArgs
     }
   }
 }
+
+query getProgramIdByName( $filter: ProgramFilter!) {
+  programsConnection(filter:$filter,direction: FORWARD){
+    edges{
+      node{
+        id
+        name
+        status
+        system
+        subjectsConnection {
+          edges {
+            node {
+              id
+              name
+              status
+              system
+            }
+          }
+        }
+        ageRangesConnection {
+          edges {
+            node {
+              id
+              name
+              status
+              system
+            }
+          }
+        }
+				gradesConnection {
+          edges {
+            node {
+              id
+              name
+              status
+              system
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+query getCategories($filter: CategoryFilter) {
+  categoriesConnection(filter: $filter, direction: FORWARD) {
+    
+  }
+}

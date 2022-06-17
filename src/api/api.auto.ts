@@ -539,6 +539,7 @@ export interface EntityExportOutcomeView {
   outcome_id?: string;
   outcome_name?: string;
   program?: string[];
+  row_number?: number;
   score_threshold?: number;
   sets?: string[];
   shortcode?: string;
@@ -632,6 +633,28 @@ export interface EntityIDName {
   name?: string;
 }
 
+export interface EntityImportOutcomeRequest {
+  create_data?: EntityImportOutcomeView[];
+  update_data?: EntityImportOutcomeView[];
+}
+
+export interface EntityImportOutcomeView {
+  age?: string[];
+  assumed?: boolean;
+  category?: string[];
+  description?: string;
+  grade?: string[];
+  keywords?: string[];
+  outcome_name: string;
+  program?: string[];
+  row_number: number;
+  score_threshold?: number;
+  sets?: string[];
+  shortcode?: string;
+  subcategory?: string[];
+  subject?: string[];
+}
+
 export interface EntityJwtToken {
   token?: string;
 }
@@ -717,6 +740,14 @@ export interface EntityLearningSummaryOutcome {
   status?: "achieved" | "not_achieved" | "partially";
 }
 
+export interface EntityLessonPlan {
+  description?: string;
+  id?: string;
+  materials?: EntityMaterial[];
+  name?: string;
+  thumbnail?: string;
+}
+
 export interface EntityLessonPlanForSchedule {
   group_name?: string;
   id?: string;
@@ -776,6 +807,14 @@ export interface EntityLiveClassSummaryItemV2 {
 
 export interface EntityLiveTokenView {
   token?: string;
+}
+
+export interface EntityMaterial {
+  data?: string;
+  description?: string;
+  id?: string;
+  name?: string;
+  thumbnail?: string;
 }
 
 export interface EntityMilestone {
@@ -879,6 +918,7 @@ export interface EntityOutcomeCondition {
   description?: string;
   grade_ids?: string[];
   ids?: string[];
+  is_locked?: boolean;
   keywords?: string;
   order_by?: string;
   organization_id?: string;
@@ -1141,7 +1181,6 @@ export interface EntityScheduleLessonPlanMaterial {
 
 export interface EntityScheduleListView {
   class_id?: string;
-  assessment_status?: "in_progress" | "complete";
   class_type?: "OnlineClass" | "OfflineClass" | "Homework" | "Task";
   class_type_label?: EntityScheduleShortInfo;
   complete_assessment?: boolean;
@@ -1267,6 +1306,9 @@ export interface EntityScheduleTimeViewListRequest {
   program_ids?: string[];
   school_ids?: string[];
   start_at_ge?: number;
+
+  /** indicates query different types of Study */
+  study_types?: ("normal" | "homefun" | "review")[];
   subject_ids?: string[];
   teacher_ids?: string[];
   time_at?: number;
@@ -1293,6 +1335,7 @@ export interface EntityScheduleTimeViewQuery {
   program_ids?: string[];
   school_ids?: string[];
   start_at_ge?: number;
+  study_types?: string[];
   subject_ids?: string[];
   teacher_ids?: string[];
   time_at?: number;
@@ -1401,6 +1444,7 @@ export interface EntityStudentAchievementReportItem {
   attend?: boolean;
   not_achieved_count?: number;
   not_attempted_count?: number;
+  status_unknown?: number;
   student_id?: string;
   student_name?: string;
 }
@@ -1567,6 +1611,14 @@ export interface EntityTeacherReportCategory {
   name?: string;
 }
 
+export interface EntityTreeResponse {
+  children?: EntityTreeResponse[];
+  dir_path?: string;
+  id?: string;
+  item_count?: number;
+  name?: string;
+}
+
 export interface EntityUpdateFolderRequest {
   description?: string;
   keywords?: string[];
@@ -1583,6 +1635,43 @@ export interface EntityUpdateScheduleReviewStatusRequest {
 
 export interface EntityUserSettingJsonContent {
   cms_page_size: number;
+}
+
+export interface EntityVerifyImportOutcomeRequest {
+  data?: EntityImportOutcomeView[];
+}
+
+export interface EntityVerifyImportOutcomeResponse {
+  create_data?: EntityVerifyImportOutcomeView[];
+  exist_error?: boolean;
+  update_data?: EntityVerifyImportOutcomeView[];
+}
+
+export interface EntityVerifyImportOutcomeResult {
+  error?: string;
+  value?: string;
+}
+
+export interface EntityVerifyImportOutcomeResults {
+  errors?: string[];
+  value?: string;
+}
+
+export interface EntityVerifyImportOutcomeView {
+  age?: string[];
+  assumed?: boolean;
+  category?: string[];
+  description?: string;
+  grade?: string[];
+  keywords?: string[];
+  outcome_name: string;
+  program?: string[];
+  row_number?: number;
+  score_threshold?: number;
+  sets?: EntityVerifyImportOutcomeResult[];
+  shortcode?: EntityVerifyImportOutcomeResults;
+  subcategory?: string[];
+  subject?: string[];
 }
 
 export interface EntityVisibilitySetting {
@@ -3310,6 +3399,20 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
      */
     shareFolders: (content: EntityShareFoldersRequest, params?: RequestParams) =>
       this.request<string, ApiBadRequestResponse | ApiInternalServerErrorResponse>(`/folders/share`, "PUT", params, content),
+
+    /**
+     * @tags folder
+     * @name getTree
+     * @summary getTree
+     * @request GET:/folders/tree
+     * @description get tree
+     */
+    getTree: (query: { key?: string; type: "all" | "name"; role: "me" | "all" }, params?: RequestParams) =>
+      this.request<EntityTreeResponse, ApiBadRequestResponse | ApiForbiddenResponse | ApiInternalServerErrorResponse>(
+        `/folders/tree${this.addQueryParams(query)}`,
+        "GET",
+        params
+      ),
   };
   grades = {
     /**
@@ -3423,6 +3526,21 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
         "GET",
         params
       ),
+
+    /**
+     * @tags content
+     * @name getSTMLessonPlan
+     * @summary getSTMLessonPlan
+     * @request GET:/internal/stm/contents
+     * @description get stm lesson_plan
+     */
+    getStmLessonPlan: (ids: string[], params?: RequestParams) =>
+      this.request<EntityLessonPlan[], ApiBadRequestResponse | ApiInternalServerErrorResponse>(
+        `/internal/stm/contents`,
+        "GET",
+        params,
+        ids
+      ),
   };
   learningOutcomes = {
     /**
@@ -3481,6 +3599,32 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
         EntityExportOutcomeResponse,
         ApiBadRequestResponse | ApiForbiddenResponse | ApiNotFoundResponse | ApiInternalServerErrorResponse
       >(`/learning_outcomes/export`, "POST", params, outcome),
+
+    /**
+     * @tags learning_outcomes
+     * @name importLearningOutcomes
+     * @summary import learning outcome
+     * @request POST:/learning_outcomes/import
+     * @description import learning outcome
+     */
+    importLearningOutcomes: (outcome: EntityImportOutcomeRequest, params?: RequestParams) =>
+      this.request<
+        EntityVerifyImportOutcomeResponse,
+        ApiBadRequestResponse | ApiForbiddenResponse | ApiNotFoundResponse | ApiInternalServerErrorResponse
+      >(`/learning_outcomes/import`, "POST", params, outcome),
+
+    /**
+     * @tags learning_outcomes
+     * @name verifyImportLearningOutcomes
+     * @summary verify import learning outcome data
+     * @request POST:/learning_outcomes/verify_import
+     * @description verify import learning outcome data
+     */
+    verifyImportLearningOutcomes: (outcome: EntityVerifyImportOutcomeRequest, params?: RequestParams) =>
+      this.request<
+        EntityVerifyImportOutcomeResponse,
+        ApiBadRequestResponse | ApiForbiddenResponse | ApiNotFoundResponse | ApiInternalServerErrorResponse
+      >(`/learning_outcomes/verify_import`, "POST", params, outcome),
 
     /**
      * @tags learning_outcomes
@@ -4143,11 +4287,11 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
 
     /**
      * @tags reports/studentProgress
-     * @name getLearnOutcomeClassAttendance
+     * @name getClassAttendance
      * @summary getClassAttendance
      * @request POST:/reports/student_progress/class_attendance
      */
-    getLearnOutcomeClassAttendance: (request: EntityClassAttendanceRequest, params?: RequestParams) =>
+    getClassAttendance: (request: EntityClassAttendanceRequest, params?: RequestParams) =>
       this.request<EntityClassAttendanceResponse, ApiBadRequestResponse | ApiForbiddenResponse | ApiInternalServerErrorResponse>(
         `/reports/student_progress/class_attendance`,
         "POST",

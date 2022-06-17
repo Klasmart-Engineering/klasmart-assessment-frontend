@@ -1,3 +1,6 @@
+import { CSVObjProps } from "@components/UploadCSV";
+import { d } from "@locale/LocaleManager";
+import { OutcomeFromCSVFirstProps, OutcomeHeadersProps } from "@pages/OutcomeList/types";
 import { ApiPullOutcomeSetResponse, ModelOutcomeDetailView } from "../api/api.auto";
 import { GetOutcomeDetail, OutcomeSetResult } from "../api/type";
 
@@ -142,4 +145,74 @@ export function formattedDate(value: number | undefined): string {
     return `${y}/${MMs}/${ds}`;
   }
   return "";
+}
+
+export function formattedMonthDay(): string {
+  let date = new Date();
+  let MM = date.getMonth() + 1;
+  const MMs = MM < 10 ? `0${MM}` : MM;
+  let d = date.getDate();
+  const ds = d < 10 ? `0${d}` : d;
+  return `${MMs}${ds}`;
+}
+export function stringToArray(value: string | string[]): string[] {
+  if(value instanceof Array) {
+    return value;
+  } else if(value){
+    return [value]
+  } else {
+    return []
+  }
+}
+
+export function transferCSVToOutcome(header: string[], array: CSVObjProps[]): {headers: OutcomeHeadersProps[], loArray: OutcomeFromCSVFirstProps[]} {
+  const loKeyValue = {
+    outcome_name: d("Learning Outcome Name").t("assess_label_learning_outcome_name"),
+    shortcode: d("Short Code").t("assess_label_short_code"),//
+    assumed: d("Assumed").t("assess_label_assumed"),
+    score_threshold: d("Score Threshold").t("learning_outcome_label_threshold"),
+    program: d("Program").t("assess_label_program"),
+    subject: d("Subject").t("assess_label_subject"),
+    category: d("Category").t("library_label_category"),
+    subcategory: d("Subcategory").t("library_label_subcategory"),
+    sets: d("Learning Outcome Set").t("assess_set_learning_outcome_set"),//
+    age: d("Age").t("assess_label_age"),
+    grade: d("Grade").t("assess_label_grade"),
+    keywords: d("Keywords").t("assess_label_keywords"),
+    description: d("Description").t("assess_label_description"),
+    author: d("Author").t("library_label_author"),
+    updated_at: d("Created On").t("library_label_created_on"),
+    milestones: d("Milestones").t("assess_label_milestone"),//
+  }
+  const n_headers = header.filter(item => !!item)
+  const headers = n_headers.map(item => {
+    const loKeyValues = Object.entries(loKeyValue);
+    const curValus = loKeyValues.find((values) => values[1] === item);
+    return {
+      title: item,
+      key: (curValus ? curValus[0] : "") as string
+    }
+  });
+  const loArray = array.map((item, i) => {
+        return {
+          row_number: i + 2,
+          outcome_name: item[loKeyValue.outcome_name] as string,
+          shortcode: item[loKeyValue.shortcode] as string,
+          assumed: item[loKeyValue.assumed] as string,
+          score_threshold: item[loKeyValue.score_threshold] as string,
+          program: item[loKeyValue.program] as string,
+          subject: stringToArray(item[loKeyValue.subject]),
+          category: item[loKeyValue.category] as string,
+          subcategory: stringToArray(item[loKeyValue.subcategory]),
+          sets: stringToArray(item[loKeyValue.sets]),
+          age: stringToArray(item[loKeyValue.age]),
+          grade: stringToArray(item[loKeyValue.grade]),
+          keywords: stringToArray(item[loKeyValue.keywords]),
+          description: item[loKeyValue.description] as string,
+          author: item[loKeyValue.author] as string,
+          updated_at: item[loKeyValue.updated_at] as string,
+          milestones: stringToArray(item[loKeyValue.milestones]),
+        }
+      });
+  return { headers, loArray };
 }

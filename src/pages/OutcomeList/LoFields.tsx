@@ -1,6 +1,7 @@
 import { CheckboxGroup, CheckboxGroupContext } from "@components/CheckboxGroup";
 import { d, t } from "@locale/LocaleManager";
-import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, makeStyles, Typography } from "@material-ui/core";
+import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, IconButton, makeStyles, Typography } from "@material-ui/core";
+import { Close } from "@material-ui/icons";
 import { formattedNowOrTime, timestampToTime } from "@models/ModelOutcomeDetailForm";
 import { ChangeEvent, DOMAttributes, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -10,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     display: "flex",
     flexWrap: "wrap",
+    marginBottom: 20,
   },
   fieldsItem: {
     width: "48%",
@@ -26,7 +28,12 @@ const useStyles = makeStyles((theme) => ({
     color: "#fff", 
     width: "calc(100% + 16px)", 
     height: "calc(100% + 6px)", 
-  }
+  },
+  closeBtn: {
+    position: "absolute",
+    top: theme.spacing(1),
+    right: theme.spacing(1),
+  },
 }))
 const FIELDS = "FIELDS";
 export interface LoFieldsProps {
@@ -48,18 +55,18 @@ export function LoFields(props: LoFieldsProps) {
       { label: d("Short Code").t("assess_label_short_code"), value: "shortcode", checked: true, readonly: false },
       { label: d("Assumed").t("assess_label_assumed"), value: "assumed", checked: false, readonly: false },
       { label: d("Score Threshold").t("learning_outcome_label_threshold"), value: "score_threshold", checked: true, readonly: false },
-      { label: d("Created On").t("library_label_created_on"), value: "updated_at", checked: true, readonly: false },
-      { label: d("Author").t("library_label_author"), value: "author", checked: false, readonly: false },
       { label: d("Program").t("assess_label_program"), value: "program", checked: true, readonly: true },
       { label: d("Subject").t("assess_label_subject"), value: "subject", checked: true, readonly: true },
       { label: d("Category").t("library_label_category"), value: "category", checked: true, readonly: true },
       { label: d("Subcategory").t("library_label_subcategory"), value: "subcategory", checked: true, readonly: true },
+      { label: d("Learning Outcome Set").t("assess_set_learning_outcome_set"), value: "sets", checked: false, readonly: false },
       { label: d("Age").t("assess_label_age"), value: "age", checked: false, readonly: false },
       { label: d("Grade").t("assess_label_grade"), value: "grade", checked: false, readonly: false },
-      { label: d("Learning Outcome Set").t("assess_set_learning_outcome_set"), value: "sets", checked: false, readonly: false },
       { label: d("Keywords").t("assess_label_keywords"), value: "keywords", checked: false, readonly: false },
+      { label: d("Description").t("assess_label_description"), value: "description", checked: false, readonly: false},
+      { label: d("Author").t("library_label_author"), value: "author", checked: false, readonly: false },
+      { label: d("Created On").t("library_label_created_on"), value: "updated_at", checked: true, readonly: false },
       { label: d("Milestones").t("assess_label_milestone"), value: "milestones", checked: false, readonly: false },
-      { label: d("Description").t("assess_label_description"), value: "description", checked: false, readonly: false}
     ];
   }, [])
   const selectedFields = useMemo(() => {
@@ -79,15 +86,19 @@ export function LoFields(props: LoFieldsProps) {
     <Dialog open={open} fullWidth maxWidth={"sm"}>
       <DialogTitle className={css.title}>
         {d("Download").t("assessment_lo_download")}
+        <IconButton onClick={onClose} className={css.closeBtn}>
+          <Close />
+        </IconButton>
       </DialogTitle>
       <DialogContent>
         <div className={css.fieldsCon}>
           <Typography>
-            {d("Select which columns to include:").t("assessment_lo_download_column_title")}
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <span style={{color: "#666"}}>{t("assessment_lo_download_object_quantity", { quantity: list.length.toString() })}</span>
+            {t("assessment_lo_download_object_quantity", { quantity: list.length.toString() })}
+            {/* {d("Select which columns to include:").t("assessment_lo_download_column_title")}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */}
+            {/* <span style={{color: "#666"}}>{t("assessment_lo_download_object_quantity", { quantity: list.length.toString() })}</span> */}
           </Typography>
-          <Controller
+          {false && <Controller
             name={FIELDS}
             control={control}
             defaultValue={defaultFields}
@@ -116,7 +127,7 @@ export function LoFields(props: LoFieldsProps) {
                 )}
               />
             )}
-          />
+          />}
         </div>
       </DialogContent>
       <DialogActions>

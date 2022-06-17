@@ -1,3 +1,4 @@
+import { isEnableUpload } from "@api/extra";
 import { Button, Divider, Grid, Grow, Menu, MenuItem, MenuList, Paper, Popper, TextField } from "@material-ui/core";
 import Hidden from "@material-ui/core/Hidden";
 import { makeStyles } from "@material-ui/core/styles";
@@ -207,7 +208,8 @@ enum BulkAction {
   reject = "reject",
   addSet = "addSet",
   downloadAll = "downloadAll",
-  downloadSelected = "downloadSelected"
+  downloadSelected = "downloadSelected",
+  upload = "upload"
 }
 
 interface BulkActionOption {
@@ -228,8 +230,11 @@ function getBulkAction(condition: OutcomeQueryCondition, perm: PermissionResult<
       if (perm.create_learning_outcome_421) {
         const download = [
           { label: d("Download All Rows").t("assessment_lo_download_all"), value: BulkAction.downloadAll },
-          { label: d("Download Selected Rows").t("assessment_lo_download_selected"), value: BulkAction.downloadSelected}
-        ]
+          { label: d("Download Selected Rows").t("assessment_lo_download_selected"), value: BulkAction.downloadSelected},
+        ];
+        if(isEnableUpload()) {
+          download.push({ label: "Upload", value: BulkAction.upload })
+        }
         res1.push.apply(res1, download)
       }
       return res1;
@@ -275,10 +280,11 @@ export interface ThirdSearchHeaderProps extends OutcomeQueryConditionBaseProps {
   onBulkAddSet: () => any;
   onBulkDownloadAll: () => any;
   onBulkDownloadSelected: () => any;
+  onUpload: () => any;
 }
 export function ThirdSearchHeader(props: ThirdSearchHeaderProps) {
   const classes = useStyles();
-  const { value, selectedIdsLength, onChange, onBulkDelete, onBulkPublish, onBulkApprove, onBulkReject, onBulkAddSet, onBulkDownloadAll, onBulkDownloadSelected } = props;
+  const { value, selectedIdsLength, onChange, onBulkDelete, onBulkPublish, onBulkApprove, onBulkReject, onBulkAddSet, onBulkDownloadAll, onBulkDownloadSelected, onUpload } = props;
   const perm = usePermission([
     PermissionType.delete_published_learning_outcome_448,
     PermissionType.delete_org_pending_learning_outcome_447,
@@ -299,6 +305,7 @@ export function ThirdSearchHeader(props: ThirdSearchHeaderProps) {
     if (event.target.value === BulkAction.addSet) onBulkAddSet();
     if (event.target.value === BulkAction.downloadAll) onBulkDownloadAll();
     if (event.target.value === BulkAction.downloadSelected) onBulkDownloadSelected();
+    if (event.target.value === BulkAction.upload) onUpload();
   };
   const handleChangeOrder = (event: ChangeEvent<HTMLInputElement>) => {
     const order_by = event.target.value as OutcomeOrderBy | undefined;
@@ -366,7 +373,7 @@ export function ThirdSearchHeader(props: ThirdSearchHeaderProps) {
 
 export function ThirdSearchHeaderMb(props: ThirdSearchHeaderProps) {
   const classes = useStyles();
-  const { value, onChange, onBulkDelete, onBulkPublish, onBulkApprove, onBulkReject, onBulkAddSet, onBulkDownloadAll, onBulkDownloadSelected } = props;
+  const { value, onChange, onBulkDelete, onBulkPublish, onBulkApprove, onBulkReject, onBulkAddSet, onBulkDownloadAll, onBulkDownloadSelected, onUpload } = props;
   const perm = usePermission([
     PermissionType.delete_published_learning_outcome_448,
     PermissionType.delete_org_pending_learning_outcome_447,
@@ -393,6 +400,7 @@ export function ThirdSearchHeaderMb(props: ThirdSearchHeaderProps) {
     if (bulkaction === BulkAction.addSet) onBulkAddSet();
     if (bulkaction === BulkAction.downloadAll) onBulkDownloadAll();
     if (bulkaction === BulkAction.downloadSelected) onBulkDownloadSelected();
+    if (bulkaction === BulkAction.upload) onUpload();
   };
   const handleClose = () => {
     setAnchorElLeft(null);

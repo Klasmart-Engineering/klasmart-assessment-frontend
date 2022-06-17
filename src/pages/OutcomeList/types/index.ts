@@ -81,3 +81,116 @@ export interface FieldsProps {
   checked: boolean;
   readonly: boolean;
 }
+
+export interface BaseInfoProps {
+  id?: string;
+  name?: string;
+  status?: string;
+  system?: boolean;
+}
+export interface ProgramsObjProps extends BaseInfoProps {
+  // subjects?: BaseInfoProps[];
+  ages: BaseInfoProps[];
+  grades: BaseInfoProps[];
+}
+
+export const LoKeys = [
+  "outcome_name", 
+  "shortcode", 
+  "assumed", 
+  "score_threshold", 
+  "program", 
+  "subject", 
+  "category", 
+  "subcategory", 
+  "sets", 
+  "age", 
+  "grade", 
+  "keywords", 
+  "description", 
+  "author", 
+  "updated_at", 
+  "milestones"
+]
+
+export interface CustomOutcomeItemProps {
+  id?: string;
+  value?: string;
+  error?: string;
+}
+export interface ShortcodeProps{
+  value?: string;
+  errors?: string[];
+}
+export interface CustomOutcomeProps {
+  row_number: number;
+  outcome_name: CustomOutcomeItemProps;
+  shortcode: ShortcodeProps;
+  assumed: CustomOutcomeItemProps;
+  score_threshold: CustomOutcomeItemProps;
+  program: CustomOutcomeItemProps;
+  subject: CustomOutcomeItemProps[];
+  category: CustomOutcomeItemProps;
+  subcategory: CustomOutcomeItemProps[];
+  sets: CustomOutcomeItemProps[];
+  age: CustomOutcomeItemProps[];
+  grade: CustomOutcomeItemProps[];
+  keywords: CustomOutcomeItemProps[];
+  description: CustomOutcomeItemProps;
+  author: string;
+  updated_at: string;
+  milestones: string[];
+}
+
+
+export interface CategoryObjProps extends BaseInfoProps {
+  subCategory: BaseInfoProps[]
+}
+export interface SubjectObjProps {
+  id?: string;
+  name?: string;
+  category?: CategoryObjProps[];
+}
+
+export interface OutcomeFromCSVFirstProps {
+  row_number: number;
+  outcome_name: string;
+  shortcode: string;
+  assumed: string;
+  score_threshold: string;
+  program: string;
+  subject: string[];
+  category: string;
+  subcategory: string[];
+  sets: string[];
+  age: string[];
+  grade: string[];
+  keywords: string[];
+  description: string;
+  author: string;
+  updated_at: string;
+  milestones: string[];
+}
+
+export enum UploadTab {
+  create = "create",
+  modify = "modify"
+}
+export interface UploadLoItemProps {
+  value?: string;
+  error?: string;
+}
+export interface UploadLoProps {
+
+}
+
+export interface OutcomeHeadersProps {
+  key: string;
+  title: string;
+}
+
+export interface ErrorsInfoProps {
+  errorCount: number, 
+  errorRowsIndex: number[], 
+  errorColumnsIndex: number[],
+}

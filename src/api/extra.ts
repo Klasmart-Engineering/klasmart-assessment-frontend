@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+import { ProgramsObjProps, SubjectObjProps } from "@pages/OutcomeList/types";
 import { LinkedMockOptionsItem } from "@reducers/contentEdit/programsHandler";
 import { store } from "@reducers/index";
 import { FileLike } from "@rpldy/shared";
@@ -8,6 +9,7 @@ import api, { gqlapi } from ".";
 // import requireContentType from "../../scripts/contentType.macro";
 import { LangRecordId } from "../locale/lang/type";
 import { ICacheData } from "../services/permissionCahceService";
+import { ConnectionDirection } from "./api-ko-schema.auto";
 import { EntityFolderItemInfo } from "./api.auto";
 import { apiEmitter, ApiErrorEventData, ApiEvent } from "./emitter";
 
@@ -437,14 +439,226 @@ export const uploadFile = async (path: string, body: any) => {
   return resp;
 };
 
+export async function getProgramIdByProgramName(names: string[]) {
+  let nameToProgramArray: ProgramsObjProps[] = []
+  const orgId = apiOrganizationOfPage();
+  const queryStr = names.map((name, index) => {
+    const filter = `{
+      AND: [
+        {
+          OR: [
+            {organizationId: {
+              operator: eq,
+              value: "${orgId}"
+            }},
+            {system: {operator: eq, value: true}}
+          ]
+        },
+        {name: {
+            operator: eq,
+            value: "${name}",
+            caseInsensitive: false
+        }},
+        {status: {
+          operator: eq, 
+          value: "active"
+        }}
+      ]
+    }`;
+    return `q_${index}: programsConnection(filter: ${filter}, direction: ${ConnectionDirection.Forward}){
+      edges{
+        node{
+          id,
+          name,
+          ageRangesConnection {
+            edges {
+              node {
+                id
+                name
+                status
+                system
+              }
+            }
+          },
+          gradesConnection {
+            edges {
+              node {
+                id
+                name
+                status
+                system
+              }
+            }
+          }
+        }
+      }
+    }`
+  }).join(",");
+  try {
+  const programResult = await gqlapi.query({
+    query: gql`
+      query getProgramIdByName{
+        ${queryStr}
+      }
+      `
+    });
+  for(const item in programResult.data || {}) {
+    const program = programResult.data[item];
+    if(program && program.edges.length >= 1){
+      program.edges.forEach((pItem: { node: { ageRangesConnection: any; gradesConnection: any; id: any; name: any; }; }, index: number) => {
+        if(index === 0) {
+          const age = pItem.node.ageRangesConnection;
+          const grade = pItem.node.gradesConnection;
+          nameToProgramArray.push({
+            id: pItem.node.id,
+            name: pItem.node.name,
+            ages: age.edges.map((aItem: { node: { id: any; name: any; system: any; status: any; }; }) => {
+              return {
+                id: aItem.node.id,
+                name: aItem.node.name,
+                system: aItem.node.system,
+                status: aItem.node.status
+              }
+            }),
+            grades: grade.edges.map((gItem: { node: { id: any; name: any; system: any; status: any; }; }) => {
+              return {
+                id: gItem.node.id,
+                name: gItem.node.name,
+                system: gItem.node.system,
+                status: gItem.node.status
+              }
+            })
+          })
+        }
+      })
+    }
+  }
+} catch (e) {
+  console.log(e)
+}
+  return nameToProgramArray;
+}
 
+export async function getSubjectIdByProgramIdAndSubjectName(programId: string, subjectNames: string[]): Promise<SubjectObjProps[]>{
+  const orgId = apiOrganizationOfPage();
+  let nameToSubjectArray: SubjectObjProps[] = [];
+  const queryStr = subjectNames
+  .map((name, index) => {
+    const filterStr = `{
+      AND: [
+        {
+          OR: [
+            {
+              organizationId: {
+                operator: eq,
+                value: "${orgId}"
+              }
+            },
+            {
+              system: {
+                operator: eq, 
+                value: true
+              }
+            }
+          ],
+          AND: [{
+              name: {
+                operator: contains, 
+                value: "${name}", 
+                caseInsensitive: true
+              },
+              programId: {
+                operator: eq,
+                value: "${programId}"
+              }
+          }]
+        }
+      ],
+      status: {operator: eq, value: "active"}
+    }`
+    return `q_${index}: subjectsConnection(filter: ${filterStr}, direction: ${ConnectionDirection.Forward}){
+      edges {
+        node {
+          id,
+          name,
+          status,
+          system,
+          categoriesConnection{
+            edges{
+              node {
+                 id,
+         				 name,
+                system,
+                status,
+                subcategoriesConnection{
+                  edges{
+                    node {
+                       id,
+                        name,
+                      system,
+                      status,
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }`
+  }).join(",");
+  try {
+    const subjectResult = await gqlapi.query({
+      query: gql`
+        query getSubjectIdByName{${queryStr}}
+      `
+    })
+    for (const item in subjectResult.data || {}) {
+      const subject = subjectResult.data[item];
+      if(subject && subject.edges.length >= 1) {
+        subject.edges.forEach((sItem: { node: { id: string, name: string, categoriesConnection: any }; }, index: number) => {
+          if(index === 0) {
+            const category = sItem.node.categoriesConnection
+            nameToSubjectArray.push({
+              id: sItem.node.id,
+              name: sItem.node.name,
+              category: category.edges.map((cItem: { node: { id: string; name: string; system: boolean; status: string; subcategoriesConnection: any }; }) => {
+                if(cItem) {
+                  const subcategory = cItem.node.subcategoriesConnection;
+                  return {
+                    id: cItem.node.id,
+                    name: cItem.node.name,
+                    system: cItem.node.system,
+                    status: cItem.node.status,
+                    subCategory: subcategory.edges.map((scItem: { node: { id: any; name: any; system: any; status: any; }; }) => {
+                      return {
+                        id: scItem.node.id,
+                        name: scItem.node.name,
+                        system: scItem.node.system,
+                        status: scItem.node.status,
+                      }
+                    })
+                  }
+                } else {
+                  return undefined
+                }
+              })
+            })
+          }
+        })
+      }
+    }
+  } catch (e) {
+    console.log(e)
+  }
+  return nameToSubjectArray;
+}
 
-
-
-
-
-
-
+export async function getGradeIdByProgramIdAndGradeName(programId: string, gradeNames: string[]) {
+}
+export function isEnableUpload() {
+  return process.env.REACT_APP_ENABLE_UPLOAD_LO === "1"
+}
 
 
 

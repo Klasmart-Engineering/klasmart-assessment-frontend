@@ -1,3 +1,4 @@
+import { CSVObjProps } from "@components/UploadCSV";
 import useQueryCms from "@hooks/useQueryCms";
 import { AsyncTrunkReturned } from "@reducers/type";
 import { PayloadAction, unwrapResult } from "@reduxjs/toolkit";
@@ -14,9 +15,9 @@ import { FirstSearchHeader, FirstSearchHeaderMb } from "../../components/Assessm
 import { emptyTip, permissionTip } from "../../components/TipImages";
 import { usePermission } from "../../hooks/usePermission";
 import { d } from "../../locale/LocaleManager";
-import { excluedOutcomeSet, findSetIndex, ids2OutcomeSet, isAllMineOutcome } from "../../models/ModelOutcomeDetailForm";
+import { excluedOutcomeSet, findSetIndex, ids2OutcomeSet, isAllMineOutcome, transferCSVToOutcome } from "../../models/ModelOutcomeDetailForm";
 import { AppDispatch, RootState } from "../../reducers";
-import { actWarning } from "../../reducers/notify";
+import { actError, actWarning } from "../../reducers/notify";
 import {
   approve,
   bulkApprove,
@@ -25,11 +26,13 @@ import {
   bulkPublishOutcome,
   bulkReject,
   createOutcomeSet,
-  deleteOutcome, exportOutcomes, newReject,
+  deleteOutcome, exportOutcomes, importLearningOutcomes, newReject,
   onLoadOutcomeList,
+  parseCsvLo,
   publishOutcome,
   pullOutcomeSet,
   resetSelectedIds,
+  resetUploadData,
   setSelectedIds
 } from "../../reducers/outcome";
 import CreateOutcomings from "../OutcomeEdit";
@@ -38,7 +41,8 @@ import { LoFields, LoFieldsProps, useLoFields } from "./LoFields";
 import { OutcomeTable, OutcomeTableProps } from "./OutcomeTable";
 import { SecondSearchHeader, SecondSearchHeaderMb } from "./SecondSearchHeader";
 import { ThirdSearchHeader, ThirdSearchHeaderMb, ThirdSearchHeaderProps } from "./ThirdSearchHeader";
-import { BulkListForm, BulkListFormKey, OutcomeListExectSearch, OutcomeQueryCondition } from "./types";
+import { BulkListForm, BulkListFormKey, LoKeys, OutcomeHeadersProps, OutcomeListExectSearch, OutcomeQueryCondition } from "./types";
+import { UploadOutcome, useUploadOutcome } from "./UploadOutcome";
 
 const useQuery = (): OutcomeQueryCondition => {
   const { querys, search_key, publish_status, author_name, page, is_unpub } = useQueryCms();
@@ -82,9 +86,10 @@ export function OutcomeList() {
   const formMethods = useForm<BulkListForm>();
   const { watch, reset, getValues } = formMethods;
   const ids = watch(BulkListFormKey.CHECKED_BULK_IDS);
-  const { outcomeList, total, user_id, outcomeSetList, defaultSelectOutcomeset, selectedIdsMap, downloadOutcomes } = useSelector<RootState, RootState["outcome"]>(
+  const { outcomeList, total, user_id, outcomeSetList, defaultSelectOutcomeset, selectedIdsMap, downloadOutcomes, updateLoList, createLoList } = useSelector<RootState, RootState["outcome"]>(
     (state) => state.outcome
   );
+  const [headers, setHeaders] = useState<OutcomeHeadersProps[]>();
   const selectedIds = useMemo(() => {
     const currIds = outcomeList.map(item => item.outcome_id);
     let idsMap: Record<string, boolean> = cloneDeep(selectedIdsMap);
@@ -95,7 +100,8 @@ export function OutcomeList() {
     return Object.keys(idsMap).filter(item => idsMap[item]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ids, outcomeList, dispatch]);
-  const [initFields, setInitFields] = useState(["outcome_name", "shortcode", "score_threshold", "updated_at", "program", "subject", "category", "subcategory"]);
+  // const [initFields, setInitFields] = useState(["outcome_name", "shortcode", "assumed", "score_threshold", "program", "subject", "category", "subcategory", "sets", "age", "grade", "keywords", "description", "author", "updated_at", "milestones"]);
+  const [initFields, setInitFields] = useState([...LoKeys]);
   const perm = usePermission([
     PermissionType.view_my_unpublished_learning_outcome_410,
     PermissionType.view_org_unpublished_learning_outcome_411,
@@ -115,6 +121,7 @@ export function OutcomeList() {
   const [selectedOutcomeSet, setSelectedOutcomeSet] = React.useState<OutcomeSetResult>([]);
   const { addSetActive, openAddSet, closeAddSet } = useAddSet();
   const { loFieldsActive, openLoFields, closeLoFields } = useLoFields();
+  const { uploadOutcomeActive, openUploadOutcome, closeUploadOutcome } = useUploadOutcome();
   const handlePublish: OutcomeTableProps["onPublish"] = (id) => {
     dispatch(resetSelectedIds({}));
     return refreshWithDispatch(dispatch(publishOutcome(id)).then(unwrapResult));
@@ -257,6 +264,52 @@ export function OutcomeList() {
   const handleChangeFields: LoFieldsProps["onChangeFields"] = (fields: string[]) => {
     setInitFields(fields)
   }
+  const handleOpenUpload: ThirdSearchHeaderProps["onUpload"] = () => {
+    dispatch(resetUploadData());
+    openUploadOutcome();
+  }
+  const handleUploadSuccess = (header: string[], array: CSVObjProps[]) => {
+    const loKeyValue = {
+      outcome_name: d("Learning Outcome Name").t("assess_label_learning_outcome_name"),
+      shortcode: d("Short Code").t("assess_label_short_code"),//
+      assumed: d("Assumed").t("assess_label_assumed"),
+      score_threshold: d("Score Threshold").t("learning_outcome_label_threshold"),
+      program: d("Program").t("assess_label_program"),
+      subject: d("Subject").t("assess_label_subject"),
+      category: d("Category").t("library_label_category"),
+      subcategory: d("Subcategory").t("library_label_subcategory"),
+      sets: d("Learning Outcome Set").t("assess_set_learning_outcome_set"),//
+      age: d("Age").t("assess_label_age"),
+      grade: d("Grade").t("assess_label_grade"),
+      keywords: d("Keywords").t("assess_label_keywords"),
+      description: d("Description").t("assess_label_description"),
+      author: d("Author").t("library_label_author"),
+      updated_at: d("Created On").t("library_label_created_on"),
+      milestones: d("Milestones").t("assess_label_milestone"),//
+    }
+    const templateHeaders = Object.values(loKeyValue);
+    const headAllRight = header.every((item, index) => item === templateHeaders[index])
+    if(headAllRight) {
+      if(!array.length || array.length > 200) {
+        return dispatch(actError("The CSV file must contain 1~200 learning outcomes! Please check the CSV file and upload again."))
+      } else {
+        const { headers, loArray } =  transferCSVToOutcome(header, array);
+        setHeaders(headers);
+        dispatch(parseCsvLo({loArray, metaLoading: true}));
+      }
+    } else {
+      return dispatch(actError("Error in parsing columns! Please use the CSV template file and upload again."))
+    }
+  }
+  const handleConfirmUplpadOutcome = async () => {
+    const { payload } = (await dispatch(importLearningOutcomes({ metaLoading: true }))) as unknown as PayloadAction<
+      AsyncTrunkReturned<typeof importLearningOutcomes>
+    >;
+    if(!payload.exist_error) {
+      closeUploadOutcome();
+      history.push({ search: toQueryString({ ...condition, publish_status: "pending", page: 1, is_unpub: "" })});
+    }
+  }
   useEffect(() => {
     let page = condition.page;
     if (outcomeList.length === 0 && total && total > 1) {
@@ -300,6 +353,7 @@ export function OutcomeList() {
             onBulkAddSet={handleBulkAddSet}
             onBulkDownloadAll={handleBulkDownloadAll}
             onBulkDownloadSelected={handleOpenFieldsSelected}
+            onUpload={handleOpenUpload}
           />
           <ThirdSearchHeaderMb
             value={condition}
@@ -312,6 +366,7 @@ export function OutcomeList() {
             onBulkAddSet={handleBulkAddSet}
             onBulkDownloadAll={handleBulkDownloadAll}
             onBulkDownloadSelected={handleOpenFieldsSelected}
+            onUpload={handleOpenUpload}
           />
         </>
       )}
@@ -361,6 +416,15 @@ export function OutcomeList() {
         onClose={closeLoFields}
         onBulkDownload={handleBulkDownload}
         onChangeFields={handleChangeFields}
+      />
+      <UploadOutcome 
+        open={uploadOutcomeActive}
+        headers={headers || []}
+        createLoList={createLoList}
+        updateLoList={updateLoList}
+        onClose={closeUploadOutcome}
+        onUploadSuccess={handleUploadSuccess}
+        onConfirm={handleConfirmUplpadOutcome}
       />
     </div>
   );

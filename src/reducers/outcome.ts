@@ -1,12 +1,12 @@
 import { QueryMyUserDocument, QueryMyUserQuery, QueryMyUserQueryVariables } from "@api/api-ko.auto";
-import { ApiPullOutcomeSetResponse } from "@api/api.auto";
-import { apiGetMockOptions, MockOptions } from "@api/extra";
+import { ApiPullOutcomeSetResponse, EntityImportOutcomeView } from "@api/api.auto";
+import { apiGetMockOptions, getProgramIdByProgramName, getSubjectIdByProgramIdAndSubjectName, MockOptions } from "@api/extra";
 import api, { gqlapi } from "@api/index";
 import { GetOutcomeDetail, GetOutcomeList, GetOutcomeListResult, OutcomePublishStatus } from "@api/type";
 import { LangRecordId } from "@locale/lang/type";
 import { d } from "@locale/LocaleManager";
 import { isUnpublish } from "@pages/OutcomeList/ThirdSearchHeader";
-import { DownloadOutcomeListResult, OutcomeQueryCondition } from "@pages/OutcomeList/types";
+import { BaseInfoProps, CategoryObjProps, CustomOutcomeItemProps, CustomOutcomeProps, DownloadOutcomeListResult, OutcomeFromCSVFirstProps, OutcomeQueryCondition, ProgramsObjProps, SubjectObjProps } from "@pages/OutcomeList/types";
 import { createAsyncThunk, createSlice, PayloadAction, unwrapResult } from "@reduxjs/toolkit";
 import { actAsyncConfirm, ConfirmDialogType } from "./confirm";
 import programsHandler, { getDevelopmentalAndSkills, LinkedMockOptionsItem } from "./contentEdit/programsHandler";
@@ -28,6 +28,11 @@ interface IOutcomeState extends IPermissionState {
   shortCode: string;
   selectedIdsMap: Record<string, boolean>;
   downloadOutcomes: IQueryDownloadOutcomesResult;
+  programsArray: ProgramsObjProps[];
+  subjectArray: SubjectObjProps[];
+  uploadLoList: CustomOutcomeProps[],
+  createLoList: CustomOutcomeProps[],
+  updateLoList: CustomOutcomeProps[],
 }
 
 interface RootState {
@@ -110,6 +115,11 @@ export const initialState: IOutcomeState = {
   shortCode: "",
   selectedIdsMap: {},
   downloadOutcomes: [],
+  programsArray: [],
+  subjectArray: [],
+  uploadLoList: [],
+  createLoList: [],
+  updateLoList: [],
 };
 
 interface ParamsGetNewOptions {
@@ -469,6 +479,425 @@ export const generateShortcode = createAsyncThunk<IQueryGenerateShortcodeResult,
   }
 );
 
+type IQueryGetProgramId = { programNames: string[] };
+export const getProgramId = createAsyncThunk<ProgramsObjProps[], IQueryGetProgramId>(
+  "outcome/getProgramId",
+  async (query) => {
+    const { programNames } = query;
+    const res = await getProgramIdByProgramName(programNames);
+    return res;
+  }
+)
+
+type IQueryGetSubjectIdsBySubjectName = {
+  programId: string;
+  subjectNames: string[];
+}
+export const getSubjectIdsBySubjectName = createAsyncThunk<SubjectObjProps[], IQueryGetSubjectIdsBySubjectName>(
+  "outcome/getSubjectIdsBySubjectName", 
+  async (query) => {
+    const { programId, subjectNames } = query;
+    const res = await getSubjectIdByProgramIdAndSubjectName(programId, subjectNames);
+    return res;
+  }
+)
+export interface IQueryParsecsvLo {
+  loArray: OutcomeFromCSVFirstProps[]
+}
+
+export const parseCsvLo = createAsyncThunk<any, IQueryParsecsvLo & LoadingMetaPayload>(
+  "outcome/parseCsvLo",
+  async ({loArray}) => {
+    const programsNameSet = new Set<string>();
+    loArray.forEach(item => {
+      programsNameSet.add(item.program);
+    });
+    const programsNameArray = Array.from(programsNameSet.keys());
+    const programRes = await getProgramIdByProgramName(programsNameArray)
+    let programsObjMap = new Map<string, ProgramsObjProps>();
+    if(programRes) {
+      programRes.forEach(item => {
+        programsObjMap.set(item.name!, item)
+      })
+    }
+    let afterFeValidLoArray: { row_number: number; keywords: { value: string; }[]; author: string; updated_at: string; shortcode: string; sets: { value: string; }[]; milestones: { value: string; }[]; outcome_name: { value: string; error: string; } | { value: string; error: string; }; assumed: { value: string | boolean; error: string; } | { value: string | boolean; error: string; }; score_threshold: { value: string; error: string; } | { value: string; error: string; }; description: { value: string; error: string; } | { value: string; error: string; }; program: CustomOutcomeItemProps; subject: CustomOutcomeItemProps[]; category: CustomOutcomeItemProps; subcategory: CustomOutcomeItemProps[]; age: CustomOutcomeItemProps[]; grade: CustomOutcomeItemProps[]; }[] = [];
+    for(const item of loArray) {
+      const outcomeNameError = item.outcome_name.length === 0 ? "Can’t not be empty!" : item.outcome_name.length > 255 ?  "The length must be 1~255 characters." : "";
+      const compareAssumed = item.assumed.toLocaleLowerCase();
+      const outcomeAssumed = compareAssumed === "true" ? true : compareAssumed === "false" ? false : item.assumed;
+      const outcomeAssumedError = (outcomeAssumed === true || outcomeAssumed === false) ? "" : "Invalid! Please type ”True” or “False” in the CSV file.";
+      const patt = new RegExp(/^(100|[1-9]?\d(\.\d\d?\d?)?)%$|0$/);
+      const scoreThresholdIsEmpty = item.score_threshold === "";
+      const scoreThresholdsValue = scoreThresholdIsEmpty ? (outcomeAssumed === true ? "0%" : outcomeAssumed === false ? "80%" : item.score_threshold) : item.score_threshold;
+      const scoreThresholdValueValid = patt.test(scoreThresholdsValue);
+      const outcomeScoreThresholdError = scoreThresholdValueValid ? "" : "Invalid! Please type Text from “0%” to “100%” or nothing in the CSV file.";
+      const outcomeDescriptionError = item.description.length > 2000 ? "The length must be 0~2000 characters." : "";
+      
+      const programObj = programsObjMap.get(item.program);
+      let outcomeProgram: CustomOutcomeItemProps = { id: "", value: item.program, error: "" };
+      const subjectIsEmpty = item.subject.length === 0;
+      let outcomeSubject: CustomOutcomeItemProps[] = 
+      item.subject.map(sItem => {
+        return { id: "", value: sItem, error: "" }
+      });
+      const categoryIsEmpty = item.category === "";
+      let outcomeCategory: CustomOutcomeItemProps = { id: "", value: item.category, error: "" };
+      const subcategoryIsEmoty = item.subcategory.length === 0;
+      let outcomeSubcategory: CustomOutcomeItemProps[] = 
+      item.subcategory.map(scItem => {
+        return { id: "", value: scItem, error: "" }
+      });
+      const outcomeAgeIsEmpty = item.age.length === 0;
+      const outcomeAge: CustomOutcomeItemProps[] = item.age.map(aItem => {
+        return { id: "", value: aItem, error: "" }
+      });
+      const outcomeGradeIsEmpty = item.grade.length === 0;
+      const outcomeGrade: CustomOutcomeItemProps[] = item.grade.map(gItem => {
+        return { id: "", value: gItem, error: "" }
+      })
+      if(item.program) {
+        if(programObj) {
+          outcomeProgram.id = programObj.id;
+          if(!subjectIsEmpty) {
+            const categoryObjMap = new Map<string, CategoryObjProps>();
+            const subjectObjMap = new Map<string, SubjectObjProps>();
+            // (async () => {
+              const subjectRes = await getSubjectIdByProgramIdAndSubjectName(programObj.id!, item.subject);
+            // } 
+              subjectRes.forEach(srItem => {
+                subjectObjMap.set(srItem.name!, srItem)
+              })
+              outcomeSubject.forEach(sItem => {
+                const subjectObj = subjectObjMap.get(sItem.value!);
+                if(subjectObj) {
+                  sItem.id = subjectObj.id;
+                  sItem.value = subjectObj.name;
+                  const category = subjectObj?.category;
+                  if(category) {
+                    category.forEach(cItem => {
+                      categoryObjMap.set(cItem.name!, cItem)
+                    })
+                  }
+                } else {
+                  sItem.error = `Invaid name! Can’t find: ${sItem.value}`
+                }
+              })
+              // 找到了任意一个subjec id
+              const isFoundSubjectId = outcomeSubject.some(item => !item.error)
+              if(isFoundSubjectId) {
+                if(!categoryIsEmpty) {
+                  const categoryObj = categoryObjMap.get(outcomeCategory.value!);
+                  if(categoryObj) {
+                    outcomeCategory.id = categoryObj.id;
+                    if(!subcategoryIsEmoty) {
+                      const subcategoryMap = new Map<string, BaseInfoProps>();
+                      const subCategory = categoryObj.subCategory;
+                      if(subCategory) {
+                        subCategory.forEach(item => {
+                          subcategoryMap.set(item.name!, item)
+                        });
+                      }
+                      outcomeSubcategory.forEach(scItem => {
+                        const subcategoryObj = subcategoryMap.get(scItem.value!);
+                        if(subcategoryObj) {
+                          scItem.id = subcategoryObj?.id;
+                          scItem.value = subcategoryObj?.name;
+                        } else {
+                          scItem.error = `Invaid name! Can’t find: ${scItem.value}`
+                        }
+                      })
+                    }
+                  } else {
+                    outcomeCategory.error = `Invaid name! Can’t find: ${outcomeCategory.value}`
+                  }
+                } else {
+                  // category是空
+                  if(!subcategoryIsEmoty) {
+                    outcomeSubcategory.forEach(sItem => {
+                      sItem.error = `Invaid name! Can’t find: ${sItem.value}`
+                    })
+                  }
+                }
+              } else {
+                // subjectId没找到
+                if(!categoryIsEmpty) {
+                  outcomeCategory.error = `Invaid name! Can’t find: ${outcomeCategory.value}`
+                }
+                if(!subcategoryIsEmoty) {
+                  outcomeSubcategory.forEach(sItem => {
+                    sItem.error = `Invaid name! Can’t find: ${sItem.value}`
+                  })
+                }
+              }
+            // })();
+          } else {
+            // subject是空数组
+            if(!categoryIsEmpty) {
+              outcomeCategory.error = `Invaid name! Can’t find: ${outcomeCategory.value}`
+            }
+            if(!subcategoryIsEmoty) {
+              outcomeSubcategory.forEach(sItem => {
+                sItem.error = `Invaid name! Can’t find: ${sItem.value}`
+              })
+            }
+          }
+          if(!outcomeAgeIsEmpty) {
+            const ageMap = new Map<string, BaseInfoProps>();
+            programObj.ages.forEach(item => {
+              ageMap.set(item.name!, item)
+            });
+            outcomeAge.forEach(aItem => {
+              const ageObj = ageMap.get(aItem.value!);
+              if(ageObj) {
+                aItem.id = ageObj?.id;
+              } else {
+                aItem.error = `Invaid name! Can’t find: ${aItem.value}`
+              }
+            })
+          }
+          if(!outcomeGradeIsEmpty) {
+            const gradeMap = new Map<string, BaseInfoProps>();
+            programObj.grades.forEach(item => {
+              gradeMap.set(item.name!, item)
+            });
+            outcomeGrade.forEach(gItem => {
+              const gradeObj = gradeMap.get(gItem.value!);
+              if(gradeObj) {
+                gItem.id = gradeObj?.id;
+              } else {
+                gItem.error = `Invaid name! Can’t find: ${gItem.value}`
+              }
+            })
+            // const subjectRes = await getSubjectIdByProgramIdAndSubjectName(programObj.id!, item.subject);
+          }
+        } else {
+          outcomeProgram.error = `Invaid name! Can’t find: ${item.program}`;
+          if(!subjectIsEmpty) {
+            outcomeSubject.forEach(sItem => {
+              sItem.error = `Invaid name! Can’t find: ${sItem.value}`
+            })
+          }
+          if(!categoryIsEmpty) {
+            outcomeCategory.error = `Invaid name! Can’t find: ${outcomeCategory.value}`
+          }
+          if(!subcategoryIsEmoty) {
+            outcomeSubcategory.forEach(sItem => {
+              sItem.error = `Invaid name! Can’t find: ${sItem.value}`
+            })
+          }
+        }
+      } else {
+        // program是空
+        outcomeProgram.error = "Can’t not be empty!";
+        if(subjectIsEmpty) {
+          outcomeSubject.forEach(sItem => {
+            sItem.error = `Can’t not be empty!`
+          })
+        } else {
+          outcomeSubject.forEach(sItem => {
+            sItem.error = `Invaid name! Can’t find: ${sItem.value}`
+          })
+        }
+        if(categoryIsEmpty) {
+          outcomeCategory.error =  `Can’t not be empty!`;
+        } else {
+          outcomeCategory.error = `Invaid name! Can’t find: ${outcomeCategory.value}`
+        }
+        if(!subcategoryIsEmoty) {
+          outcomeSubcategory.forEach(sItem => {
+            sItem.error = `Invaid name! Can’t find: ${sItem.value}`
+          })
+        }
+      }
+      afterFeValidLoArray.push({
+        row_number: item.row_number,
+        keywords: item.keywords.map(item => {
+          return {
+            value: item
+          }
+        }),
+        author: item.author,
+        updated_at: item.updated_at,
+        shortcode: item.shortcode,
+        sets: item.sets.map(item => {
+          return { value: item}
+        }),
+        milestones: item.milestones.map(item => {
+          return { value: item}
+        }),
+        outcome_name: {
+          value: item.outcome_name,
+          error: outcomeNameError
+        },
+        assumed: {
+          value:  outcomeAssumed,
+          error: outcomeAssumedError
+        },
+        score_threshold: {
+          value: scoreThresholdsValue,
+          error: outcomeScoreThresholdError
+        },
+        description: {
+          value: item.description,
+          error: outcomeDescriptionError
+        },
+        program: outcomeProgram,
+        subject: outcomeSubject,
+        category: outcomeCategory,
+        subcategory: outcomeSubcategory,
+        age: outcomeAge,
+        grade: outcomeGrade,
+      })
+    }
+    const importoutcome: EntityImportOutcomeView[] = 
+    afterFeValidLoArray.map(item => {
+      const score_threshold = Number(item.score_threshold.value.split("%")[0]);
+      return {
+        age: item.age.map(item => item.id!),
+        assumed: Boolean(item.assumed.value),
+        category: [item.category.id!],
+        description: item.description.value,
+        grade: item.grade.map(item => item.id!),
+        keywords: item.keywords.map(item => item.value!),
+        outcome_name: item.outcome_name.value,
+        program: [item.program.id!],
+        row_number: item.row_number,
+        score_threshold: score_threshold ? 0 : score_threshold,
+        sets: item.sets.map(item => item.value!),
+        shortcode: item.shortcode,
+        subcategory: item.subcategory.map((item) => item.id!),
+        subject: item.subject.map((item) => item.id!),
+      }
+    });
+    const beValidRes = await api.learningOutcomes.verifyImportLearningOutcomes({data: importoutcome});
+    const createLoList = 
+    beValidRes.create_data ? 
+    beValidRes.create_data.map(item => {
+      const curValidLo = afterFeValidLoArray.find(aItem => item.row_number === aItem.row_number);
+      return {
+        ...curValidLo,
+        shortcode: {
+          value: item.shortcode?.value,
+          error: item.shortcode?.errors
+        },
+        sets: item.sets?.map((sItem, i) => {
+          return {
+            id: sItem.value,
+            value: curValidLo?.sets[i].value,
+            error: sItem.error
+          }
+        })
+      }
+    }) : [];
+    const updateLoList = 
+    beValidRes.update_data ?
+    beValidRes.update_data.map(item => {
+      const curValidLo = afterFeValidLoArray.find(aItem => item.row_number === aItem.row_number);
+      return {
+        ...curValidLo,
+        shortcode: {
+          value: item.shortcode?.value,
+          error: item.shortcode?.errors
+        },
+        sets: item.sets?.map((sItem, i) => {
+          return {
+            id: sItem.value,
+            value: curValidLo?.sets[i].value,
+            error: sItem.error
+          }
+        })
+      }
+    }) : [];
+    return {
+      create: createLoList,
+      update: updateLoList
+    }
+  }
+)
+
+type IResultImportLo = {
+  create: CustomOutcomeProps[],
+  update: CustomOutcomeProps[],
+  exist_error: boolean,
+}
+export const importLearningOutcomes = createAsyncThunk<IResultImportLo, LoadingMetaPayload, { state: RootState }>(
+  "outcome/importOutcome",
+  async ({ metaLoading }, { getState, dispatch }) => {
+    const { outcome: { createLoList, updateLoList } } = getState();
+    const create_data = createLoList.map(item => {
+      const score_threshold = (item.score_threshold && item.score_threshold.value ) ? Number(item.score_threshold.value.split("%")[0]) : 0;
+      return {
+        age: item.age.map(item => item.id!),
+        assumed: Boolean(item.assumed.value),
+        category: [item.category.id!],
+        description: item.description.value,
+        grade: item.grade.map(item => item.id!),
+        keywords: item.keywords.map(item => item.value!),
+        outcome_name: item.outcome_name.value!,
+        program: [item.program.id!],
+        row_number: item.row_number,
+        score_threshold: score_threshold ? 0 : score_threshold,
+        sets: item.sets.map(item => item.id!),
+        shortcode: item.shortcode.value,
+        subcategory: item.subcategory.map((item) => item.id!),
+        subject: item.subject.map((item) => item.id!),
+      }
+    });
+    const update_data = updateLoList.map(item => {
+      const score_threshold = (item.score_threshold && item.score_threshold.value ) ? Number(item.score_threshold.value.split("%")[0]) : 0;
+      return {
+        age: item.age.map(item => item.id!),
+        assumed: Boolean(item.assumed.value),
+        category: [item.category.id!],
+        description: item.description.value,
+        grade: item.grade.map(item => item.id!),
+        keywords: item.keywords.map(item => item.value!),
+        outcome_name: item.outcome_name.value!,
+        program: [item.program.id!],
+        row_number: item.row_number,
+        score_threshold: score_threshold ? 0 : score_threshold,
+        sets: item.sets.map(item => item.id!),
+        shortcode: item.shortcode.value,
+        subcategory: item.subcategory.map((item) => item.id!),
+        subject: item.subject.map((item) => item.id!),
+      }
+    })
+    const res = await api.learningOutcomes.importLearningOutcomes({ create_data, update_data});
+    let create: CustomOutcomeProps[] = createLoList;
+    let update: CustomOutcomeProps[] = createLoList;
+    if (res.exist_error) {
+      const { create_data, update_data } = res;
+      create = createLoList.map(item => {
+        const curValidLo = create_data?.find(cItem => cItem.row_number === item.row_number);
+        return {
+          ...item,
+          shortcode: {
+            value: curValidLo?.shortcode?.value,
+            error: curValidLo?.shortcode?.errors
+          }
+        }
+      });
+      update = updateLoList.map(item => {
+        const curValidLo = update_data?.find(cItem => cItem.row_number === item.row_number);
+        return {
+          ...item,
+          shortcode: {
+            value: curValidLo?.shortcode?.value,
+            error: curValidLo?.shortcode?.errors
+          }
+        }
+      });
+    } else {
+      dispatch(actSuccess(d("Deleted Successfully").t("assess_msg_deleted_successfully")));
+    }
+    return {
+      exist_error: res.exist_error as boolean,
+      create,
+      update
+    }
+  }
+)
+
 const { actions, reducer } = createSlice({
   name: "outcome",
   initialState,
@@ -482,6 +911,10 @@ const { actions, reducer } = createSlice({
     resetSelectedIds: (state, { payload }: PayloadAction<Record<string, boolean>>) => {
       state.selectedIdsMap = payload;
     },
+    resetUploadData: (state, {payload}: PayloadAction) => {
+      state.createLoList = [];
+      state.updateLoList = [];
+    }
   },
   extraReducers: {
     [actOutcomeList.fulfilled.type]: (state, { payload }: PayloadAction<any>) => {
@@ -632,7 +1065,30 @@ const { actions, reducer } = createSlice({
     [exportOutcomes.fulfilled.type]: (state, { payload }: PayloadAction<AsyncTrunkReturned<typeof exportOutcomes>>) => {
       state.downloadOutcomes = payload;
     },
+    // [getProgramsIdByProgramName.fulfilled.type]: (state, { payload }: PayloadAction<AsyncTrunkReturned<typeof getProgramsIdByProgramName>>) => {
+    //   if(payload) {
+    //     state.programsArray.push(payload);
+    //   }
+    // },
+    // [getProgramId.fulfilled.type]: (state, { payload }: PayloadAction<AsyncTrunkReturned<typeof getProgramId>>) => {
+    //   state.programsArray = [...payload];
+    // },
+    [getSubjectIdsBySubjectName.fulfilled.type]: (state, { payload }: PayloadAction<AsyncTrunkReturned<typeof getSubjectIdsBySubjectName>>) => {
+      payload.forEach(item => {
+        state.subjectArray.push(item)
+      });
+    },
+    [parseCsvLo.fulfilled.type]: (state, { payload }: PayloadAction<AsyncTrunkReturned<typeof parseCsvLo>>) => {
+      // state.uploadLoList = payload;
+      state.createLoList = payload.create;
+      state.updateLoList = payload.update;
+    },
+    [importLearningOutcomes.fulfilled.type]: (state, { payload }: PayloadAction<AsyncTrunkReturned<typeof parseCsvLo>>) => {
+      // state.uploadLoList = payload;
+      state.createLoList = payload.create;
+      state.updateLoList = payload.update;
+    },
   },
 });
-export const { resetShortCode, setSelectedIds, resetSelectedIds } = actions;
+export const { resetShortCode, setSelectedIds, resetSelectedIds, resetUploadData } = actions;
 export default reducer;
