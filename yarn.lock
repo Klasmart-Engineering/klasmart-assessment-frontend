@@ -3824,7 +3824,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^16.8.6 || ^17.0.0", "@types/react@^16.8.8", "@types/react@^17", "@types/react@^17.0.0", "@types/react@^17.0.0 || ^18.0.0", "@types/react@^17.0.39", "@types/react@16 || 17":
+"@types/react@*", "@types/react@^16.8.6 || ^17.0.0", "@types/react@^16.8.8 || ^17", "@types/react@^17", "@types/react@^17.0.0", "@types/react@^17.0.0 || ^18.0.0", "@types/react@^17.0.39", "@types/react@16 || 17":
   "integrity" "sha512-YfhQ22Lah2e3CHPsb93tRwIGNiSwkuz1/blk4e6QrWS0jQzCSNbGLtOEYhPg02W0yGTTmpajp7dCTbBAMN3qsg=="
   "resolved" "https://registry.npmjs.org/@types/react/-/react-17.0.45.tgz"
   "version" "17.0.45"
@@ -13386,10 +13386,10 @@
   dependencies:
     "semver" "^5.6.0"
 
-"react-archer@^2.0.2":
-  "integrity" "sha512-olKb+sdqsES0KO2MQ17ziMnk+KoYUXKzpLhtyMcEjbSiLxDzDZpNYPlkFGmogEyRxvxWdvwVxlrQyWf/XDs/Aw=="
-  "resolved" "https://registry.npmjs.org/react-archer/-/react-archer-2.0.2.tgz"
-  "version" "2.0.2"
+"react-archer@^3.3.0":
+  "integrity" "sha512-A1B1fX2USpaZd7W3JI3FKsoUfQ6Eed7opQej+WuYKwKTwfnbUYsfz3aAuESksfFGfLq2zYOi7Zz6SDr+F6X1kQ=="
+  "resolved" "https://registry.npmjs.org/react-archer/-/react-archer-3.3.0.tgz"
+  "version" "3.3.0"
   dependencies:
     "react-fast-compare" "^2.0.4"
     "resize-observer-polyfill" "1.5.0"
@@ -13881,7 +13881,7 @@
   dependencies:
     "prop-types" "^15.7.2"
 
-"react@*", "react@^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0", "react@^16.0.0", "react@^16.0.0 || ^17.0.0", "react@^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.13.1 || ^17.0.0", "react@^16.3.0 || ^17.0.0-0", "react@^16.3.0 || 17", "react@^16.4.0-0", "react@^16.8.0  || ^17.0.0", "react@^16.8.0 || ^17", "react@^16.8.0 || ^17 || ^18", "react@^16.8.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.8.3 || ^17", "react@^16.9.0 || ^17.0.0 || ^18", "react@^17.0.0", "react@^17.0.0 || ^18.0.0", "react@^17.0.2", "react@^17.0.2 || ^18.0.0", "react@>= 0.14.0", "react@>= 16", "react@>= 16.3.0", "react@>= 16.8", "react@>= 16.8.0", "react@>= 16.9.0", "react@>=15", "react@>=16.0.0", "react@>=16.11", "react@>=16.13.1", "react@>=16.4.0", "react@>=16.6.0", "react@>=16.8", "react@>=16.8.0", "react@>=16.8.x", "react@>=17.0.2", "react@0.13.x || 0.14.x || ^15.0.0-0 || 15.x.x || ^16.0.0-0 || ^16.x.x || ^17.x.x", "react@16 - 18", "react@17.0.2":
+"react@*", "react@^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0", "react@^16.0.0", "react@^16.0.0 || ^17.0.0", "react@^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.13.1 || ^17.0.0", "react@^16.3.0 || ^17.0.0-0", "react@^16.3.0 || 17", "react@^16.8.0  || ^17.0.0", "react@^16.8.0 || ^17", "react@^16.8.0 || ^17 || ^18", "react@^16.8.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.8.3 || ^17", "react@^16.9.0 || ^17", "react@^16.9.0 || ^17.0.0 || ^18", "react@^17.0.0", "react@^17.0.0 || ^18.0.0", "react@^17.0.2", "react@^17.0.2 || ^18.0.0", "react@>= 0.14.0", "react@>= 16", "react@>= 16.3.0", "react@>= 16.8", "react@>= 16.8.0", "react@>= 16.9.0", "react@>=15", "react@>=16.0.0", "react@>=16.11", "react@>=16.13.1", "react@>=16.4.0", "react@>=16.6.0", "react@>=16.8", "react@>=16.8.0", "react@>=16.8.x", "react@>=17.0.2", "react@0.13.x || 0.14.x || ^15.0.0-0 || 15.x.x || ^16.0.0-0 || ^16.x.x || ^17.x.x", "react@16 - 18", "react@17.0.2":
   "integrity" "sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA=="
   "resolved" "https://registry.npmjs.org/react/-/react-17.0.2.tgz"
   "version" "17.0.2"
