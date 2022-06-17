@@ -1822,6 +1822,8 @@ A new ‘Auto review’ lesson will appear on students’ calendar once our plat
   | { id: "assessment_lo_download_selected"; description: `Download Selected Rows`; values: undefined }
   | { id: "assessment_lo_download_quantity"; description: `({number} rows selected)`; values: { number: string | number } }
   | { id: "assessment_lo_download_column_title"; description: `Select which columns to include:`; values: undefined }
+  | { id: "home_student_teacherFeedbackWidget_containerTitleLabel"; description: `Teacher’s feedback`; values: undefined }
+  | { id: "home_student_teacherFeedbackWidget_noFeedBack"; description: `There is no teacher's feedback`; values: undefined }
   | {
       id: "assessment_lo_download_object_quantity";
       description: `(There are {quantity} rows to download)`;
