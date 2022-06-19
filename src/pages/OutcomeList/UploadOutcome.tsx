@@ -2,7 +2,19 @@ import { FixedTable } from "@components/FixedTable";
 import { emptyTip } from "@components/TipImages";
 import { CSVObjProps, UploadCSV } from "@components/UploadCSV";
 import { d } from "@locale/LocaleManager";
-import { Button, createStyles, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, makeStyles, Tab, Tabs } from "@material-ui/core";
+import {
+  Button,
+  createStyles,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+  makeStyles,
+  Tab,
+  Tabs,
+} from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 import { actAsyncConfirm } from "@reducers/confirm";
 import { AppDispatch } from "@reducers/index";
@@ -42,7 +54,7 @@ const useStyles = makeStyles((theme) =>
       color: "#000",
     },
     uploadInfo: {
-      color: "#666"
+      color: "#666",
     },
     firstInfo: {
       marginTop: 5,
@@ -56,16 +68,14 @@ const useStyles = makeStyles((theme) =>
       width: "100%",
       height: "450px",
       // overflow: "hidden",
-    }
+    },
   })
 );
-
-
 
 export interface UploadOutcomeProps {
   open: boolean;
   headers: OutcomeHeadersProps[];
-  createLoList: CustomOutcomeProps[],
+  createLoList: CustomOutcomeProps[];
   updateLoList: CustomOutcomeProps[];
   onClose: () => void;
   onUploadSuccess: (header: string[], array: CSVObjProps[]) => void;
@@ -73,7 +83,7 @@ export interface UploadOutcomeProps {
   // onClick
 }
 export interface CustomOutcomeProps {
-  [key: string]: any
+  [key: string]: any;
 }
 export function UploadOutcome(props: UploadOutcomeProps) {
   const css = useStyles();
@@ -91,32 +101,32 @@ export function UploadOutcome(props: UploadOutcomeProps) {
       headers.forEach((hitem, ii) => {
         const curLo = item[hitem.key];
         const isArray = curLo instanceof Array;
-        if(isArray) {
-          if(curLo.some(citem => !!citem.error)){
+        if (isArray) {
+          if (curLo.some((citem) => !!citem.error)) {
             errorCount = errorCount + 1;
             errorRowsSet.add(i);
             errorColumnsSet.add(ii);
           }
         } else {
-          if(curLo && (curLo.error instanceof Array)) {
-            if(curLo.error.some((i: any) => !!i)){
+          if (curLo && curLo.error instanceof Array) {
+            if (curLo.error.some((i: any) => !!i)) {
               errorCount = errorCount + 1;
               errorRowsSet.add(i);
               errorColumnsSet.add(ii);
             }
           } else {
-            if(curLo && curLo.error) {
+            if (curLo && curLo.error) {
               errorCount = errorCount + 1;
               errorRowsSet.add(i);
               errorColumnsSet.add(ii);
             }
           }
         }
-      })
+      });
     });
     const errorRowsIndex = Array.from(errorRowsSet);
     const errorColumnsIndex = Array.from(errorColumnsSet);
-    return {errorCount, errorRowsIndex, errorColumnsIndex}
+    return { errorCount, errorRowsIndex, errorColumnsIndex };
   }, [createLoList, headers]);
   const updateErrorsInfo: ErrorsInfoProps = useMemo(() => {
     let errorCount = 0;
@@ -126,56 +136,56 @@ export function UploadOutcome(props: UploadOutcomeProps) {
       headers.forEach((hitem, ii) => {
         const curLo = item[hitem.key];
         const isArray = curLo instanceof Array;
-        if(isArray) {
-          if(curLo.some(citem => !!citem.error)){
+        if (isArray) {
+          if (curLo.some((citem) => !!citem.error)) {
             errorCount = errorCount + 1;
             errorRowsSet.add(i);
             errorColumnsSet.add(ii);
           }
         } else {
-          if(curLo && (curLo.error instanceof Array)) {
-            if(curLo.error.some((i: any) => !!i)){
+          if (curLo && curLo.error instanceof Array) {
+            if (curLo.error.some((i: any) => !!i)) {
               errorCount = errorCount + 1;
               errorRowsSet.add(i);
               errorColumnsSet.add(ii);
             }
           } else {
-            if(curLo && curLo.error) {
+            if (curLo && curLo.error) {
               errorCount = errorCount + 1;
               errorRowsSet.add(i);
               errorColumnsSet.add(ii);
             }
           }
         }
-      })
+      });
     });
     const errorRowsIndex = Array.from(errorRowsSet);
     const errorColumnsIndex = Array.from(errorColumnsSet);
-    return {errorCount, errorRowsIndex, errorColumnsIndex}
+    return { errorCount, errorRowsIndex, errorColumnsIndex };
   }, [updateLoList, headers]);
   const totalError = createErrorsInfo.errorCount + updateErrorsInfo.errorCount;
   const totalRowsError = createErrorsInfo.errorRowsIndex.length + updateErrorsInfo.errorRowsIndex.length;
   const { confirmDialogActive, openConfirmDialog, closeConfirmDialog } = useConfirmDialog();
   const handleConfirm = () => {
     onConfirm();
-  }
+  };
   const handleUploadSuccess = (header: string[], array: CSVObjProps[]) => {
     closeConfirmDialog();
     onUploadSuccess(header, array);
-  }
- 
+  };
+
   const handleUploadFail = () => {
-    return dispatch(actError(d("Unsupported Format").t("library_error_unsupported_format")))
-  }
+    return dispatch(actError(d("Unsupported Format").t("library_error_unsupported_format")));
+  };
 
   const handleChangeTab = (event: React.ChangeEvent<{}>, tabValue: UploadTab) => {
-    setTabValue(tabValue)
-  }
+    setTabValue(tabValue);
+  };
   const handleClickUploadBtn = () => {
     openConfirmDialog();
-  }
+  };
   const handleClose = async () => {
-    if(total > 1) {
+    if (total > 1) {
       const content = "Are you discarding current info and leave";
       const { isConfirmed } = unwrapResult(await dispatch(actAsyncConfirm({ content, hideCancel: false })));
       if (isConfirmed) {
@@ -185,76 +195,74 @@ export function UploadOutcome(props: UploadOutcomeProps) {
     } else {
       onClose();
     }
-  }
+  };
   return (
     <>
-    <Dialog open={open} fullWidth maxWidth={"lg"}>
-      <DialogTitle className={css.title}>
-        <span>{"Bulk Upload"}</span>
-        <span className={css.downloadTemplate}>
-          <LODownloadTemplate />
-        </span>
-        <div className={css.uploadBtn}>
-          {
-            total
-            ? <Button color="primary" variant="contained" onClick={handleClickUploadBtn}>{"Upload .csv from device"}</Button>
-            : <UploadCSV label={"Upload .csv from device"} onUploadSuccess={handleUploadSuccess} onUploadFail={handleUploadFail}/>
-        }
-        </div>
-        <IconButton onClick={handleClose} className={css.closeBtn}>
-          <Close />
-        </IconButton>
-      </DialogTitle>
-      <DialogContent>
-        <p className={css.firstInfo}>
-          <span className={css.contentTitle}>{"Check all learning outcomes to upload."}</span>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <span className={css.uploadInfo}>{`(There are ${total} to upload, ${createCount} to create, ${updateCount} to modify)`}</span>
-        </p>
-        {
-          totalError > 0 &&
-          <p className={css.errorInfo}>{`There are totally ${totalError} errors in ${totalRowsError} rows, Check the CSV file based on the highlited cells, and upload again.`}</p>
-        }
-        <Tabs
-          value={tabValue}
-          onChange={handleChangeTab}
-          indicatorColor="primary"
-          textColor="primary"
-          centered
-        >
-          <Tab label="Create" value={UploadTab.create} />
-          <Tab label="Modify" value={UploadTab.modify}/>
-        </Tabs>
-        <div className={css.tableCon}>
-          {
-            tabValue === UploadTab.create ?
-            (createLoList.length ? 
-            <FixedTable headers={headers || []} rows={createLoList} errorInfo={createErrorsInfo}  />
-            : emptyTip)
-            :
-            (updateLoList.length ?
-            <FixedTable headers={headers || []} rows={updateLoList} errorInfo={updateErrorsInfo} />
-            : emptyTip)
-          }
-        </div>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} disableRipple={true} color="primary" variant="outlined">
-          {d("CANCEL").t("general_button_CANCEL")}
-        </Button>
-        <Button color="primary" variant="contained" disabled={totalError>0} className={css.okBtn} onClick={handleConfirm}>
-          {d("CONFIRM").t("general_button_CONFIRM")}
-        </Button>
-      </DialogActions>
-    </Dialog>
-      <ConfirmDialog 
+      <Dialog open={open} fullWidth maxWidth={"lg"}>
+        <DialogTitle className={css.title}>
+          <span>{"Bulk Upload"}</span>
+          <span className={css.downloadTemplate}>
+            <LODownloadTemplate />
+          </span>
+          <div className={css.uploadBtn}>
+            {total ? (
+              <Button color="primary" variant="contained" onClick={handleClickUploadBtn}>
+                {"Upload .csv from device"}
+              </Button>
+            ) : (
+              <UploadCSV label={"Upload .csv from device"} onUploadSuccess={handleUploadSuccess} onUploadFail={handleUploadFail} />
+            )}
+          </div>
+          <IconButton onClick={handleClose} className={css.closeBtn}>
+            <Close />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>
+          <p className={css.firstInfo}>
+            <span className={css.contentTitle}>{"Check all learning outcomes to upload."}</span>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span className={css.uploadInfo}>{`(There are ${total} to upload, ${createCount} to create, ${updateCount} to modify)`}</span>
+          </p>
+          {totalError > 0 && (
+            <p
+              className={css.errorInfo}
+            >{`There are totally ${totalError} errors in ${totalRowsError} rows, Check the CSV file based on the highlited cells, and upload again.`}</p>
+          )}
+          <Tabs value={tabValue} onChange={handleChangeTab} indicatorColor="primary" textColor="primary" centered>
+            <Tab label="Create" value={UploadTab.create} />
+            <Tab label="Modify" value={UploadTab.modify} />
+          </Tabs>
+          <div className={css.tableCon}>
+            {tabValue === UploadTab.create ? (
+              createLoList.length ? (
+                <FixedTable headers={headers || []} rows={createLoList} errorInfo={createErrorsInfo} />
+              ) : (
+                emptyTip
+              )
+            ) : updateLoList.length ? (
+              <FixedTable headers={headers || []} rows={updateLoList} errorInfo={updateErrorsInfo} />
+            ) : (
+              emptyTip
+            )}
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onClose} disableRipple={true} color="primary" variant="outlined">
+            {d("CANCEL").t("general_button_CANCEL")}
+          </Button>
+          <Button color="primary" variant="contained" disabled={totalError > 0} className={css.okBtn} onClick={handleConfirm}>
+            {d("CONFIRM").t("general_button_CONFIRM")}
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <ConfirmDialog
         open={confirmDialogActive}
         onClose={closeConfirmDialog}
         onUpload={handleUploadSuccess}
         onUploadFail={handleUploadFail}
       />
     </>
-  )
+  );
 }
 
 export function useUploadOutcome() {
@@ -265,7 +273,7 @@ export function useUploadOutcome() {
       uploadOutcomeShowIndex,
       uploadOutcomeActive: active,
       openUploadOutcome: () => {
-        setUploadOutcomeShowIndex(uploadOutcomeShowIndex + 1)
+        setUploadOutcomeShowIndex(uploadOutcomeShowIndex + 1);
         setActive(true);
       },
       closeUploadOutcome: () => {
@@ -282,22 +290,22 @@ export interface ConfirmDialogProps {
   onUploadFail: () => void;
 }
 export function ConfirmDialog(props: ConfirmDialogProps) {
-  const css = useStyles();
-  const {open, onClose, onUpload, onUploadFail} = props;
+  // const css = useStyles();
+  const { open, onClose, onUpload, onUploadFail } = props;
   return (
     <Dialog open={open}>
-        <DialogTitle></DialogTitle>
-        <DialogContent>
-          <DialogContentText>{"Are you uploading another file and discarding current info?"}</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose} disableRipple={true} color="primary">
-            {d("CANCEL").t("general_button_CANCEL")}
-          </Button>
-          <UploadCSV label={"UPLOAD"} onUploadSuccess={onUpload} onUploadFail={onUploadFail} />
-        </DialogActions>
+      <DialogTitle></DialogTitle>
+      <DialogContent>
+        <DialogContentText>{"Are you uploading another file and discarding current info?"}</DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} disableRipple={true} color="primary">
+          {d("CANCEL").t("general_button_CANCEL")}
+        </Button>
+        <UploadCSV label={"UPLOAD"} onUploadSuccess={onUpload} onUploadFail={onUploadFail} />
+      </DialogActions>
     </Dialog>
-  )
+  );
 }
 
 export function useConfirmDialog() {
@@ -308,13 +316,14 @@ export function useConfirmDialog() {
       confirmDialogShowIndex,
       confirmDialogActive: active,
       openConfirmDialog: () => {
-        setConfirmDialogShowIndex(confirmDialogShowIndex + 1)
+        setConfirmDialogShowIndex(confirmDialogShowIndex + 1);
         setActive(true);
       },
       closeConfirmDialog: () => {
         setActive(false);
       },
     }),
+    //eslint-disable-next-line react-hooks/exhaustive-deps
     [active, setConfirmDialogShowIndex]
   );
 }
