@@ -21,7 +21,7 @@
     "call-me-maybe" "^1.0.1"
     "js-yaml" "^4.1.0"
 
-"@apollo/client@^3.5.10", "@apollo/client@3 - 4", "@apollo/client@latest":
+"@apollo/client@^3.6.8", "@apollo/client@3 - 4", "@apollo/client@latest":
   "integrity" "sha512-p/J6KRHZZPGX0bZtMLvRFAIcReYsRYGg+Jz9MkgabWPy0L8rwgyolq9fvKsNqkH888Tj9Yvwrxz9V84KfcORJA=="
   "resolved" "https://registry.npmjs.org/@apollo/client/-/client-3.6.8.tgz"
   "version" "3.6.8"
@@ -14002,12 +14002,12 @@
     "private" "^0.1.8"
     "source-map" "~0.6.1"
 
-"recoil-persist@^4.1.0":
-  "integrity" "sha512-MHVfML9GxJP3RpkKR4F5rp7DtvzIvjWhowtMao/b7h2k4afMio/4sMAdUtltIrDaeVegH0Iga8Sx5XQ3oD7CzA=="
-  "resolved" "https://registry.npmjs.org/recoil-persist/-/recoil-persist-4.2.0.tgz"
-  "version" "4.2.0"
+"recoil-persist@^4.1.0", "recoil-persist@4.1.0":
+  "integrity" "sha512-7ruOsLhrEqBpl8EM6j5OITSKJXvH7BfSDxO5m1Heb3dJo6mnCJ3t4ln1KDJhZrvFOkqyO37Ufv3VB1wU06tfCA=="
+  "resolved" "https://registry.npmjs.org/recoil-persist/-/recoil-persist-4.1.0.tgz"
+  "version" "4.1.0"
 
-"recoil@^0.6.1", "recoil@^0.7.2":
+"recoil@^0.6.1":
   "integrity" "sha512-J7oT3LZl2vpyFClgSUpOQjpykz84VSX/NJE/PavAtR8n7Z+whEdVBPUtwc2TEWjONeL/lJmiac2XQ+qEOQA52Q=="
   "resolved" "https://registry.npmjs.org/recoil/-/recoil-0.6.1.tgz"
   "version" "0.6.1"
