@@ -1183,7 +1183,7 @@
   "assessment_lo_bulk_upload_cancel": "Cancel",
   "assessment_lo_bulk_upload_confirm": "Confirm",
   "assessment_lo_bulk_upload_check_notice": "업로드할 모든 학습 결과를 확인하세요.",
-  "assessment_lo_bulk_upload_result": "(업로드할 {count} 개, 생성할 {count} 개, 수정할 { {count} 개가 있습니다.)",
+  "assessment_lo_bulk_upload_result": "(업로드할 {count1} 개, 생성할 {count2} 개, 수정할 {count3} 개가 있습니다.)",
   "assessment_lo_bulk_upload_error_notice": "( {value} 행에 전체 {count} 개의 오류가 있습니다. 강조 표시된 셀을 기반으로 CSV 파일을 확인하고 다시 업로드하십시오.)",
   "assessment_lo_bulk_upload_row": "열",
   "assessment_lo_bulk_reupload": "다른 CSV 파일을 업로드하고 현재 데이터를 삭제하시겠습니까?",

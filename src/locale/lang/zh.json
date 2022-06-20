@@ -1183,7 +1183,7 @@
   "assessment_lo_bulk_upload_cancel": "取消",
   "assessment_lo_bulk_upload_confirm": "确认",
   "assessment_lo_bulk_upload_check_notice": "检查要上传的所有学习成果。",
-  "assessment_lo_bulk_upload_result": "(共 {count} 个学习成果待上传, {count}  个待创建, {count} 个待修改。)",
+  "assessment_lo_bulk_upload_result": "(共 {count1} 个学习成果待上传, {count2}  个待创建, {count3} 个待修改。)",
   "assessment_lo_bulk_upload_error_notice": "(共有 {count}个错误, 分布在 {value}行。请根据高亮单元格检查CSV文件，并再次上传。)",
   "assessment_lo_bulk_upload_row": "行号",
   "assessment_lo_bulk_reupload": "确定上传另一个CSV文件，并不保存当前数据么？",

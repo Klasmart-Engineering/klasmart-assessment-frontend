@@ -1183,7 +1183,7 @@
   "assessment_lo_bulk_upload_cancel": "Batal",
   "assessment_lo_bulk_upload_confirm": "Konfirmasi",
   "assessment_lo_bulk_upload_check_notice": "Centang semua hasil belajar untuk mengunggah.",
-  "assessment_lo_bulk_upload_result": "(Ada {count} untuk diunggah, {count} untuk dibuat, {count} untuk dimodifikasi.)",
+  "assessment_lo_bulk_upload_result": "(Ada {count1} untuk diunggah, {count2} untuk dibuat, {count3} untuk dimodifikasi.)",
   "assessment_lo_bulk_upload_error_notice": "(Ada {count} kesalahan di baris {value}. Periksa file CSV berdasarkan kolom yang disorot, lalu unggah lagi.)",
   "assessment_lo_bulk_upload_row": "Baris",
   "assessment_lo_bulk_reupload": "Unggah file CSV lain dan buang data yang ada sekarang?",
