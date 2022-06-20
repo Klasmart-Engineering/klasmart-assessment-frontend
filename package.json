@@ -164,7 +164,6 @@
     "react-app-rewire-alias": "^1.1.5",
     "react-app-rewired": "^2.1.8",
     "react-docgen-typescript": "^1.22.0",
-    "react-styleguidist": "^11.1.6",
     "swagger-typescript-api": "^1.12.0",
     "unzipper": "^0.10.11"
   }
