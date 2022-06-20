@@ -1,6 +1,7 @@
 import noFeedBack from "@assets/img/noFeedback.png";
 import WidgetWrapper from "../../../WidgetWrapper";
-import { UserAvatar } from "@kl-engineering/kidsloop-px";
+// import { UserAvatar } from "@kl-engineering/kidsloop-px";
+import UserAvatar from "./component/UserAvatar";
 import { Box, CircularProgress, Theme, Typography } from "@material-ui/core";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import React, { useEffect, useState } from "react";

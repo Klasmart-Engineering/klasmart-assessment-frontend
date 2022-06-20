@@ -290,7 +290,6 @@ export interface ConfirmDialogProps {
   onUploadFail: () => void;
 }
 export function ConfirmDialog(props: ConfirmDialogProps) {
-  // const css = useStyles();
   const { open, onClose, onUpload, onUploadFail } = props;
   return (
     <Dialog open={open}>
@@ -323,7 +322,6 @@ export function useConfirmDialog() {
         setActive(false);
       },
     }),
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-    [active, setConfirmDialogShowIndex]
+    [active, confirmDialogShowIndex, setConfirmDialogShowIndex]
   );
 }
