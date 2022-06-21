@@ -50,25 +50,25 @@ export function LoFields(props: LoFieldsProps) {
   const { control, watch } = useForm();
   const values = watch()[FIELDS];
   const outcomeFields: FieldsProps[] = useMemo(() => {
-    return [
-      { label: d("Learning Outcome Name").t("assess_label_learning_outcome_name"), value: "outcome_name", checked: true, readonly: false },
-      { label: d("Short Code").t("assess_label_short_code"), value: "shortcode", checked: true, readonly: false },
-      { label: d("Assumed").t("assess_label_assumed"), value: "assumed", checked: false, readonly: false },
-      { label: d("Score Threshold").t("learning_outcome_label_threshold"), value: "score_threshold", checked: true, readonly: false },
-      { label: d("Program").t("assess_label_program"), value: "program", checked: true, readonly: true },
-      { label: d("Subject").t("assess_label_subject"), value: "subject", checked: true, readonly: true },
-      { label: d("Category").t("library_label_category"), value: "category", checked: true, readonly: true },
-      { label: d("Subcategory").t("library_label_subcategory"), value: "subcategory", checked: true, readonly: true },
-      { label: d("Learning Outcome Set").t("assess_set_learning_outcome_set"), value: "sets", checked: false, readonly: false },
-      { label: d("Age").t("assess_label_age"), value: "age", checked: false, readonly: false },
-      { label: d("Grade").t("assess_label_grade"), value: "grade", checked: false, readonly: false },
-      { label: d("Keywords").t("assess_label_keywords"), value: "keywords", checked: false, readonly: false },
-      { label: d("Description").t("assess_label_description"), value: "description", checked: false, readonly: false},
-      { label: d("Author").t("library_label_author"), value: "author", checked: false, readonly: false },
-      { label: d("Created On").t("library_label_created_on"), value: "updated_at", checked: true, readonly: false },
-      { label: d("Milestones").t("assess_label_milestone"), value: "milestones", checked: false, readonly: false },
-    ];
-  }, [])
+    return  [
+      { label: "Learning Outcome Name", value: "outcome_name", checked: true, readonly: false },
+      { label: "Short Code", value: "shortcode", checked: true, readonly: false },
+      { label: "Assumed", value: "assumed", checked: false, readonly: false },
+      { label: "Score Threshold", value: "score_threshold", checked: true, readonly: false },
+      { label: "Program", value: "program", checked: true, readonly: true },
+      { label: "Subject", value: "subject", checked: true, readonly: true },
+      { label: "Category", value: "category", checked: true, readonly: true },
+      { label: "Subcategory", value: "subcategory", checked: true, readonly: true },
+      { label: "Learning Outcome Set", value: "sets", checked: false, readonly: false },
+      { label: "Age", value: "age", checked: false, readonly: false },
+      { label: "Grade", value: "grade", checked: false, readonly: false },
+      { label: "Keywords", value: "keywords", checked: false, readonly: false },
+      { label: "Description", value: "description", checked: false, readonly: false},
+      { label: "Author", value: "author", checked: false, readonly: false },
+      { label: "Created On", value: "updated_at", checked: true, readonly: false },
+      { label: "Milestones", value: "milestones", checked: false, readonly: false },
+    ]
+  }, []);
   const selectedFields = useMemo(() => {
     return outcomeFields.map(item => {
       const selectedValues = values ? values : defaultFields;

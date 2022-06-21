@@ -1647,7 +1647,7 @@ type LangRecord =
   | { id: "report_label_learner_usage"; description: `Learner Usage`; values: undefined }
   | {
       id: "report_label_learner_usage_info";
-      description: `Understand the level of usage of the learners over the last 7 days: 
+      description: `Understand the level of usage of the learners over the last 7 days:
 <ul>
   <li>Material consumption metrics
 </li>
@@ -1829,7 +1829,76 @@ A new ‘Auto review’ lesson will appear on students’ calendar once our plat
       description: `(There are {quantity} rows to download)`;
       values: { quantity: string | number };
     }
-  | { id: "schedule_msg_no_permission_to_be_redirected"; description: `You do not have permission. Redirecting...`; values: undefined };
+  | { id: "schedule_msg_no_permission_to_be_redirected"; description: `You do not have permission. Redirecting...`; values: undefined }
+  | {
+      id: "assessment_lo_bulk_upload_parse_failed";
+      description: `Parse Failed! Please check the CSV file and upload again.`;
+      values: undefined;
+    }
+  | {
+      id: "assessment_lo_bulk_upload_parse_error";
+      description: `Error in parsing columns! Please use the CSV template file and upload again.`;
+      values: undefined;
+    }
+  | {
+      id: "assessment_lo_bulk_upload_limit";
+      description: `The CSV file must contain 1~200 learning outcomes! Please check the CSV file and upload again.`;
+      values: undefined;
+    }
+  | { id: "assessment_lo_bulk_upload_length_limit"; description: `The length must be 1~255 characters.`; values: undefined }
+  | { id: "assessment_lo_bulk_upload_duplicate_shortcode"; description: `Duplicated with row {value}`; values: { value: string | number } }
+  | {
+      id: "assessment_lo_bulk_upload_invalid_assumed";
+      description: `Invalid! Please type ”True” or “False” in the CSV file.`;
+      values: undefined;
+    }
+  | {
+      id: "assessment_lo_bulk_upload_invalid_threshold";
+      description: `Invalid! Please type Text from “0%” to “100%” or nothing in the CSV file.`;
+      values: undefined;
+    }
+  | { id: "assessment_lo_bulk_upload_empty_input"; description: `Can’t not be empty!`; values: undefined }
+  | { id: "assessment_lo_bulk_upload_invalid_name"; description: `Invaid name! Can’t find {value}`; values: { value: string | number } }
+  | { id: "assessment_lo_bulk_upload_duplicated_name"; description: `Invalid name! Duplicate: {value}`; values: { value: string | number } }
+  | { id: "assessment_lo_bulk_upload_keyword_length"; description: `The length must be 0~2000 characters.`; values: undefined }
+  | { id: "assessment_lo_bulk_upload_shortcode_exists"; description: `Short code already exists!`; values: undefined }
+  | { id: "assessment_lo_bulk_upload_shortcode_not_exists"; description: `Short code not exists!`; values: undefined }
+  | {
+      id: "assessment_lo_bulk_upload_shortcode_locked";
+      description: `Learning Outcome with this Short Code can not be edited!`;
+      values: undefined;
+    }
+  | {
+      id: "assessment_lo_bulk_upload_validation_success";
+      description: `Uploaded {number} Learning Outcomes successfully!`;
+      values: { number: string | number };
+    }
+  | { id: "assessment_lo_bulk_upload_button"; description: `Upload`; values: undefined }
+  | { id: "assessment_lo_bulk_upload_template"; description: `Download CSV Template`; values: undefined }
+  | { id: "assessment_lo_bulk_upload_csv_file"; description: `Upload CSV File`; values: undefined }
+  | { id: "assessment_lo_bulk_upload_create"; description: `Create`; values: undefined }
+  | { id: "assessment_lo_bulk_upload_modify"; description: `Modify`; values: undefined }
+  | { id: "assessment_lo_bulk_upload_cancel"; description: `Cancel`; values: undefined }
+  | { id: "assessment_lo_bulk_upload_confirm"; description: `Confirm`; values: undefined }
+  | { id: "assessment_lo_bulk_upload_check_notice"; description: `Check all learning outcomes to upload.`; values: undefined }
+  | {
+      id: "assessment_lo_bulk_upload_result";
+      description: `(There are {count} to upload, {count}to create, {count}to modify.)`;
+      values: { count: string | number };
+    }
+  | {
+      id: "assessment_lo_bulk_upload_error_notice";
+      description: `(There are totally {count} errors in {value} rows. Check the CSV file based on the highlighted cells, and upload again.)`;
+      values: { count: string | number; value: string | number };
+    }
+  | { id: "assessment_lo_bulk_upload_row"; description: `Row`; values: undefined }
+  | { id: "assessment_lo_bulk_reupload"; description: `Are you uploading another CSV file and discarding current data?`; values: undefined }
+  | { id: "assessment_lo_bulk_upload_popup_cancel"; description: `CANCEL`; values: undefined }
+  | { id: "assessment_lo_bulk_upload_popup_upload"; description: `UPLOAD`; values: undefined }
+  | { id: "assessment_lo_bulk_upload_discard"; description: `DISCARD`; values: undefined }
+  | { id: "assessment_lo_bulk_upload_discard_warning"; description: `Are you discarding current data and leave?`; values: undefined }
+  | { id: "home_student_teacherFeedbackWidget_containerTitleLabel"; description: `Teacher’s feedback`; values: undefined }
+  | { id: "home_student_teacherFeedbackWidget_noFeedBack"; description: `There is no teacher's feedback`; values: undefined };
 
 export type LangRecordId = LangRecord["id"];
 export type LangRecodeDescription = LangRecord["description"];

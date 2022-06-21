@@ -1,7 +1,7 @@
 import { FixedTable } from "@components/FixedTable";
 import { emptyTip } from "@components/TipImages";
 import { CSVObjProps, UploadCSV } from "@components/UploadCSV";
-import { d } from "@locale/LocaleManager";
+import { d, t } from "@locale/LocaleManager";
 import {
   Button,
   createStyles,
@@ -13,7 +13,7 @@ import {
   IconButton,
   makeStyles,
   Tab,
-  Tabs,
+  Tabs
 } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 import { actAsyncConfirm } from "@reducers/confirm";
@@ -31,20 +31,20 @@ const useStyles = makeStyles((theme) =>
     },
     closeBtn: {
       position: "absolute",
-      top: "3px",
+      top: "8px",
       right: theme.spacing(1),
     },
     uploadBtn: {
       position: "absolute",
-      top: theme.spacing(1),
+      top: "14px",
       right: theme.spacing(7),
     },
     downloadTemplate: {
       // color: "#000",
       // fontSize: "14px",
       position: "absolute",
-      top: theme.spacing(1),
-      right: theme.spacing(32),
+      top: "14px",
+      right: theme.spacing(28),
     },
     okBtn: {
       marginLeft: "40px !important",
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) =>
       color: "#000",
     },
     uploadInfo: {
-      color: "#666",
+      color: "#ccc"
     },
     firstInfo: {
       marginTop: 5,
@@ -68,7 +68,8 @@ const useStyles = makeStyles((theme) =>
       width: "100%",
       height: "450px",
       // overflow: "hidden",
-    },
+      paddingBottom: "16px",
+    }
   })
 );
 
@@ -166,11 +167,20 @@ export function UploadOutcome(props: UploadOutcomeProps) {
   const totalError = createErrorsInfo.errorCount + updateErrorsInfo.errorCount;
   const totalRowsError = createErrorsInfo.errorRowsIndex.length + updateErrorsInfo.errorRowsIndex.length;
   const { confirmDialogActive, openConfirmDialog, closeConfirmDialog } = useConfirmDialog();
+  const disableConfirm = useMemo(() => {
+    if(totalError > 0 || total === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }, [totalError, total])
   const handleConfirm = () => {
     onConfirm();
   };
   const handleUploadSuccess = (header: string[], array: CSVObjProps[]) => {
-    closeConfirmDialog();
+    if(confirmDialogActive) {
+      closeConfirmDialog();
+    }
     onUploadSuccess(header, array);
   };
 
@@ -185,9 +195,9 @@ export function UploadOutcome(props: UploadOutcomeProps) {
     openConfirmDialog();
   };
   const handleClose = async () => {
-    if (total > 1) {
-      const content = "Are you discarding current info and leave";
-      const { isConfirmed } = unwrapResult(await dispatch(actAsyncConfirm({ content, hideCancel: false })));
+    if(total > 1) {
+      const content = d("Are you discarding current data and leave?").t("assessment_lo_bulk_upload_discard_warning");
+      const { isConfirmed } = unwrapResult(await dispatch(actAsyncConfirm({ content, confirmText: d("DISCARD").t("assessment_lo_bulk_upload_discard"), hideCancel: false })));
       if (isConfirmed) {
         onClose();
       }
@@ -198,64 +208,66 @@ export function UploadOutcome(props: UploadOutcomeProps) {
   };
   return (
     <>
-      <Dialog open={open} fullWidth maxWidth={"lg"}>
-        <DialogTitle className={css.title}>
-          <span>{"Bulk Upload"}</span>
-          <span className={css.downloadTemplate}>
-            <LODownloadTemplate />
-          </span>
-          <div className={css.uploadBtn}>
-            {total ? (
-              <Button color="primary" variant="contained" onClick={handleClickUploadBtn}>
-                {"Upload .csv from device"}
-              </Button>
-            ) : (
-              <UploadCSV label={"Upload .csv from device"} onUploadSuccess={handleUploadSuccess} onUploadFail={handleUploadFail} />
-            )}
-          </div>
-          <IconButton onClick={handleClose} className={css.closeBtn}>
-            <Close />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent>
-          <p className={css.firstInfo}>
-            <span className={css.contentTitle}>{"Check all learning outcomes to upload."}</span>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <span className={css.uploadInfo}>{`(There are ${total} to upload, ${createCount} to create, ${updateCount} to modify)`}</span>
-          </p>
-          {totalError > 0 && (
-            <p
-              className={css.errorInfo}
-            >{`There are totally ${totalError} errors in ${totalRowsError} rows, Check the CSV file based on the highlited cells, and upload again.`}</p>
-          )}
-          <Tabs value={tabValue} onChange={handleChangeTab} indicatorColor="primary" textColor="primary" centered>
-            <Tab label="Create" value={UploadTab.create} />
-            <Tab label="Modify" value={UploadTab.modify} />
-          </Tabs>
-          <div className={css.tableCon}>
-            {tabValue === UploadTab.create ? (
-              createLoList.length ? (
-                <FixedTable headers={headers || []} rows={createLoList} errorInfo={createErrorsInfo} />
-              ) : (
-                emptyTip
-              )
-            ) : updateLoList.length ? (
-              <FixedTable headers={headers || []} rows={updateLoList} errorInfo={updateErrorsInfo} />
-            ) : (
-              emptyTip
-            )}
-          </div>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose} disableRipple={true} color="primary" variant="outlined">
-            {d("CANCEL").t("general_button_CANCEL")}
-          </Button>
-          <Button color="primary" variant="contained" disabled={totalError > 0} className={css.okBtn} onClick={handleConfirm}>
-            {d("CONFIRM").t("general_button_CONFIRM")}
-          </Button>
-        </DialogActions>
-      </Dialog>
-      <ConfirmDialog
+    <Dialog open={open} fullWidth maxWidth={"lg"}>
+      <DialogTitle className={css.title}>
+        <span>{"Bulk Upload"}</span>
+        <span className={css.downloadTemplate}>
+          <LODownloadTemplate />
+        </span>
+        <div className={css.uploadBtn}>
+          {
+            total
+            ? <Button color="primary" variant="contained" onClick={handleClickUploadBtn}>{d("Upload CSV File").t("assessment_lo_bulk_upload_csv_file")}</Button>
+            : <UploadCSV label={d("Upload CSV File").t("assessment_lo_bulk_upload_csv_file")} onUploadSuccess={handleUploadSuccess} onUploadFail={handleUploadFail}/>
+        }
+        </div>
+        <IconButton onClick={handleClose} className={css.closeBtn}>
+          <Close />
+        </IconButton>
+      </DialogTitle>
+      <DialogContent>
+        <p className={css.firstInfo}>
+          <span className={css.contentTitle}>{d("Check all learning outcomes to upload.").t("assessment_lo_bulk_upload_check_notice")}</span>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <span className={css.uploadInfo}>{`(There are ${total} to upload, ${createCount} to create, ${updateCount} to modify)`}</span>
+        </p>
+        {
+          totalError > 0 &&
+          <p className={css.errorInfo}>{t("assessment_lo_bulk_upload_error_notice", {count: totalError as number, value: totalRowsError})}</p>
+        }
+        <Tabs
+          value={tabValue}
+          onChange={handleChangeTab}
+          indicatorColor="primary"
+          textColor="primary"
+          centered
+        >
+          <Tab label={d("Create").t("assessment_lo_bulk_upload_create")} value={UploadTab.create} />
+          <Tab label={d("Modify").t("assessment_lo_bulk_upload_modify")} value={UploadTab.modify}/>
+        </Tabs>
+        <div className={css.tableCon}>
+          {
+            tabValue === UploadTab.create ?
+            (createLoList.length ? 
+            <FixedTable headers={headers || []} rows={createLoList} errorInfo={createErrorsInfo} requiredColumns={[6]}  />
+            : emptyTip)
+            :
+            (updateLoList.length ?
+            <FixedTable headers={headers || []} rows={updateLoList} errorInfo={updateErrorsInfo} requiredColumns={[6]} />
+            : emptyTip)
+          }
+        </div>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose} disableRipple={true} color="primary" variant="outlined">
+          {d("CANCEL").t("general_button_CANCEL")}
+        </Button>
+        <Button color="primary" variant="contained" disabled={disableConfirm} className={css.okBtn} onClick={handleConfirm}>
+          {d("CONFIRM").t("general_button_CONFIRM")}
+        </Button>
+      </DialogActions>
+    </Dialog>
+      <ConfirmDialog 
         open={confirmDialogActive}
         onClose={closeConfirmDialog}
         onUpload={handleUploadSuccess}

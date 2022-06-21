@@ -159,9 +159,16 @@ export function stringToArray(value: string | string[]): string[] {
   if(value instanceof Array) {
     return value;
   } else if(value){
-    return [value]
+    return [value.trim()]
   } else {
     return []
+  }
+}
+export function arrayToString(value: string | string[]) {
+  if(value instanceof Array) {
+    return value.join(";");
+  } else if(value) {
+    return value.trim();
   }
 }
 
@@ -196,21 +203,21 @@ export function transferCSVToOutcome(header: string[], array: CSVObjProps[]): {h
   const loArray = array.map((item, i) => {
         return {
           row_number: i + 2,
-          outcome_name: item[loKeyValue.outcome_name] as string,
-          shortcode: item[loKeyValue.shortcode] as string,
-          assumed: item[loKeyValue.assumed] as string,
-          score_threshold: item[loKeyValue.score_threshold] as string,
-          program: item[loKeyValue.program] as string,
+          outcome_name: item[loKeyValue.outcome_name]?.trim() as string,
+          shortcode: item[loKeyValue.shortcode]?.trim() as string,
+          assumed: item[loKeyValue.assumed]?.trim() as string,
+          score_threshold: item[loKeyValue.score_threshold]?.trim() as string,
+          program: arrayToString(item[loKeyValue.program]),
           subject: stringToArray(item[loKeyValue.subject]),
-          category: item[loKeyValue.category] as string,
+          category: arrayToString(item[loKeyValue.category]),
           subcategory: stringToArray(item[loKeyValue.subcategory]),
           sets: stringToArray(item[loKeyValue.sets]),
           age: stringToArray(item[loKeyValue.age]),
           grade: stringToArray(item[loKeyValue.grade]),
           keywords: stringToArray(item[loKeyValue.keywords]),
-          description: item[loKeyValue.description] as string,
-          author: item[loKeyValue.author] as string,
-          updated_at: item[loKeyValue.updated_at] as string,
+          description: item[loKeyValue.description]?.trim() as string,
+          author: item[loKeyValue.author]?.trim() as string,
+          updated_at: item[loKeyValue.updated_at]?.trim() as string,
           milestones: stringToArray(item[loKeyValue.milestones]),
         }
       });

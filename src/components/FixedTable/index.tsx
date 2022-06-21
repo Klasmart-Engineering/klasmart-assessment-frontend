@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => createStyles({
     backgroundColor: "#FDF2F2"
   },
   rowItem: {
-    borderBottom: "1px solid #F3F3F3",
+    borderBottom: "1px solid #666",
   },
   firstColumn: {
     boxShadow: `inset -1px -1px 0px #F3F3F3`,
@@ -97,9 +97,14 @@ export interface HeaderType {
   title: string,
   key: string,
 }
+export interface ItemsType {
+  value: boolean | number | string | string[] | undefined,
+  error: string,
+}
 export interface CellType {
   value: boolean | number | string | string[] | undefined,
   error: string | string[],
+  items: ItemsType[];
 }
 export interface RowsItemType {
   [key: string]: CellType | CellType[]
@@ -108,6 +113,7 @@ export interface FixedTableProps {
   headers: HeaderType[];
   rows: RowsItemType[];
   errorInfo: ErrorsInfoProps;
+  requiredColumns: number[];
 }
 export function FixedTable(props: FixedTableProps) {
   const css = useStyles();
@@ -143,22 +149,25 @@ export function FixedTable(props: FixedTableProps) {
                         const isArray = curRowItem instanceof Array;
                         const isObject = curRowItem instanceof Object;
                         const hasError = 
-                        isArray
-                         ? 
-                        (curRowItem.length ? curRowItem.filter(item => !!item.error).length : false)
-                        : 
-                        isObject
-                        ?
-                        ((curRowItem.error instanceof Array) ? curRowItem.error.filter(item => !!item).length : curRowItem.error)
-                        :
-                        false;
+                          isArray
+                          ? 
+                          (curRowItem.length ? curRowItem.filter(item => !!item.error).length : false)
+                          : 
+                          isObject
+                          ?
+                          curRowItem.items ? !!curRowItem.error
+                          :
+                          ((curRowItem.error instanceof Array) ? curRowItem.error.filter(item => !!item).length : !!curRowItem.error)
+                          :
+                          false;
                         const error = 
-                        hasError ?
+                          hasError ?
                           (isArray
                           ? 
                           <>
-                            {curRowItem.map(item => item.error).map((e, i) => {
-                              return (<div key={e.toString()+i}>{e}</div>)
+                            {curRowItem.map((e, i) => {
+                              const key = JSON.stringify(e.error) + i;
+                              return (<div key={key}>{e.error}</div>)
                             })}
                           </>
                           :
@@ -190,6 +199,20 @@ export function FixedTable(props: FixedTableProps) {
                               <>
                                 {
                                   curRowItem.map((cr, iii) => {
+                                    const isObj = cr instanceof Object;
+                                    return (
+                                      <li className={clsx(css.cellBase, css.leftCell)} key={`${cr.value+""}-${iii}`}>
+                                        {isObj ? cr.value : cr}
+                                      </li>
+                                    )
+                                  })
+                                }
+                              </>
+                              :
+                              curRowItem?.items ?
+                              <>
+                                {
+                                  curRowItem.items.map((cr, iii) => {
                                     const isObj = cr instanceof Object;
                                     return (
                                       <li className={clsx(css.cellBase, css.leftCell)} key={`${cr.value+""}-${iii}`}>

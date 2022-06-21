@@ -440,7 +440,8 @@ export const uploadFile = async (path: string, body: any) => {
 };
 
 export async function getProgramIdByProgramName(names: string[]) {
-  let nameToProgramArray: ProgramsObjProps[] = []
+  let nameToProgramArray: ProgramsObjProps[] = [];
+  if(names.length === 0) return nameToProgramArray;
   const orgId = apiOrganizationOfPage();
   const queryStr = names.map((name, index) => {
     const filter = `{

@@ -118,6 +118,10 @@ export interface CustomOutcomeItemProps {
   value?: string;
   error?: string;
 }
+export interface CustomOutcomeItemArrayProps {
+  error?: string;
+  items?: CustomOutcomeItemProps[];
+}
 export interface ShortcodeProps{
   value?: string;
   errors?: string[];
@@ -129,12 +133,12 @@ export interface CustomOutcomeProps {
   assumed: CustomOutcomeItemProps;
   score_threshold: CustomOutcomeItemProps;
   program: CustomOutcomeItemProps;
-  subject: CustomOutcomeItemProps[];
+  subject: CustomOutcomeItemArrayProps;
   category: CustomOutcomeItemProps;
-  subcategory: CustomOutcomeItemProps[];
+  subcategory: CustomOutcomeItemArrayProps;
   sets: CustomOutcomeItemProps[];
-  age: CustomOutcomeItemProps[];
-  grade: CustomOutcomeItemProps[];
+  age: CustomOutcomeItemArrayProps;
+  grade: CustomOutcomeItemArrayProps;
   keywords: CustomOutcomeItemProps[];
   description: CustomOutcomeItemProps;
   author: string;
@@ -154,22 +158,22 @@ export interface SubjectObjProps {
 
 export interface OutcomeFromCSVFirstProps {
   row_number: number;
-  outcome_name: string;
-  shortcode: string;
-  assumed: string;
-  score_threshold: string;
-  program: string;
-  subject: string[];
-  category: string;
-  subcategory: string[];
-  sets: string[];
-  age: string[];
-  grade: string[];
-  keywords: string[];
-  description: string;
-  author: string;
-  updated_at: string;
-  milestones: string[];
+  outcome_name?: string;
+  shortcode?: string;
+  assumed?: string;
+  score_threshold?: string;
+  program?: string;
+  subject?: string[];
+  category?: string;
+  subcategory?: string[];
+  sets?: string[];
+  age?: string[];
+  grade?: string[];
+  keywords?: string[];
+  description?: string;
+  author?: string;
+  updated_at?: string;
+  milestones?: string[];
 }
 
 export enum UploadTab {
@@ -179,9 +183,6 @@ export enum UploadTab {
 export interface UploadLoItemProps {
   value?: string;
   error?: string;
-}
-export interface UploadLoProps {
-
 }
 
 export interface OutcomeHeadersProps {
@@ -193,4 +194,27 @@ export interface ErrorsInfoProps {
   errorCount: number, 
   errorRowsIndex: number[], 
   errorColumnsIndex: number[],
+}
+
+export interface AfterFeValidInfoProps {
+  row_number: number;
+  keywords?: UploadLoItemProps[];
+  author?: string;
+  updated_at?: string;
+  shortcode?: string;
+  sets?: UploadLoItemProps[];
+  milestones?: UploadLoItemProps[];
+  outcome_name?: UploadLoItemProps;
+  assumed?: { 
+    value?: boolean | string;
+    error?: string;
+  };
+  score_threshold?: UploadLoItemProps;
+  description?: UploadLoItemProps;
+  program?: CustomOutcomeItemProps;
+  subject?: CustomOutcomeItemArrayProps;
+  category?: CustomOutcomeItemProps;
+  subcategory?: CustomOutcomeItemArrayProps;
+  age?: CustomOutcomeItemArrayProps;
+  grade?: CustomOutcomeItemArrayProps;
 }

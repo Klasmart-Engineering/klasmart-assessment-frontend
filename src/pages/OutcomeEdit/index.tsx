@@ -150,7 +150,7 @@ export default function CreateOutcomings() {
           >;
           if (payload === "ok") {
             dispatch(actSuccess(d("Updated Successfully").t("assess_msg_updated_successfully")));
-            // await dispatch(getOutcomeDetail({ id: outcome_id, metaLoading: true }));
+            await dispatch(getOutcomeDetail({ id: outcome_id, metaLoading: true }));
             reset(value);
             setCondition("default");
           }

@@ -4,9 +4,9 @@ import { apiGetMockOptions, getProgramIdByProgramName, getSubjectIdByProgramIdAn
 import api, { gqlapi } from "@api/index";
 import { GetOutcomeDetail, GetOutcomeList, GetOutcomeListResult, OutcomePublishStatus } from "@api/type";
 import { LangRecordId } from "@locale/lang/type";
-import { d } from "@locale/LocaleManager";
+import { d, t } from "@locale/LocaleManager";
 import { isUnpublish } from "@pages/OutcomeList/ThirdSearchHeader";
-import { BaseInfoProps, CategoryObjProps, CustomOutcomeItemProps, CustomOutcomeProps, DownloadOutcomeListResult, OutcomeFromCSVFirstProps, OutcomeQueryCondition, ProgramsObjProps, SubjectObjProps } from "@pages/OutcomeList/types";
+import { AfterFeValidInfoProps, BaseInfoProps, CategoryObjProps, CustomOutcomeItemArrayProps, CustomOutcomeItemProps, CustomOutcomeProps, DownloadOutcomeListResult, OutcomeFromCSVFirstProps, OutcomeQueryCondition, ProgramsObjProps, SubjectObjProps } from "@pages/OutcomeList/types";
 import { createAsyncThunk, createSlice, PayloadAction, unwrapResult } from "@reduxjs/toolkit";
 import { actAsyncConfirm, ConfirmDialogType } from "./confirm";
 import programsHandler, { getDevelopmentalAndSkills, LinkedMockOptionsItem } from "./contentEdit/programsHandler";
@@ -510,7 +510,9 @@ export const parseCsvLo = createAsyncThunk<any, IQueryParsecsvLo & LoadingMetaPa
   async ({loArray}) => {
     const programsNameSet = new Set<string>();
     loArray.forEach(item => {
-      programsNameSet.add(item.program);
+      if(item.program) {
+        programsNameSet.add(item.program);
+      }
     });
     const programsNameArray = Array.from(programsNameSet.keys());
     const programRes = await getProgramIdByProgramName(programsNameArray)
@@ -520,73 +522,100 @@ export const parseCsvLo = createAsyncThunk<any, IQueryParsecsvLo & LoadingMetaPa
         programsObjMap.set(item.name!, item)
       })
     }
-    let afterFeValidLoArray: { row_number: number; keywords: { value: string; }[]; author: string; updated_at: string; shortcode: string; sets: { value: string; }[]; milestones: { value: string; }[]; outcome_name: { value: string; error: string; } | { value: string; error: string; }; assumed: { value: string | boolean; error: string; } | { value: string | boolean; error: string; }; score_threshold: { value: string; error: string; } | { value: string; error: string; }; description: { value: string; error: string; } | { value: string; error: string; }; program: CustomOutcomeItemProps; subject: CustomOutcomeItemProps[]; category: CustomOutcomeItemProps; subcategory: CustomOutcomeItemProps[]; age: CustomOutcomeItemProps[]; grade: CustomOutcomeItemProps[]; }[] = [];
+    let afterFeValidLoArray: AfterFeValidInfoProps[] = [];
     for(const item of loArray) {
-      const outcomeNameError = item.outcome_name.length === 0 ? "Can’t not be empty!" : item.outcome_name.length > 255 ?  "The length must be 1~255 characters." : "";
-      const compareAssumed = item.assumed.toLocaleLowerCase();
+      const outcomeNameError = item.outcome_name ?
+      ((item.outcome_name.length > 255 || item.outcome_name.length < 1) ? d("The length must be 1~255 characters.").t("assessment_lo_bulk_upload_length_limit") : "")
+      : d("Can’t not be empty!" ).t("assessment_lo_bulk_upload_empty_input");
+      const assumedIsEmpty = item.assumed === "" || item.assumed === undefined;
+      const compareAssumed = item.assumed ? item.assumed?.toLocaleLowerCase() : item.assumed;
       const outcomeAssumed = compareAssumed === "true" ? true : compareAssumed === "false" ? false : item.assumed;
-      const outcomeAssumedError = (outcomeAssumed === true || outcomeAssumed === false) ? "" : "Invalid! Please type ”True” or “False” in the CSV file.";
-      const patt = new RegExp(/^(100|[1-9]?\d(\.\d\d?\d?)?)%$|0$/);
-      const scoreThresholdIsEmpty = item.score_threshold === "";
-      const scoreThresholdsValue = scoreThresholdIsEmpty ? (outcomeAssumed === true ? "0%" : outcomeAssumed === false ? "80%" : item.score_threshold) : item.score_threshold;
-      const scoreThresholdValueValid = patt.test(scoreThresholdsValue);
-      const outcomeScoreThresholdError = scoreThresholdValueValid ? "" : "Invalid! Please type Text from “0%” to “100%” or nothing in the CSV file.";
-      const outcomeDescriptionError = item.description.length > 2000 ? "The length must be 0~2000 characters." : "";
+      const outcomeAssumedError = assumedIsEmpty ? d("Can’t not be empty!").t("assessment_lo_bulk_upload_empty_input") : (outcomeAssumed === true || outcomeAssumed === false) ? "" : d("Invalid! Please type ”True” or “False” in the CSV file.").t("assessment_lo_bulk_upload_invalid_assumed");
+      const patt = new RegExp(/^(100|[1-9]?\d?)%$|0$/);
+      const scoreThresholdValueValid = patt.test(item?.score_threshold!);
+      const scoreThresholdsValue = outcomeAssumed === true ? "0%" : (outcomeAssumed === false ? (scoreThresholdValueValid ? item.score_threshold : "80%") : item.score_threshold);
+      const scoreThresholdsValueIsEmpty = scoreThresholdsValue === "" || scoreThresholdsValue === undefined;
+      const finalScoreThresholdIsValid = patt.test(scoreThresholdsValue!);
+      const outcomeScoreThresholdError = scoreThresholdsValueIsEmpty ? d("Can’t not be empty!").t("assessment_lo_bulk_upload_empty_input") : finalScoreThresholdIsValid ? "" : d("Invalid! Please type Text from “0%” to “100%” or nothing in the CSV file.").t("assessment_lo_bulk_upload_invalid_threshold");
+      const outcomeDescriptionError = (item.description && item.description.length > 2000) ? d("The length must be 0~2000 characters.").t("assessment_lo_bulk_upload_keyword_length") : "";
+      let programObj: ProgramsObjProps | undefined = undefined;
+      let outcomeProgram: CustomOutcomeItemProps = { id: "", value: item.program, error: ""};
+      const subjectIsEmpty = item.subject ? item.subject.length === 0 : true;
+      let outcomeSubject: CustomOutcomeItemArrayProps = {
+        error: "",
+        items: (item && item.subject) ?
+                item.subject.map(sItem => {
+                  return { id: "", value: sItem, error: "" }
+                }) : []
+      }
       
-      const programObj = programsObjMap.get(item.program);
-      let outcomeProgram: CustomOutcomeItemProps = { id: "", value: item.program, error: "" };
-      const subjectIsEmpty = item.subject.length === 0;
-      let outcomeSubject: CustomOutcomeItemProps[] = 
-      item.subject.map(sItem => {
-        return { id: "", value: sItem, error: "" }
-      });
-      const categoryIsEmpty = item.category === "";
-      let outcomeCategory: CustomOutcomeItemProps = { id: "", value: item.category, error: "" };
-      const subcategoryIsEmoty = item.subcategory.length === 0;
-      let outcomeSubcategory: CustomOutcomeItemProps[] = 
-      item.subcategory.map(scItem => {
-        return { id: "", value: scItem, error: "" }
-      });
-      const outcomeAgeIsEmpty = item.age.length === 0;
-      const outcomeAge: CustomOutcomeItemProps[] = item.age.map(aItem => {
-        return { id: "", value: aItem, error: "" }
-      });
-      const outcomeGradeIsEmpty = item.grade.length === 0;
-      const outcomeGrade: CustomOutcomeItemProps[] = item.grade.map(gItem => {
-        return { id: "", value: gItem, error: "" }
-      })
-      if(item.program) {
+      const categoryIsEmpty = item.category === undefined || item.category === "";
+      let outcomeCategory: CustomOutcomeItemProps = {id: "", value: item.category, error: ""};
+      const subcategoryIsEmoty = item.subcategory ? item.subcategory.length === 0 : true;
+      let outcomeSubcategory: CustomOutcomeItemArrayProps = {
+        error: "",
+        items: item.subcategory ?
+                item.subcategory.map(scItem => {
+                  return { id: "", value: scItem, error: "" }
+                }) : []
+      }
+      const outcomeAgeIsEmpty = item.age ? item?.age.length === 0 : true;
+      const outcomeAge: CustomOutcomeItemArrayProps =  {
+        error: "",
+        items: item.age ?
+                item.age.map(aItem => {
+                  return { id: "", value: aItem, error: "" }
+                }) : [],
+      }
+      const outcomeGradeIsEmpty = item.grade ? item?.grade.length === 0 : true;
+      const outcomeGrade: CustomOutcomeItemArrayProps = {
+        error: "",
+        items: item.grade ?
+                item?.grade.map(gItem => {
+                  return { id: "", value: gItem, error: "" }
+                }) : [],
+      }
+      if(item.program && item.program.length) {
+        programObj = programsObjMap.get(item?.program!);
         if(programObj) {
           outcomeProgram.id = programObj.id;
           if(!subjectIsEmpty) {
             const categoryObjMap = new Map<string, CategoryObjProps>();
             const subjectObjMap = new Map<string, SubjectObjProps>();
-            // (async () => {
-              const subjectRes = await getSubjectIdByProgramIdAndSubjectName(programObj.id!, item.subject);
-            // } 
+            let subjectRes: SubjectObjProps[] = [];
+              if(item.subject) {
+               subjectRes = await getSubjectIdByProgramIdAndSubjectName(programObj.id!, item.subject);
+              }
               subjectRes.forEach(srItem => {
                 subjectObjMap.set(srItem.name!, srItem)
               })
-              outcomeSubject.forEach(sItem => {
-                const subjectObj = subjectObjMap.get(sItem.value!);
-                if(subjectObj) {
-                  sItem.id = subjectObj.id;
-                  sItem.value = subjectObj.name;
-                  const category = subjectObj?.category;
-                  if(category) {
-                    category.forEach(cItem => {
-                      categoryObjMap.set(cItem.name!, cItem)
-                    })
+              if(outcomeSubject && outcomeSubject.items) {
+                const errorsValue: (string | undefined)[] = [];
+                outcomeSubject.items.forEach(sItem => {
+                  const subjectObj = subjectObjMap.get(sItem.value!);
+                  if(subjectObj) {
+                    sItem.id = subjectObj.id;
+                    sItem.value = subjectObj.name;
+                    const category = subjectObj?.category;
+                    if(category) {
+                      category.forEach(cItem => {
+                        categoryObjMap.set(cItem.name!, cItem)
+                      })
+                    }
+                  } else {
+                    errorsValue.push(sItem.value)
+                    sItem.error = t("assessment_lo_bulk_upload_invalid_name", { value: sItem.value as string })
                   }
-                } else {
-                  sItem.error = `Invaid name! Can’t find: ${sItem.value}`
+                })
+                if(errorsValue.length) {
+                  outcomeSubject.error = errorsValue.length ? t("assessment_lo_bulk_upload_invalid_name", {value: errorsValue.join(",")}) : ""
                 }
-              })
+              }
               // 找到了任意一个subjec id
-              const isFoundSubjectId = outcomeSubject.some(item => !item.error)
+              const isFoundSubjectId = (outcomeSubject && outcomeSubject.items && outcomeSubject.items.length) ? outcomeSubject.items.some(item => !item.error) : false;
               if(isFoundSubjectId) {
                 if(!categoryIsEmpty) {
-                  const categoryObj = categoryObjMap.get(outcomeCategory.value!);
+                  const categoryObj = categoryObjMap.get(item?.category!);
                   if(categoryObj) {
                     outcomeCategory.id = categoryObj.id;
                     if(!subcategoryIsEmoty) {
@@ -597,48 +626,71 @@ export const parseCsvLo = createAsyncThunk<any, IQueryParsecsvLo & LoadingMetaPa
                           subcategoryMap.set(item.name!, item)
                         });
                       }
-                      outcomeSubcategory.forEach(scItem => {
-                        const subcategoryObj = subcategoryMap.get(scItem.value!);
-                        if(subcategoryObj) {
-                          scItem.id = subcategoryObj?.id;
-                          scItem.value = subcategoryObj?.name;
-                        } else {
-                          scItem.error = `Invaid name! Can’t find: ${scItem.value}`
-                        }
-                      })
+                      if(outcomeSubcategory && outcomeSubcategory.items) {
+                        const errorsValue: (string | undefined)[] = [];
+                        outcomeSubcategory.items.forEach(scItem => {
+                          const subcategoryObj = subcategoryMap.get(scItem.value!);
+                          if(subcategoryObj) {
+                            scItem.id = subcategoryObj?.id;
+                            scItem.value = subcategoryObj?.name;
+                          } else {
+                            errorsValue.push(scItem.value)
+                            scItem.error = t("assessment_lo_bulk_upload_invalid_name", { value: scItem.value as string });
+                          }
+                        });
+                        outcomeSubcategory.error = errorsValue.length ? t("assessment_lo_bulk_upload_invalid_name", { value: errorsValue.join(",") }) : "";
+                      }
                     }
                   } else {
-                    outcomeCategory.error = `Invaid name! Can’t find: ${outcomeCategory.value}`
+                    // 没找到category
+                    outcomeCategory.error = t("assessment_lo_bulk_upload_invalid_name", { value: item.category as string })
                   }
                 } else {
                   // category是空
                   if(!subcategoryIsEmoty) {
-                    outcomeSubcategory.forEach(sItem => {
-                      sItem.error = `Invaid name! Can’t find: ${sItem.value}`
-                    })
+                    if(outcomeSubcategory && outcomeSubcategory.items) {
+                      const errorsValue: (string | undefined)[] = [];
+                      outcomeSubcategory.items.forEach(scItem => {
+                        errorsValue.push(scItem.value)
+                        scItem.error = t("assessment_lo_bulk_upload_invalid_name", { value: scItem.value as string });
+                      })
+                      outcomeSubcategory.error = errorsValue.length ? t("assessment_lo_bulk_upload_invalid_name", { value: errorsValue.join(",") }) : "";
+                    }
                   }
                 }
               } else {
                 // subjectId没找到
                 if(!categoryIsEmpty) {
-                  outcomeCategory.error = `Invaid name! Can’t find: ${outcomeCategory.value}`
+                  outcomeSubcategory.error = t("assessment_lo_bulk_upload_invalid_name", { value: item.category as string });
                 }
                 if(!subcategoryIsEmoty) {
-                  outcomeSubcategory.forEach(sItem => {
-                    sItem.error = `Invaid name! Can’t find: ${sItem.value}`
-                  })
+                  if(outcomeSubcategory && outcomeSubcategory.items) {
+                    const errorsValue: (string | undefined)[] = [];
+                    outcomeSubcategory.items.forEach(scItem => {
+                      errorsValue.push(scItem.value)
+                      scItem.error = t("assessment_lo_bulk_upload_invalid_name", { value: scItem.value as string });
+                    })
+                    outcomeSubcategory.error = errorsValue.length ?  t("assessment_lo_bulk_upload_invalid_name", { value: errorsValue.join(",") }) : "";
+                  }
                 }
               }
-            // })();
           } else {
             // subject是空数组
+            outcomeSubject.error = d("Can’t not be empty!").t("assessment_lo_bulk_upload_empty_input")
             if(!categoryIsEmpty) {
-              outcomeCategory.error = `Invaid name! Can’t find: ${outcomeCategory.value}`
+              outcomeSubcategory.error = t("assessment_lo_bulk_upload_invalid_name", { value: item.category as string });
+            } else {
+              outcomeCategory.error = d("Can’t not be empty!").t("assessment_lo_bulk_upload_empty_input");
             }
             if(!subcategoryIsEmoty) {
-              outcomeSubcategory.forEach(sItem => {
-                sItem.error = `Invaid name! Can’t find: ${sItem.value}`
-              })
+              if(outcomeSubcategory && outcomeSubcategory.items) {
+                const errorsValue: (string | undefined)[] = [];
+                outcomeSubcategory.items.forEach(scItem => {
+                  errorsValue.push(scItem.value)
+                  scItem.error = t("assessment_lo_bulk_upload_invalid_name", { value: scItem.value as string });
+                })
+                outcomeSubcategory.error = errorsValue.length ? t("assessment_lo_bulk_upload_invalid_name", { value: errorsValue.join(",") }) : "";
+              }
             }
           }
           if(!outcomeAgeIsEmpty) {
@@ -646,91 +698,121 @@ export const parseCsvLo = createAsyncThunk<any, IQueryParsecsvLo & LoadingMetaPa
             programObj.ages.forEach(item => {
               ageMap.set(item.name!, item)
             });
-            outcomeAge.forEach(aItem => {
-              const ageObj = ageMap.get(aItem.value!);
-              if(ageObj) {
-                aItem.id = ageObj?.id;
-              } else {
-                aItem.error = `Invaid name! Can’t find: ${aItem.value}`
-              }
-            })
+            if(outcomeAge && outcomeAge.items) {
+              const errorsValue: (string | undefined)[] = [];
+              outcomeAge.items.forEach(aItem => {
+                const ageObj = ageMap.get(aItem.value!);
+                if(ageObj) {
+                  aItem.id = ageObj?.id;
+                } else {
+                  errorsValue.push(aItem.value)
+                  aItem.error = t("assessment_lo_bulk_upload_invalid_name", { value: aItem.value as string });
+                }
+              });
+              outcomeAge.error = errorsValue.length ? t("assessment_lo_bulk_upload_invalid_name", { value: errorsValue.join(",") }) : "";
+            }
           }
           if(!outcomeGradeIsEmpty) {
             const gradeMap = new Map<string, BaseInfoProps>();
             programObj.grades.forEach(item => {
               gradeMap.set(item.name!, item)
             });
-            outcomeGrade.forEach(gItem => {
-              const gradeObj = gradeMap.get(gItem.value!);
-              if(gradeObj) {
-                gItem.id = gradeObj?.id;
-              } else {
-                gItem.error = `Invaid name! Can’t find: ${gItem.value}`
-              }
-            })
-            // const subjectRes = await getSubjectIdByProgramIdAndSubjectName(programObj.id!, item.subject);
+            if(outcomeGrade && outcomeGrade.items) {
+              const errorsValue: (string | undefined)[] = [];
+              outcomeGrade.items.forEach(gItem => {
+                const gradeObj = gradeMap.get(gItem.value!);
+                if(gradeObj) {
+                  gItem.id = gradeObj?.id;
+                } else {
+                  errorsValue.push(gItem.value)
+                  gItem.error = t("assessment_lo_bulk_upload_invalid_name", { value: gItem.value as string });
+                }
+              })
+              outcomeGrade.error = errorsValue.length ? t("assessment_lo_bulk_upload_invalid_name", { value: errorsValue.join(",") }) : "";
+            }
           }
         } else {
-          outcomeProgram.error = `Invaid name! Can’t find: ${item.program}`;
+          // 没找到program
+          outcomeProgram.error = t("assessment_lo_bulk_upload_invalid_name", { value: item.program as string })
           if(!subjectIsEmpty) {
-            outcomeSubject.forEach(sItem => {
-              sItem.error = `Invaid name! Can’t find: ${sItem.value}`
-            })
+            if(outcomeSubject && outcomeSubject.items) {
+              const errorsValue: (string | undefined)[] = [];
+              outcomeSubject.items.forEach(sItem => {
+                errorsValue.push(sItem.value)
+                sItem.error = t("assessment_lo_bulk_upload_invalid_name", { value: sItem.value as string });
+              })
+              outcomeSubject.error = errorsValue.length ? t("assessment_lo_bulk_upload_invalid_name", { value: errorsValue.join(",") }) : "";
+            }
           }
           if(!categoryIsEmpty) {
-            outcomeCategory.error = `Invaid name! Can’t find: ${outcomeCategory.value}`
+            outcomeCategory.error = t("assessment_lo_bulk_upload_invalid_name", { value: item.category as string });
+          } else {
+            outcomeCategory.error = d("Can’t not be empty!").t("assessment_lo_bulk_upload_empty_input");
           }
           if(!subcategoryIsEmoty) {
-            outcomeSubcategory.forEach(sItem => {
-              sItem.error = `Invaid name! Can’t find: ${sItem.value}`
-            })
+            if(outcomeSubcategory && outcomeSubcategory.items) {
+              const errorsValue: (string | undefined)[] = [];
+              outcomeSubcategory.items.forEach(scItem => {
+                errorsValue.push(scItem.value)
+                scItem.error = t("assessment_lo_bulk_upload_invalid_name", { value: scItem.value as string });
+              })
+              outcomeSubcategory.error = errorsValue.length ? t("assessment_lo_bulk_upload_invalid_name", { value: errorsValue.join(",") }) : "";
+            }
           }
         }
       } else {
         // program是空
-        outcomeProgram.error = "Can’t not be empty!";
+        outcomeProgram.error = d("Can’t not be empty!").t("assessment_lo_bulk_upload_empty_input");
         if(subjectIsEmpty) {
-          outcomeSubject.forEach(sItem => {
-            sItem.error = `Can’t not be empty!`
-          })
+          outcomeSubject.error = d("Can’t not be empty!").t("assessment_lo_bulk_upload_empty_input");
         } else {
-          outcomeSubject.forEach(sItem => {
-            sItem.error = `Invaid name! Can’t find: ${sItem.value}`
-          })
+          if(outcomeSubject && outcomeSubject.items) {
+            const errorsValue: (string | undefined)[] = [];
+            outcomeSubject.items.forEach(sItem => {
+              errorsValue.push(sItem.value)
+              sItem.error = t("assessment_lo_bulk_upload_invalid_name", { value: sItem.value as string });
+            })
+            outcomeSubcategory.error = errorsValue.length ? t("assessment_lo_bulk_upload_invalid_name", { value: errorsValue.join(",") }) : "";
+          }
         }
         if(categoryIsEmpty) {
-          outcomeCategory.error =  `Can’t not be empty!`;
+          outcomeCategory.error = d("Can’t not be empty!").t("assessment_lo_bulk_upload_empty_input");;
         } else {
-          outcomeCategory.error = `Invaid name! Can’t find: ${outcomeCategory.value}`
+          outcomeSubcategory.error = t("assessment_lo_bulk_upload_invalid_name", { value: item.category as string });
         }
         if(!subcategoryIsEmoty) {
-          outcomeSubcategory.forEach(sItem => {
-            sItem.error = `Invaid name! Can’t find: ${sItem.value}`
-          })
+          if(outcomeSubcategory && outcomeSubcategory.items) {
+            const errorsValue: (string | undefined)[] = [];
+            outcomeSubcategory.items.forEach(scItem => {
+              errorsValue.push(scItem.value)
+              scItem.error = t("assessment_lo_bulk_upload_invalid_name", { value: scItem.value as string });
+            })
+            outcomeSubcategory.error = errorsValue.length ? t("assessment_lo_bulk_upload_invalid_name", { value: errorsValue.join(",") }) : "";
+          }
         }
-      }
+      };
       afterFeValidLoArray.push({
         row_number: item.row_number,
-        keywords: item.keywords.map(item => {
+        keywords: item?.keywords?.map(item => {
           return {
             value: item
           }
-        }),
+        }) ?? [],
         author: item.author,
         updated_at: item.updated_at,
-        shortcode: item.shortcode,
-        sets: item.sets.map(item => {
+        shortcode: item.shortcode ? item.shortcode.padStart(5, "0") : item.shortcode,
+        sets: item?.sets?.map(item => {
           return { value: item}
-        }),
-        milestones: item.milestones.map(item => {
+        }) ?? [],
+        milestones: item?.milestones?.map(item => {
           return { value: item}
-        }),
+        }) ?? [],
         outcome_name: {
           value: item.outcome_name,
           error: outcomeNameError
         },
         assumed: {
-          value:  outcomeAssumed,
+          value: outcomeAssumed,
           error: outcomeAssumedError
         },
         score_threshold: {
@@ -751,22 +833,22 @@ export const parseCsvLo = createAsyncThunk<any, IQueryParsecsvLo & LoadingMetaPa
     }
     const importoutcome: EntityImportOutcomeView[] = 
     afterFeValidLoArray.map(item => {
-      const score_threshold = Number(item.score_threshold.value.split("%")[0]);
+      const score_threshold = (item.score_threshold && item.score_threshold.value) ? Number(item.score_threshold.value.split("%")[0]) : 0;
       return {
-        age: item.age.map(item => item.id!),
-        assumed: Boolean(item.assumed.value),
-        category: [item.category.id!],
-        description: item.description.value,
-        grade: item.grade.map(item => item.id!),
-        keywords: item.keywords.map(item => item.value!),
-        outcome_name: item.outcome_name.value,
-        program: [item.program.id!],
+        age: item?.age?.items?.map((item) => item.id!),
+        assumed: Boolean(item?.assumed?.value),
+        category: [item?.category?.value!],
+        description: item?.description?.value,
+        grade: item?.grade?.items?.map((item) => item.id!),
+        keywords: item?.keywords?.map(item => item.value!),
+        outcome_name: item?.outcome_name?.value as string,
+        program: [item?.program?.value!],
         row_number: item.row_number,
-        score_threshold: score_threshold ? 0 : score_threshold,
-        sets: item.sets.map(item => item.value!),
+        score_threshold: score_threshold/100,
+        sets: item.sets ? item.sets.map(item => item.value!) : [],
         shortcode: item.shortcode,
-        subcategory: item.subcategory.map((item) => item.id!),
-        subject: item.subject.map((item) => item.id!),
+        subcategory: item?.subcategory?.items?.map((item) => item.id!),
+        subject: item?.subject?.items?.map((item) => item.id!),
       }
     });
     const beValidRes = await api.learningOutcomes.verifyImportLearningOutcomes({data: importoutcome});
@@ -778,15 +860,20 @@ export const parseCsvLo = createAsyncThunk<any, IQueryParsecsvLo & LoadingMetaPa
         ...curValidLo,
         shortcode: {
           value: item.shortcode?.value,
-          error: item.shortcode?.errors
+          error: item.shortcode?.errors?.map(error => {
+            const errorLabel: LangRecordId = error as LangRecordId;
+            return t(errorLabel, {value: item.shortcode?.value as string})
+          }) ?? []
         },
         sets: item.sets?.map((sItem, i) => {
+          const errorLabel: LangRecordId | undefined = sItem.error ? sItem.error as LangRecordId : undefined;
+          const curSetsValue = (curValidLo && curValidLo.sets && curValidLo.sets[i]) ? curValidLo.sets[i]?.value : ""
           return {
             id: sItem.value,
-            value: curValidLo?.sets[i].value,
-            error: sItem.error
+            value: curSetsValue,
+            error: errorLabel ? t(errorLabel, {value: curSetsValue as string}) : ""
           }
-        })
+        }) ?? []
       }
     }) : [];
     const updateLoList = 
@@ -797,13 +884,18 @@ export const parseCsvLo = createAsyncThunk<any, IQueryParsecsvLo & LoadingMetaPa
         ...curValidLo,
         shortcode: {
           value: item.shortcode?.value,
-          error: item.shortcode?.errors
+          error: item.shortcode?.errors?.map(error => {
+            const errorLabel: LangRecordId = error as LangRecordId;
+            return t(errorLabel, {value: item.shortcode?.value as string})
+          }) ?? []
         },
         sets: item.sets?.map((sItem, i) => {
+          const errorLabel: LangRecordId | undefined = sItem.error ? sItem.error as LangRecordId : undefined;
+          const curSetsValue = (curValidLo && curValidLo.sets && curValidLo.sets[i]) ? curValidLo.sets[i]?.value : ""
           return {
             id: sItem.value,
-            value: curValidLo?.sets[i].value,
-            error: sItem.error
+            value: curSetsValue,
+            error: errorLabel ? t(errorLabel, {value: curSetsValue as string}) : ""
           }
         })
       }
@@ -827,39 +919,39 @@ export const importLearningOutcomes = createAsyncThunk<IResultImportLo, LoadingM
     const create_data = createLoList.map(item => {
       const score_threshold = (item.score_threshold && item.score_threshold.value ) ? Number(item.score_threshold.value.split("%")[0]) : 0;
       return {
-        age: item.age.map(item => item.id!),
+        age: item?.age?.items?.map((item) => item.id!),
         assumed: Boolean(item.assumed.value),
-        category: [item.category.id!],
+        category: [item?.category?.value!],
         description: item.description.value,
-        grade: item.grade.map(item => item.id!),
-        keywords: item.keywords.map(item => item.value!),
+        grade: item?.grade?.items?.map((item) => item.id!),
+        keywords: item.keywords.map((item) => item.value!),
         outcome_name: item.outcome_name.value!,
-        program: [item.program.id!],
+        program: [item?.program?.value!],
         row_number: item.row_number,
-        score_threshold: score_threshold ? 0 : score_threshold,
+        score_threshold: score_threshold/100,
         sets: item.sets.map(item => item.id!),
         shortcode: item.shortcode.value,
-        subcategory: item.subcategory.map((item) => item.id!),
-        subject: item.subject.map((item) => item.id!),
+        subcategory: item?.subcategory?.items?.map((item) => item.id!),
+        subject: item?.subject?.items?.map((item) => item.id!),
       }
     });
     const update_data = updateLoList.map(item => {
       const score_threshold = (item.score_threshold && item.score_threshold.value ) ? Number(item.score_threshold.value.split("%")[0]) : 0;
       return {
-        age: item.age.map(item => item.id!),
+        age: item?.age?.items?.map((item) => item.id!),
         assumed: Boolean(item.assumed.value),
-        category: [item.category.id!],
+        category: [item?.category?.value!],
         description: item.description.value,
-        grade: item.grade.map(item => item.id!),
-        keywords: item.keywords.map(item => item.value!),
+        grade: item?.grade?.items?.map((item) => item.id!),
+        keywords: item.keywords.map((item) => item.value!),
         outcome_name: item.outcome_name.value!,
-        program: [item.program.id!],
+        program: [item?.program?.value!],
         row_number: item.row_number,
-        score_threshold: score_threshold ? 0 : score_threshold,
+        score_threshold: score_threshold/100,
         sets: item.sets.map(item => item.id!),
         shortcode: item.shortcode.value,
-        subcategory: item.subcategory.map((item) => item.id!),
-        subject: item.subject.map((item) => item.id!),
+        subcategory: item?.subcategory?.items?.map((item) => item.id!),
+        subject: item?.subject?.items?.map((item) => item.id!),
       }
     })
     const res = await api.learningOutcomes.importLearningOutcomes({ create_data, update_data});
@@ -873,7 +965,10 @@ export const importLearningOutcomes = createAsyncThunk<IResultImportLo, LoadingM
           ...item,
           shortcode: {
             value: curValidLo?.shortcode?.value,
-            error: curValidLo?.shortcode?.errors
+            error: curValidLo?.shortcode?.errors?.map(error => {
+              const errorLabel: LangRecordId = error as LangRecordId;
+              return t(errorLabel, {value: item.shortcode?.value as string})
+            })
           }
         }
       });
@@ -883,12 +978,16 @@ export const importLearningOutcomes = createAsyncThunk<IResultImportLo, LoadingM
           ...item,
           shortcode: {
             value: curValidLo?.shortcode?.value,
-            error: curValidLo?.shortcode?.errors
+            error: curValidLo?.shortcode?.errors?.map(error => {
+              const errorLabel: LangRecordId = error as LangRecordId;
+              return t(errorLabel, {value: item.shortcode?.value as string})
+            })
           }
         }
       });
     } else {
-      dispatch(actSuccess(d("Deleted Successfully").t("assess_msg_deleted_successfully")));
+      const total = create_data.length + update_data.length;
+      dispatch(actSuccess(t("assessment_lo_bulk_upload_validation_success", { number: total })));
     }
     return {
       exist_error: res.exist_error as boolean,

@@ -19,6 +19,8 @@ export function UploadCSV(props: UploadCSVProps) {
     if(rawFile) {
       if(!rawFile.type.includes("csv")) {
         onUploadFail();
+        e.target.files = null;
+        e.target.value = "";
       } else {
         return new Promise((resolve) => {
           const reader = new FileReader();
@@ -29,7 +31,7 @@ export function UploadCSV(props: UploadCSVProps) {
             const headers = array[0].trim().split(",").filter(i => !!i);
             const contentsArray: CSVObjProps[] = [];
             array.filter((i, index) => index > 0)
-            .filter(item => !!Object.values(item))
+            .filter(item => !!(Object.values(item).join("")))
             .forEach(item => {
               const obj: CSVObjProps = {}
               const columns = item.trim().split(/,s*(?![^"]*",)/);
@@ -53,6 +55,8 @@ export function UploadCSV(props: UploadCSVProps) {
             resolve({headers, contentsArray});
             onUploadSuccess(headers, contentsArray);
           }
+          e.target.files = null;
+          e.target.value = "";
         })
       }
     }
