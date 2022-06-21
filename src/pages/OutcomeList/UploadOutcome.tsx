@@ -260,10 +260,10 @@ export function UploadOutcome(props: UploadOutcomeProps) {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} disableRipple={true} color="primary" variant="outlined">
-          {d("CANCEL").t("general_button_CANCEL")}
+          {d("Cancel").t("assessment_lo_bulk_upload_cancel")}
         </Button>
         <Button color="primary" variant="contained" disabled={disableConfirm} className={css.okBtn} onClick={handleConfirm}>
-          {d("CONFIRM").t("general_button_CONFIRM")}
+          {d("Confirm").t("assessment_lo_bulk_upload_confirm")}
         </Button>
       </DialogActions>
     </Dialog>
@@ -313,7 +313,7 @@ export function ConfirmDialog(props: ConfirmDialogProps) {
         <Button onClick={onClose} disableRipple={true} color="primary">
           {d("CANCEL").t("general_button_CANCEL")}
         </Button>
-        <UploadCSV label={"UPLOAD"} onUploadSuccess={onUpload} onUploadFail={onUploadFail} />
+        <UploadCSV label={d("UPLOAD").t("assessment_lo_bulk_upload_popup_upload")} onUploadSuccess={onUpload} onUploadFail={onUploadFail} />
       </DialogActions>
     </Dialog>
   );

@@ -288,11 +288,11 @@ export function OutcomeList() {
       milestones: "Milestones",//
     }
     const templateHeaders = Object.values(loKeyValue);
-    const headAllRight = header.every((item, index) => item === templateHeaders[index])
+    const headAllRight = header.every((item, index) => item === templateHeaders[index]);
     if(headAllRight) {
       if(!array.length || array.length > 200) {
         dispatch(resetUploadData());
-        return dispatch(actError("The CSV file must contain 1~200 learning outcomes! Please check the CSV file and upload again."))
+        return dispatch(actError(d("The CSV file must contain 1~200 learning outcomes! Please check the CSV file and upload again.").t("assessment_lo_bulk_upload_limit")))
       } else {
         const { headers, loArray } =  transferCSVToOutcome(header, array);
         setHeaders(headers);
@@ -300,7 +300,7 @@ export function OutcomeList() {
       }
     } else {
       dispatch(resetUploadData());
-      return dispatch(actError("Error in parsing columns! Please use the CSV template file and upload again."))
+      return dispatch(actError(d("Error in parsing columns! Please use the CSV template file and upload again.").t("assessment_lo_bulk_upload_parse_error")))
     }
   }
   const handleConfirmUplpadOutcome = async () => {

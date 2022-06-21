@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => createStyles({
   },
   cellBase: {
     minWidth: 100,
-    maxWidth: 150,
+    maxWidth: 175,
     tableLayout : "fixed",
     textAlign: "center",
     overflow: "hidden",
@@ -42,8 +42,8 @@ const useStyles = makeStyles((theme) => createStyles({
     backgroundColor: "rgb(242, 245, 247)",
     width: 200,
     textAlign: "center",
-    paddingTop: "10px",
-    paddingBottom: "10px",
+    paddingTop: "16px",
+    paddingBottom: "16px",
     zIndex: 233,
   },
   headCell: {
@@ -56,22 +56,10 @@ const useStyles = makeStyles((theme) => createStyles({
   },
   cell: {
     position: "relative",
-    // boxShadow: `inset -1px -1px 0px #F3F3F3`,
+    boxShadow: `inset -1px -1px 0px #F3F3F3`,
     padding: theme.spacing(1, 2),
     // borderColor: theme.palette.grey[500],
     backgroundColor: theme.palette.common.white,
-    // "&$error": {
-    //     backgroundColor: lighten(theme.palette.error.main, 0.66),
-    // },
-    // "&$header": {
-    //     backgroundColor: theme.palette.grey[200],
-    //     "&$error": {
-    //         backgroundColor: lighten(theme.palette.error.main, 0.5),
-    //     },
-    //     "& *": {
-    //         fontWeight: 600,
-    //     },
-    // },
   },
   errorIcon: {
     position: "absolute",
@@ -82,7 +70,7 @@ const useStyles = makeStyles((theme) => createStyles({
     backgroundColor: "#FDF2F2"
   },
   rowItem: {
-    borderBottom: "1px solid #666",
+    borderBottom: "1px solid #ccc",
   },
   firstColumn: {
     boxShadow: `inset -1px -1px 0px #F3F3F3`,

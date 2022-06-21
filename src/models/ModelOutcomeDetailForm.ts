@@ -215,7 +215,7 @@ export function transferCSVToOutcome(header: string[], array: CSVObjProps[]): {h
           age: stringToArray(item[loKeyValue.age]),
           grade: stringToArray(item[loKeyValue.grade]),
           keywords: stringToArray(item[loKeyValue.keywords]),
-          description: item[loKeyValue.description]?.trim() as string,
+          description: arrayToString(item[loKeyValue.description]) as string,
           author: item[loKeyValue.author]?.trim() as string,
           updated_at: item[loKeyValue.updated_at]?.trim() as string,
           milestones: stringToArray(item[loKeyValue.milestones]),
