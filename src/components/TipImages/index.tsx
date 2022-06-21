@@ -94,9 +94,10 @@ export const emptyTipAndCreate = <TipImages type={TipImagesType.empty} text="rep
 export const noReportTip = <TipImages type={TipImagesType.noReport} text="report_label_no_report" />;
 
 export function NoOutcome() {
+  const css = useStyles();
   return (
     <div style={{ width: "100%", textAlign: "center", margin: "10vh auto" }}>
-      <img src={AnyTimeNoData} alt="" />
+      <img className={css.emptyImage} src={AnyTimeNoData} alt="" />
       <p>{d("No learning outcome is available.").t("assess_msg_no_lo")}</p>
     </div>
   );

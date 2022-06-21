@@ -136,6 +136,9 @@ export function FixedTable(props: FixedTableProps) {
                         const curRowItem = row[item.key];
                         const isArray = curRowItem instanceof Array;
                         const isObject = curRowItem instanceof Object;
+                        const openValue = !isArray ? curRowItem?.value?.toString() : curRowItem;
+                        // const open = (isObject && curRowItem.value) ? curRowItem.value.toString().length > 20 : curRowItem.toString().length > 20;
+                        // const open  = (isObject) ?  (curRowItem?.value ? curRowItem.value?.toString().length > 20 : curRowItem.toString().length > 20): false;
                         const hasError = 
                           isArray
                           ? 
@@ -188,9 +191,18 @@ export function FixedTable(props: FixedTableProps) {
                                 {
                                   curRowItem.map((cr, iii) => {
                                     const isObj = cr instanceof Object;
+                                    const value = isObj ? cr.value : cr;
+                                    const open = value ? value.toString().length > 20 : false
                                     return (
+                                      open ? 
+                                      <Tooltip title={value as string} placement="top-start" key={`${cr.value+""}-${iii}`}>
+                                        <li className={clsx(css.cellBase, css.leftCell)} >
+                                          {value}
+                                        </li>
+                                      </Tooltip>
+                                      :
                                       <li className={clsx(css.cellBase, css.leftCell)} key={`${cr.value+""}-${iii}`}>
-                                        {isObj ? cr.value : cr}
+                                        {value}
                                       </li>
                                     )
                                   })
@@ -202,20 +214,42 @@ export function FixedTable(props: FixedTableProps) {
                                 {
                                   curRowItem.items.map((cr, iii) => {
                                     const isObj = cr instanceof Object;
+                                    const value = isObj ? cr.value : cr;
+                                    const open = value ? value.toString().length > 20 : false
                                     return (
+                                      open ?
+                                      <Tooltip title={value as string} placement="top-start" key={`${cr.value+""}-${iii}`}>
+                                        <li className={clsx(css.cellBase, css.leftCell)} >
+                                          {value}
+                                        </li>
+                                      </Tooltip>
+                                      :
                                       <li className={clsx(css.cellBase, css.leftCell)} key={`${cr.value+""}-${iii}`}>
-                                        {isObj ? cr.value : cr}
+                                        {value}
                                       </li>
                                     )
                                   })
                                 }
                               </>
                               :
-                              <div className={css.cellBase}>
+                              <>
                                 {
-                                  isObject ? curRowItem.value?.toString() : curRowItem
+                                  (openValue && openValue.toString().length > 15) ?
+                                  <Tooltip title={(isObject ? curRowItem.value?.toString() : curRowItem) as string} placement="top-start">
+                                    <div className={css.cellBase}>
+                                      {
+                                        isObject ? curRowItem.value?.toString() : curRowItem
+                                      }
+                                    </div>
+                                  </Tooltip>
+                                  :
+                                  <div className={css.cellBase}>
+                                    {
+                                      isObject ? curRowItem.value?.toString() : curRowItem
+                                    }
+                                  </div>
                                 }
-                              </div>
+                              </>
                             }
                           </td>
                         )
