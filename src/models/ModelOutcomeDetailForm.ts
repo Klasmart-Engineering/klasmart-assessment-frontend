@@ -1,5 +1,4 @@
 import { CSVObjProps } from "@components/UploadCSV";
-import { d } from "@locale/LocaleManager";
 import { OutcomeFromCSVFirstProps, OutcomeHeadersProps } from "@pages/OutcomeList/types";
 import { ApiPullOutcomeSetResponse, ModelOutcomeDetailView } from "../api/api.auto";
 import { GetOutcomeDetail, OutcomeSetResult } from "../api/type";
@@ -174,22 +173,22 @@ export function arrayToString(value: string | string[]) {
 
 export function transferCSVToOutcome(header: string[], array: CSVObjProps[]): {headers: OutcomeHeadersProps[], loArray: OutcomeFromCSVFirstProps[]} {
   const loKeyValue = {
-    outcome_name: d("Learning Outcome Name").t("assess_label_learning_outcome_name"),
-    shortcode: d("Short Code").t("assess_label_short_code"),//
-    assumed: d("Assumed").t("assess_label_assumed"),
-    score_threshold: d("Score Threshold").t("learning_outcome_label_threshold"),
-    program: d("Program").t("assess_label_program"),
-    subject: d("Subject").t("assess_label_subject"),
-    category: d("Category").t("library_label_category"),
-    subcategory: d("Subcategory").t("library_label_subcategory"),
-    sets: d("Learning Outcome Set").t("assess_set_learning_outcome_set"),//
-    age: d("Age").t("assess_label_age"),
-    grade: d("Grade").t("assess_label_grade"),
-    keywords: d("Keywords").t("assess_label_keywords"),
-    description: d("Description").t("assess_label_description"),
-    author: d("Author").t("library_label_author"),
-    updated_at: d("Created On").t("library_label_created_on"),
-    milestones: d("Milestones").t("assess_label_milestone"),//
+    outcome_name: "Learning Outcome Name",
+    shortcode: "Short Code",//
+    assumed: "Assumed",
+    score_threshold: "Score Threshold",
+    program: "Program",
+    subject: "Subject",
+    category: "Category",
+    subcategory: "Subcategory",
+    sets: "Learning Outcome Set",//
+    age: "Age",
+    grade: "Grade",
+    keywords: "Keywords",
+    description: "Description",
+    author: "Author",
+    updated_at: "Created On",
+    milestones: "Milestones",//
   }
   const n_headers = header.filter(item => !!item)
   const headers = n_headers.map(item => {
@@ -200,7 +199,8 @@ export function transferCSVToOutcome(header: string[], array: CSVObjProps[]): {h
       key: (curValus ? curValus[0] : "") as string
     }
   });
-  const loArray = array.map((item, i) => {
+  const newArray = array.filter((lo, index) => index !== 0);
+  const loArray = newArray.map((item, i) => {
         return {
           row_number: i + 2,
           outcome_name: item[loKeyValue.outcome_name]?.trim() as string,

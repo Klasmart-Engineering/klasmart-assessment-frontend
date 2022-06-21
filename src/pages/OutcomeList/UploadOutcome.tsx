@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) =>
       color: "#000",
     },
     uploadInfo: {
-      color: "#ccc"
+      color: "#aaa"
     },
     firstInfo: {
       marginTop: 5,
@@ -81,7 +81,6 @@ export interface UploadOutcomeProps {
   onClose: () => void;
   onUploadSuccess: (header: string[], array: CSVObjProps[]) => void;
   onConfirm: () => void;
-  // onClick
 }
 export interface CustomOutcomeProps {
   [key: string]: any;
@@ -229,7 +228,7 @@ export function UploadOutcome(props: UploadOutcomeProps) {
         <p className={css.firstInfo}>
           <span className={css.contentTitle}>{d("Check all learning outcomes to upload.").t("assessment_lo_bulk_upload_check_notice")}</span>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <span className={css.uploadInfo}>{`(There are ${total} to upload, ${createCount} to create, ${updateCount} to modify)`}</span>
+          <span className={css.uploadInfo}>{t("assessment_lo_bulk_upload_result", { count1: total, count2: createCount, count3: updateCount})}</span>
         </p>
         {
           totalError > 0 &&
@@ -307,13 +306,13 @@ export function ConfirmDialog(props: ConfirmDialogProps) {
     <Dialog open={open}>
       <DialogTitle></DialogTitle>
       <DialogContent>
-        <DialogContentText>{"Are you uploading another file and discarding current info?"}</DialogContentText>
+        <DialogContentText>{d("Are you uploading another CSV file and discarding current data?").t("assessment_lo_bulk_reupload")}</DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} disableRipple={true} color="primary">
           {d("CANCEL").t("general_button_CANCEL")}
         </Button>
-        <UploadCSV label={d("UPLOAD").t("assessment_lo_bulk_upload_popup_upload")} onUploadSuccess={onUpload} onUploadFail={onUploadFail} />
+        <UploadCSV variant={"text"} label={d("UPLOAD").t("assessment_lo_bulk_upload_popup_upload")} onUploadSuccess={onUpload} onUploadFail={onUploadFail} />
       </DialogActions>
     </Dialog>
   );

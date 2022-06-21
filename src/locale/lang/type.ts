@@ -1647,7 +1647,7 @@ type LangRecord =
   | { id: "report_label_learner_usage"; description: `Learner Usage`; values: undefined }
   | {
       id: "report_label_learner_usage_info";
-      description: `Understand the level of usage of the learners over the last 7 days:
+      description: `Understand the level of usage of the learners over the last 7 days: 
 <ul>
   <li>Material consumption metrics
 </li>
@@ -1822,8 +1822,6 @@ A new ‘Auto review’ lesson will appear on students’ calendar once our plat
   | { id: "assessment_lo_download_selected"; description: `Download Selected Rows`; values: undefined }
   | { id: "assessment_lo_download_quantity"; description: `({number} rows selected)`; values: { number: string | number } }
   | { id: "assessment_lo_download_column_title"; description: `Select which columns to include:`; values: undefined }
-  | { id: "home_student_teacherFeedbackWidget_containerTitleLabel"; description: `Teacher’s feedback`; values: undefined }
-  | { id: "home_student_teacherFeedbackWidget_noFeedBack"; description: `There is no teacher's feedback`; values: undefined }
   | {
       id: "assessment_lo_download_object_quantity";
       description: `(There are {quantity} rows to download)`;
@@ -1883,8 +1881,8 @@ A new ‘Auto review’ lesson will appear on students’ calendar once our plat
   | { id: "assessment_lo_bulk_upload_check_notice"; description: `Check all learning outcomes to upload.`; values: undefined }
   | {
       id: "assessment_lo_bulk_upload_result";
-      description: `(There are {count} to upload, {count}to create, {count}to modify.)`;
-      values: { count: string | number };
+      description: `(There are {count1} to upload, {count2}to create, {count3}to modify.)`;
+      values: { count1: string | number; count2: string | number; count3: string | number };
     }
   | {
       id: "assessment_lo_bulk_upload_error_notice";

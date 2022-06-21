@@ -29,7 +29,6 @@ export function csvToArray(csv: string): string[][] {
       pushCell();
     } else if (c === '\r') {
       if (csv.charAt(idx + 1) === '\n') {
-        debugger
         i++;
       }
       pushRow();
@@ -82,11 +81,12 @@ export interface CSVObjProps {
 
 export interface UploadCSVProps {
   label: string;
+  variant?: "text" | "outlined" | "contained" | undefined;
   onUploadSuccess: (headers: string[], array: CSVObjProps[]) => void;
   onUploadFail: () => void;
 }
 export function UploadCSV(props: UploadCSVProps) {
-  const { label, onUploadSuccess, onUploadFail } = props;
+  const { variant = "contained", label, onUploadSuccess, onUploadFail } = props;
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     const rawFile = files && files[0] // only use files[0];
@@ -137,7 +137,7 @@ export function UploadCSV(props: UploadCSVProps) {
   return (
     <label>
       <input style={{ display: "none" }} accept=".csv" type="file" onChange={handleChange} />
-      <Button variant="contained" color="primary" component="span">
+      <Button variant={variant} color="primary" component="span">
         {label}
       </Button>
     </label>
