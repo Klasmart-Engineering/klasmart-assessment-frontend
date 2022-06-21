@@ -1183,7 +1183,7 @@
   "assessment_lo_bulk_upload_cancel": "Cancel",
   "assessment_lo_bulk_upload_confirm": "Confirm",
   "assessment_lo_bulk_upload_check_notice": "Check all learning outcomes to upload.",
-  "assessment_lo_bulk_upload_result": "(There are {count1} to upload, {count2}to create, {count3}to modify.)",
+  "assessment_lo_bulk_upload_result": "(There are {count1} to upload, {count2} to create, {count3} to modify.)",
   "assessment_lo_bulk_upload_error_notice": "(There are totally {count} errors in {value} rows. Check the CSV file based on the highlighted cells, and upload again.)",
   "assessment_lo_bulk_upload_row": "Row",
   "assessment_lo_bulk_reupload": "Are you uploading another CSV file and discarding current data?",
