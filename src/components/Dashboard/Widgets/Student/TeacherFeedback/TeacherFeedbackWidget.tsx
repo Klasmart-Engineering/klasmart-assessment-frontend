@@ -9,7 +9,12 @@ import { useBottomScrollListener } from "react-bottom-scroll-listener";
 import api from "@api/index";
 import { V2StudentAssessment, V2StudentAssessmentAttachment } from "@api/api.auto";
 import { WidgetType } from "@components/Dashboard/models/widget.model";
-import { d } from "@locale/LocaleManager";
+// import { d } from "@locale/LocaleManager";
+import {
+  // FormattedDate,
+  FormattedMessage,
+  useIntl,
+} from "react-intl";
 
 /** style **/
 export interface StyleProps {
@@ -142,6 +147,7 @@ interface TeacherFeedbackWidgetProps {
   RowsPerPage?: string;
 }
 export default function TeacherFeedbackWidget({ RowsPerPage = `3` }: TeacherFeedbackWidgetProps) {
+  const intl = useIntl();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [page, setPage] = useState(1);
@@ -204,7 +210,9 @@ export default function TeacherFeedbackWidget({ RowsPerPage = `3` }: TeacherFeed
       error={error}
       noData={false}
       reload={fetchStatusGroups}
-      label={d("Teacher’s feedback").t("home_student_teacherFeedbackWidget_containerTitleLabel")}
+      label={intl.formatMessage({
+        id: `home.student.teacherFeedbackWidget.containerTitleLabel`,
+      })}
       /*link={{
                 url: ``,
                 label: intl.formatMessage({
@@ -244,7 +252,8 @@ export default function TeacherFeedbackWidget({ RowsPerPage = `3` }: TeacherFeed
           <Box className={classes.noFeedBackPage}>
             <img src={noFeedBack} className={classes.noFeedBackIcon} alt="no feedback" />
             <Typography gutterBottom variant="body2" className={classes.noFeedBack}>
-              {d("There is no teacher's feedback").t("home_student_teacherFeedbackWidget_noFeedBack")}
+              {/*{d("There is no teacher's feedback").t("home_student_teacherFeedbackWidget_noFeedBack")}*/}
+              <FormattedMessage id={`home.student.teacherFeedbackWidget.noFeedBack`} />
             </Typography>
           </Box>
         )}
