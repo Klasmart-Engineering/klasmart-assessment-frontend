@@ -17,7 +17,7 @@ import { default as CreateOutcome, default as CreateOutcomings } from "./pages/O
 import { OutcomeList } from "@pages/OutcomeList";
 import { store } from "./reducers";
 import theme from "./theme";
-// import { Test } from "@pages/test";
+import { Test } from "@pages/test";
 const generateClassName = createGenerateClassName({
   productionPrefix: "assessment",
   seed: "assessment",
@@ -51,9 +51,9 @@ function App() {
                     <Route path={MilestoneEdit.routeMatchPath}>
                       <MilestoneEdit />
                     </Route>
-                    {/*<Route path={Test.routeBasePath}>*/}
-                    {/*  <Test />*/}
-                    {/*</Route>*/}
+                    <Route path={Test.routeBasePath}>
+                      <Test />
+                    </Route>
                     <Route path="/">
                       <Redirect to={ListAssessment.routeBasePath} />
                     </Route>

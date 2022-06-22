@@ -134,7 +134,7 @@ export const mapAssessmentForStudentToTeacherFeedbackRow = (item: V2StudentAsses
     feedback: lastTeacherComment?.comment ?? ``,
     files: item.student_attachments ?? [],
     score: item.score ?? 0,
-    teacherName: lastTeacherComment ? `${lastTeacherComment?.teacher?.given_name}`.trim() : ``,
+    teacherName: lastTeacherComment ? `${lastTeacherComment?.teacher?.given_name}`?.trim() : ``,
     teacherAvatar: lastTeacherComment?.teacher?.avatar ?? "",
     title: classTitle ?? ``,
     date: date,
@@ -165,6 +165,8 @@ export default function TeacherFeedbackWidget({ RowsPerPage = `3` }: TeacherFeed
   twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
 
   const fetchStatusGroups = async () => {
+    console.log("Fetching status groups:");
+    console.log("api:", api.assessmentsForStudent);
     if (rows.length === totalCount && totalCount !== 0) return;
     setLoading(true);
     try {
