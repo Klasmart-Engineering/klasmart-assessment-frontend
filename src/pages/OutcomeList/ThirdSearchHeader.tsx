@@ -233,7 +233,7 @@ function getBulkAction(condition: OutcomeQueryCondition, perm: PermissionResult<
           { label: d("Download Selected Rows").t("assessment_lo_download_selected"), value: BulkAction.downloadSelected},
         ];
         if(isEnableUpload() && perm.edit_published_learning_outcome_436) {
-          download.push({ label: "Upload", value: BulkAction.upload })
+          download.push({ label: d("Upload").t("assessment_lo_bulk_upload_button"), value: BulkAction.upload })
         }
         res1.push.apply(res1, download)
       }
