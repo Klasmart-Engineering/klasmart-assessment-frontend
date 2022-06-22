@@ -26,9 +26,8 @@ export function UploadCSV(props: UploadCSVProps) {
       } else {
         return new Promise((resolve) => {
           const reader = new FileReader();
-          const reader2 = new FileReader();
-          reader2.readAsArrayBuffer(rawFile);
-          reader2.onload = e => {
+          reader.readAsArrayBuffer(rawFile);
+          reader.onload = e => {
             let originData = e.target?.result as string;
             const data = Buffer.from(e.target?.result as string);
             const utf8Data = new Uint8Array(data);
