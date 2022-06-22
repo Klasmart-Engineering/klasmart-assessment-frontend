@@ -71,6 +71,9 @@ export function csvToArray(csv: string): string[][] {
   if (cell) {
     pushRow();
   }
+  if(row.length) {
+    pushRow();
+  }
   return table;
 }
 

@@ -531,7 +531,8 @@ export const parseCsvLo = createAsyncThunk<any, IQueryParsecsvLo & LoadingMetaPa
       const compareAssumed = item.assumed ? item.assumed?.toLocaleLowerCase() : item.assumed;
       const outcomeAssumed = compareAssumed === "true" ? true : compareAssumed === "false" ? false : item.assumed;
       const outcomeAssumedError = assumedIsEmpty ? d("Can’t not be empty!").t("assessment_lo_bulk_upload_empty_input") : (outcomeAssumed === true || outcomeAssumed === false) ? "" : d("Invalid! Please type ”True” or “False” in the CSV file.").t("assessment_lo_bulk_upload_invalid_assumed");
-      const patt = new RegExp(/^(100|[1-9]?\d?)%$|0$/);
+      const patt = new RegExp(/^(100|[1-9]?\d()?)%$/);
+      // const patt = new RegExp(/^(100|[1-9]?\d(\.\d\d?\d?)?)%$|0$/);
       const scoreThresholdValueValid = patt.test(item?.score_threshold!);
       const scoreThresholdsValue = outcomeAssumed === true ? "0%" : (outcomeAssumed === false ? (scoreThresholdValueValid ? (item.score_threshold === "0%" ? "80%" : item.score_threshold) : "80%") : item.score_threshold);
       const scoreThresholdsValueIsEmpty = scoreThresholdsValue === "" || scoreThresholdsValue === undefined;
