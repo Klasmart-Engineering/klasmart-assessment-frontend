@@ -290,7 +290,7 @@ export function OutcomeList() {
     const templateHeaders = Object.values(loKeyValue);
     const headAllRight = header.every((item, index) => item === templateHeaders[index]);
     if(headAllRight) {
-      if(!array.length || array.length > 200) {
+      if(!array.length || array.length > 201) {
         dispatch(resetUploadData());
         return dispatch(actError(d("The CSV file must contain 1~200 learning outcomes! Please check the CSV file and upload again.").t("assessment_lo_bulk_upload_limit")))
       } else {

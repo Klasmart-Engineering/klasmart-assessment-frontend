@@ -192,7 +192,7 @@ export function FixedTable(props: FixedTableProps) {
                                   curRowItem.map((cr, iii) => {
                                     const isObj = cr instanceof Object;
                                     const value = isObj ? cr.value : cr;
-                                    const open = value ? value.toString().length > 20 : false
+                                    const open = value ? value.toString().length > 0 : false
                                     return (
                                       open ? 
                                       <Tooltip title={value as string} placement="top-start" key={`${cr.value+""}-${iii}`}>
@@ -215,7 +215,7 @@ export function FixedTable(props: FixedTableProps) {
                                   curRowItem.items.map((cr, iii) => {
                                     const isObj = cr instanceof Object;
                                     const value = isObj ? cr.value : cr;
-                                    const open = value ? value.toString().length > 20 : false
+                                    const open = value ? value.toString().length > 0 : false
                                     return (
                                       open ?
                                       <Tooltip title={value as string} placement="top-start" key={`${cr.value+""}-${iii}`}>
@@ -234,7 +234,7 @@ export function FixedTable(props: FixedTableProps) {
                               :
                               <>
                                 {
-                                  (openValue && openValue.toString().length > 15) ?
+                                  (openValue && openValue.toString().length > 0) ?
                                   <Tooltip title={(isObject ? curRowItem.value?.toString() : curRowItem) as string} placement="top-start">
                                     <div className={css.cellBase}>
                                       {

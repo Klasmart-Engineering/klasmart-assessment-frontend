@@ -533,7 +533,7 @@ export const parseCsvLo = createAsyncThunk<any, IQueryParsecsvLo & LoadingMetaPa
       const outcomeAssumedError = assumedIsEmpty ? d("Can’t not be empty!").t("assessment_lo_bulk_upload_empty_input") : (outcomeAssumed === true || outcomeAssumed === false) ? "" : d("Invalid! Please type ”True” or “False” in the CSV file.").t("assessment_lo_bulk_upload_invalid_assumed");
       const patt = new RegExp(/^(100|[1-9]?\d?)%$|0$/);
       const scoreThresholdValueValid = patt.test(item?.score_threshold!);
-      const scoreThresholdsValue = outcomeAssumed === true ? "0%" : (outcomeAssumed === false ? (scoreThresholdValueValid ? item.score_threshold : "80%") : item.score_threshold);
+      const scoreThresholdsValue = outcomeAssumed === true ? "0%" : (outcomeAssumed === false ? (scoreThresholdValueValid ? (item.score_threshold === "0%" ? "80%" : item.score_threshold) : "80%") : item.score_threshold);
       const scoreThresholdsValueIsEmpty = scoreThresholdsValue === "" || scoreThresholdsValue === undefined;
       const finalScoreThresholdIsValid = patt.test(scoreThresholdsValue!);
       const outcomeScoreThresholdError = scoreThresholdsValueIsEmpty ? d("Can’t not be empty!").t("assessment_lo_bulk_upload_empty_input") : finalScoreThresholdIsValid ? "" : d("Invalid! Please type Text from “0%” to “100%” or nothing in the CSV file.").t("assessment_lo_bulk_upload_invalid_threshold");
@@ -547,8 +547,7 @@ export const parseCsvLo = createAsyncThunk<any, IQueryParsecsvLo & LoadingMetaPa
                 item.subject.map(sItem => {
                   return { id: "", value: sItem, error: "" }
                 }) : []
-      }
-      
+      };
       const categoryIsEmpty = item.category === undefined || item.category === "";
       let outcomeCategory: CustomOutcomeItemProps = {id: "", value: item.category, error: ""};
       const subcategoryIsEmoty = item.subcategory ? item.subcategory.length === 0 : true;
