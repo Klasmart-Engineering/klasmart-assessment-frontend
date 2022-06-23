@@ -8,6 +8,8 @@ const pkg = require("./package.json");
 const webpack = require("webpack");
 
 function myOverrides(config) {
+  const dependencies = process.env.NODE_ENV !== 'development' ? pkg.dependencies : [];
+
   config.output = {
     ...config.output,
     path: path.resolve(process.env.BUILD_PATH || 'build'),
@@ -25,6 +27,11 @@ function myOverrides(config) {
         "./TeacherFeedbackWidget": "./src/components/Dashboard/Widgets/Student/TeacherFeedback/TeacherFeedbackWidget.tsx",
       },
       shared: {
+        ...dependencies,
+        'react-intl': {
+          singleton: true,
+          requiredVersion: pkg.dependencies[`react-intl`],
+        },
         react: {
           eager: true,
           singleton: true,

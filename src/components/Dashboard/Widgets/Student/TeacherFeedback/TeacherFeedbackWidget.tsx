@@ -6,7 +6,6 @@ import { Box, CircularProgress, Theme, Typography } from "@material-ui/core";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import React, { useEffect, useState } from "react";
 import { useBottomScrollListener } from "react-bottom-scroll-listener";
-import api from "@api/index";
 import { V2StudentAssessment, V2StudentAssessmentAttachment } from "@api/api.auto";
 import { WidgetType } from "@components/Dashboard/models/widget.model";
 import {
@@ -14,6 +13,8 @@ import {
   FormattedMessage,
   useIntl,
 } from "react-intl";
+import { currentOrganizationState, useGlobalStateValue } from "@kl-engineering/frontend-state";
+import { dFetch } from "@components/Dashboard/tools";
 
 /** style **/
 export interface StyleProps {
@@ -128,7 +129,6 @@ export const mapAssessmentForStudentToTeacherFeedbackRow = (item: V2StudentAsses
   const lastTeacherComment = item.teacher_comments?.slice(-1)[0];
   const classTitle = item.title?.split(`-`)[0];
   const date = new Date((item.complete_at ?? 0) * 1000);
-  console.log("map assignment for student to teacher Feedback");
   return {
     id: item.id ?? "",
     feedback: lastTeacherComment?.comment ?? ``,
@@ -144,9 +144,9 @@ export const mapAssessmentForStudentToTeacherFeedbackRow = (item: V2StudentAsses
 
 /** Teacher Feedback Widget **/
 interface TeacherFeedbackWidgetProps {
-  RowsPerPage?: string;
+  RowsPerPage?: number;
 }
-export default function TeacherFeedbackWidget({ RowsPerPage = `3` }: TeacherFeedbackWidgetProps) {
+export default function TeacherFeedbackWidget({ RowsPerPage = 3 }: TeacherFeedbackWidgetProps) {
   const intl = useIntl();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -164,25 +164,32 @@ export default function TeacherFeedbackWidget({ RowsPerPage = `3` }: TeacherFeed
   const twoDaysAgo = new Date();
   twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
 
+  const currentOrganization = useGlobalStateValue(currentOrganizationState);
+  let organizationId: string = "";
+  if (currentOrganization) {
+    organizationId = currentOrganization.id ?? ``;
+  }
+
   const fetchStatusGroups = async () => {
-    console.log("Fetching status groups:");
-    console.log("api:", api.assessmentsForStudent);
     if (rows.length === totalCount && totalCount !== 0) return;
     setLoading(true);
     try {
       const now = new Date();
       const fourteenDaysAgo = new Date();
       fourteenDaysAgo.setDate(now.getDate() - 14);
-      const resp = await api.assessmentsForStudent.getStudentAssessments({
-        // org_id: currentOrganization?.id ?? ``,
+      let query = {
+        org_id: organizationId,
         page: page.toString(),
-        page_size: RowsPerPage,
+        page_size: RowsPerPage.toString(),
         type: "home_fun_study",
         // order_by: `-complete_at`,
         order_by: `-completed_at`,
         complete_at_ge: Math.floor(fourteenDaysAgo.getTime() / 1000).toString(),
         complete_at_le: Math.floor(now.getTime() / 1000).toString(),
-      });
+      };
+
+      const resp = await dFetch("/assessments_for_student", query);
+      // @ts-ignore
       const { list = [], total = 0 } = resp ?? {};
       setTotalCount(total);
       setRows([...rows, ...list.map(mapAssessmentForStudentToTeacherFeedbackRow)]);
@@ -215,12 +222,6 @@ export default function TeacherFeedbackWidget({ RowsPerPage = `3` }: TeacherFeed
       label={intl.formatMessage({
         id: `home.student.teacherFeedbackWidget.containerTitleLabel`,
       })}
-      /*link={{
-                    url: ``,
-                    label: intl.formatMessage({
-                        id: `home.student.teacherFeedbackWidget.containerUrlLabel`,
-                    }),
-                }}*/
       id={WidgetType.TEACHERLOAD}
     >
       <div ref={scrollRef} className={classes.widgetContent}>
