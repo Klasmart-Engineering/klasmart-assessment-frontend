@@ -9,7 +9,6 @@ import { useBottomScrollListener } from "react-bottom-scroll-listener";
 import api from "@api/index";
 import { V2StudentAssessment, V2StudentAssessmentAttachment } from "@api/api.auto";
 import { WidgetType } from "@components/Dashboard/models/widget.model";
-// import { d } from "@locale/LocaleManager";
 import {
   // FormattedDate,
   FormattedMessage,
@@ -129,6 +128,7 @@ export const mapAssessmentForStudentToTeacherFeedbackRow = (item: V2StudentAsses
   const lastTeacherComment = item.teacher_comments?.slice(-1)[0];
   const classTitle = item.title?.split(`-`)[0];
   const date = new Date((item.complete_at ?? 0) * 1000);
+  console.log("map assignment for student to teacher Feedback");
   return {
     id: item.id ?? "",
     feedback: lastTeacherComment?.comment ?? ``,
