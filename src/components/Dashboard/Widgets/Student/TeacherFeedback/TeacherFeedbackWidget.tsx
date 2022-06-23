@@ -216,11 +216,11 @@ export default function TeacherFeedbackWidget({ RowsPerPage = `3` }: TeacherFeed
         id: `home.student.teacherFeedbackWidget.containerTitleLabel`,
       })}
       /*link={{
-                url: ``,
-                label: intl.formatMessage({
-                    id: `home.student.teacherFeedbackWidget.containerUrlLabel`,
-                }),
-            }}*/
+                    url: ``,
+                    label: intl.formatMessage({
+                        id: `home.student.teacherFeedbackWidget.containerUrlLabel`,
+                    }),
+                }}*/
       id={WidgetType.TEACHERLOAD}
     >
       <div ref={scrollRef} className={classes.widgetContent}>
