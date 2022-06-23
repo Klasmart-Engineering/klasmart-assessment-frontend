@@ -9,7 +9,6 @@ import { useBottomScrollListener } from "react-bottom-scroll-listener";
 import api from "@api/index";
 import { V2StudentAssessment, V2StudentAssessmentAttachment } from "@api/api.auto";
 import { WidgetType } from "@components/Dashboard/models/widget.model";
-// import { d } from "@locale/LocaleManager";
 import {
   // FormattedDate,
   FormattedMessage,
@@ -129,12 +128,13 @@ export const mapAssessmentForStudentToTeacherFeedbackRow = (item: V2StudentAsses
   const lastTeacherComment = item.teacher_comments?.slice(-1)[0];
   const classTitle = item.title?.split(`-`)[0];
   const date = new Date((item.complete_at ?? 0) * 1000);
+  console.log("map assignment for student to teacher Feedback");
   return {
     id: item.id ?? "",
     feedback: lastTeacherComment?.comment ?? ``,
     files: item.student_attachments ?? [],
     score: item.score ?? 0,
-    teacherName: lastTeacherComment ? `${lastTeacherComment?.teacher?.given_name}`.trim() : ``,
+    teacherName: lastTeacherComment ? `${lastTeacherComment?.teacher?.given_name}`?.trim() : ``,
     teacherAvatar: lastTeacherComment?.teacher?.avatar ?? "",
     title: classTitle ?? ``,
     date: date,
@@ -165,6 +165,8 @@ export default function TeacherFeedbackWidget({ RowsPerPage = `3` }: TeacherFeed
   twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
 
   const fetchStatusGroups = async () => {
+    console.log("Fetching status groups:");
+    console.log("api:", api.assessmentsForStudent);
     if (rows.length === totalCount && totalCount !== 0) return;
     setLoading(true);
     try {
@@ -214,11 +216,11 @@ export default function TeacherFeedbackWidget({ RowsPerPage = `3` }: TeacherFeed
         id: `home.student.teacherFeedbackWidget.containerTitleLabel`,
       })}
       /*link={{
-                url: ``,
-                label: intl.formatMessage({
-                    id: `home.student.teacherFeedbackWidget.containerUrlLabel`,
-                }),
-            }}*/
+                    url: ``,
+                    label: intl.formatMessage({
+                        id: `home.student.teacherFeedbackWidget.containerUrlLabel`,
+                    }),
+                }}*/
       id={WidgetType.TEACHERLOAD}
     >
       <div ref={scrollRef} className={classes.widgetContent}>

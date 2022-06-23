@@ -6,7 +6,7 @@ import { Cancel, PlayArrow } from "@material-ui/icons";
 import { Box, Card, CircularProgress, IconButton, Link, Typography } from "@material-ui/core";
 import { Theme } from "@material-ui/core/styles";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -99,6 +99,10 @@ export default function WidgetWrapper(props: BaseWidgetProps) {
   const { children, label, link, overrideLink, loading, error, noData, noBackground, editable = true, reload, id } = props;
 
   const { editing } = useContext(WidgetContext);
+
+  useEffect(() => {
+    console.log("WidgetWrapper");
+  }, []);
 
   return (
     <Box className={`${classes.cardWrapper} ${editing && editable && classes.editContainer}`}>
