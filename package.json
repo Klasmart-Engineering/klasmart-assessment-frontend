@@ -12,6 +12,7 @@
     "@dnd-kit/utilities": "^2.0.0",
     "@kl-engineering/frontend-state": "^1.1.1",
     "@kl-engineering/kidsloop-media-hooks": "^0.2.6",
+    "@kl-engineering/kidsloop-px": "^2.4.0",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
