@@ -23,7 +23,7 @@ function myOverrides(config) {
       filename: `remoteEntry.js`,
       exposes: {
         "./Assessment": "./src/main.tsx",
-        "./TeacherFeedbackWidget": "./src/components/Dashboard/Widgets/Student/TeacherFeedback/TeacherFeedbackWidget.tsx",
+        "./TeacherFeedbackWidget": "./src/components/Dashboard/Widgets/Student/TeacherFeedback/index.tsx",
       },
       shared: {
         'react-intl': {
