@@ -11,7 +11,7 @@ export enum WidgetView {
   DEFAULT = `default`,
 }
 
-type Context = {
+export type Context = {
   editing: boolean;
   checkIfLayoutUpdated: () => void;
   editWidgets: () => void;
