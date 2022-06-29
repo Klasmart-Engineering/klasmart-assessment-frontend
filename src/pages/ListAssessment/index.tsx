@@ -101,6 +101,7 @@ export function ListAssessment() {
   
   useEffect(() => {
     dispatch(getAssessmentListV2({ ...condition, assessment_type: assessmentTypes.join(","), status: assessmentStatus.join(","), metaLoading: true }));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [condition, dispatch]);
   return (
     <>

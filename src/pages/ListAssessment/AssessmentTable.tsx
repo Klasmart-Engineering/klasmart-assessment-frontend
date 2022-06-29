@@ -68,7 +68,7 @@ interface AssessmentProps {
 }
 function AssessmentRow(props: AssessmentProps) {
   const css = useStyles();
-  const { assessment, onClickAssessment, assessmentType } = props;
+  const { assessment, onClickAssessment } = props;
   const isComplete = assessment.status === AssessmentStatus.complete;
   const statusText = 
   isComplete
