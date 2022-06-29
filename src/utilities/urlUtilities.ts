@@ -19,7 +19,7 @@ export const setQuery = (search: string, hash: Record<string, string | number | 
 
 export const clearNull = (obj: Record<string, any>) => {
   Object.keys(obj).forEach((key) => {
-    if (obj[key] == null) delete obj[key];
+    if (!obj[key]) delete obj[key];
   });
   return obj;
 };

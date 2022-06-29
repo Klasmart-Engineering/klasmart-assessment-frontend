@@ -46,8 +46,10 @@ export type DetailAssessmentResultAssignment = NonNullable<DetailAssessmentResul
 export type DetailAssessmentResultDiffContentStudent = NonNullable<DetailAssessmentResult["diff_content_students"]>[0];
 
 export enum AssessmentStatus {
-  all = "all",
-  in_progress = "InComplete",
+  pending = "Pending",
+  notstarted = "NotStarted",
+  started = "Started",
+  draft = "Draft",
   complete = "Complete",
 }
 

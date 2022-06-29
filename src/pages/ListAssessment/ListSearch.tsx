@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
   searchWrap: {
     display: "inline-flex",
     position: "relative",
+    [theme.breakpoints.down(730)]: {
+      marginBottom: 10,
+    },
   },
   searchCon: {
     display: "inline-flex",
@@ -48,6 +51,7 @@ const useStyles = makeStyles((theme) => ({
     height: "40px",
     backgroundColor: "#0E78D5",
     marginLeft: "20px",
+    marginRight: "20px",
   },
   teacherListCon: {
     width: 280,
@@ -146,7 +150,10 @@ export function ListSearch(props: SearchComProps) {
     }
     setSelectAction(false);
     setShowMask(false);
-    document.getElementsByTagName("main")[0].style.overflow = "auto";
+    const main = document.getElementsByTagName("main")[0];
+    if (main) {
+      main.style.overflow = "auto";
+    }
     setIsfocus(false);
   };
   const handleKeyPress: TextFieldProps["onKeyPress"] = (event) => {
@@ -161,7 +168,10 @@ export function ListSearch(props: SearchComProps) {
       }
       setSelectAction(false);
       setShowMask(false);
-      document.getElementsByTagName("main")[0].style.overflow = "auto";
+      const main = document.getElementsByTagName("main")[0];
+      if (main) {
+        main.style.overflow = "auto";
+      }
     }
   };
   // const handleKeyUp: TextFieldProps["onKeyUp"] = () => {
@@ -180,7 +190,10 @@ export function ListSearch(props: SearchComProps) {
 
   const handleOnFocus = () => {
     setShowMask(true);
-    document.getElementsByTagName("main")[0].style.overflow = "hidden";
+    const main = document.getElementsByTagName("main")[0];
+    if (main) {
+      main.style.overflow = "hidden";
+    }
     setIsfocus(true);
     if (searchTextDefaultValue) {
       setValue(SEARCHINPUT, "");
@@ -190,7 +203,10 @@ export function ListSearch(props: SearchComProps) {
 
   const handleHideMask = () => {
     setShowMask(false);
-    document.getElementsByTagName("main")[0].style.overflow = "auto";
+    const main = document.getElementsByTagName("main")[0];
+    if (main) {
+      main.style.overflow = "hidden";
+    }
     setIsfocus(false);
     setValue(SEARCHINPUT, defaultTeacherName);
   };
