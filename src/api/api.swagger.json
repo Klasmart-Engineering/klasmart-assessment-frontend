@@ -379,7 +379,7 @@
         "parameters": [
           {
             "type": "string",
-            "description": "status search,multiple states are separated by commas,optional value is NotStarted,Started,Draft,Complete",
+            "description": "status search,multiple states are separated by commas,optional value is Pending,NotStarted,Started,Draft,Complete",
             "name": "status",
             "in": "query"
           },
@@ -398,10 +398,9 @@
           },
           {
             "type": "string",
-            "description": "assessment type, value:OnlineClass,OfflineClass,OnlineStudy,ReviewStudy,OfflineStudy",
+            "description": "assessment type,multiple states are separated by commas,optional value is :OnlineClass,OfflineClass,OnlineStudy,ReviewStudy,OfflineStudy",
             "name": "assessment_type",
-            "in": "query",
-            "required": true
+            "in": "query"
           },
           {
             "type": "integer",
@@ -3628,7 +3627,7 @@
       }
     },
     "/internal/stm/contents": {
-      "get": {
+      "post": {
         "description": "get stm lesson_plan",
         "produces": ["application/json"],
         "tags": ["content"],
@@ -10774,9 +10773,6 @@
             "type": "string"
           }
         },
-        "row_number": {
-          "type": "integer"
-        },
         "score_threshold": {
           "type": "number"
         },
@@ -15688,10 +15684,6 @@
         "program": {
           "description": "onlineClass,offlineClass",
           "$ref": "#/definitions/entity.IDName"
-        },
-        "remaining_time": {
-          "description": "OnlineStudy",
-          "type": "integer"
         },
         "status": {
           "type": "string"

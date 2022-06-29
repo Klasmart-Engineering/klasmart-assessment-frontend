@@ -539,7 +539,6 @@ export interface EntityExportOutcomeView {
   outcome_id?: string;
   outcome_name?: string;
   program?: string[];
-  row_number?: number;
   score_threshold?: number;
   sets?: string[];
   shortcode?: string;
@@ -2154,9 +2153,6 @@ export interface V2AssessmentQueryReply {
 
   /** onlineClass,offlineClass */
   program?: EntityIDName;
-
-  /** OnlineStudy */
-  remaining_time?: number;
   status?: string;
   subjects?: EntityIDName[];
 
@@ -2551,11 +2547,11 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
      * @description assessments query
      */
     queryAssessmentV2: (
-      query: {
+      query?: {
         status?: string;
         query_key?: string;
         query_type?: "TeacherID";
-        assessment_type: string;
+        assessment_type?: string;
         page?: number;
         page_size?: number;
         order_by?: "class_end_at" | "-class_end_at" | "complete_at" | "-complete_at" | "create_at" | "-create_at";
@@ -3531,13 +3527,13 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
      * @tags content
      * @name getSTMLessonPlan
      * @summary getSTMLessonPlan
-     * @request GET:/internal/stm/contents
+     * @request POST:/internal/stm/contents
      * @description get stm lesson_plan
      */
     getStmLessonPlan: (ids: string[], params?: RequestParams) =>
       this.request<EntityLessonPlan[], ApiBadRequestResponse | ApiInternalServerErrorResponse>(
         `/internal/stm/contents`,
-        "GET",
+        "POST",
         params,
         ids
       ),

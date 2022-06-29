@@ -179,7 +179,7 @@ export enum StudyAssessmentOrderBy {
 }
 
 export enum ExectSeachType {
-  all = " ",
+  all = "",
   // class_name = "class_name",
   teacher_name = "TeacherID",
 }

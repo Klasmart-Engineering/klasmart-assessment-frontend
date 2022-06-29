@@ -1,6 +1,5 @@
 import { BooleanOperator, ConnectionDirection, StringOperator, UuidOperator } from "@api/api-ko-schema.auto";
 import { apiGetUserNameByUserId, apiWaitForOrganizationOfPage } from "@api/extra";
-import { AssessmentTypeValues } from "@components/AssessmentType";
 import { DetailAssessmentProps } from "@pages/DetailAssessment/type";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import api, { gqlapi } from "../api";
@@ -16,11 +15,9 @@ import {
   QueryMyUserQueryVariables
 } from "../api/api-ko.auto";
 import { EntityScheduleFeedbackView } from "../api/api.auto";
-import { ListAssessmentResult, ListAssessmentResultItem, OrderByAssessmentList } from "../api/type";
+import { ListAssessmentResult, ListAssessmentResultItem } from "../api/type";
 import {
-  AssessmentListResult,
-  AssessmentStatus,
-  AssessmentStatusValues, UserEntity
+  AssessmentListResult, UserEntity
 } from "../pages/ListAssessment/types";
 import { LoadingMetaPayload } from "./middleware/loadingMiddleware";
 import { AsyncReturnType, AsyncTrunkReturned } from "./type";
@@ -61,34 +58,34 @@ export const getAssessmentListV2 = createAsyncThunk<IQueryAssessmentV2Result, IQ
   "assessments/getAssessmentListV2",
   async ({ metaLoading, ...query }) => {
     const { status, assessment_type, order_by, query_key, query_type, page, page_size } = query;
-    const isStudy = assessment_type === AssessmentTypeValues.study;
-    const isReview = assessment_type === AssessmentTypeValues.review;
-    const isHomefun = assessment_type === AssessmentTypeValues.homeFun;
-    let _status: string = "";
-    let _order_by: IQueryAssessmentV2Params["order_by"];
-    if (isStudy || isReview || isHomefun) {
-      _order_by = order_by ? order_by : OrderByAssessmentList._create_at;
-      _status =
-        status === AssessmentStatus.all
-          ? AssessmentStatusValues.study_all
-          : status === AssessmentStatus.in_progress
-          ? AssessmentStatusValues.study_inprogress
-          : AssessmentStatusValues.complete;
-    } else {
-      _order_by = order_by ? order_by : OrderByAssessmentList._class_end_time;
-      _status =
-        status === AssessmentStatus.all
-          ? AssessmentStatusValues.class_live_homefun_all
-          : status === AssessmentStatus.in_progress
-          ? AssessmentStatusValues.class_live_homefun_inprogress
-          : AssessmentStatusValues.complete;
-    }
+    // const isStudy = assessment_type === AssessmentTypeValues.study;
+    // const isReview = assessment_type === AssessmentTypeValues.review;
+    // const isHomefun = assessment_type === AssessmentTypeValues.homeFun;
+    // let _status: string = "";
+    // let _order_by: IQueryAssessmentV2Params["order_by"];
+    // if (isStudy || isReview || isHomefun) {
+    //   _order_by = order_by ? order_by : OrderByAssessmentList._create_at;
+    //   _status =
+    //     status === AssessmentStatus.all
+    //       ? AssessmentStatusValues.study_all
+    //       : status === AssessmentStatus.in_progress
+    //       ? AssessmentStatusValues.study_inprogress
+    //       : AssessmentStatusValues.complete;
+    // } else {
+    //   _order_by = order_by ? order_by : OrderByAssessmentList._class_end_time;
+    //   _status =
+    //     status === AssessmentStatus.all
+    //       ? AssessmentStatusValues.class_live_homefun_all
+    //       : status === AssessmentStatus.in_progress
+    //       ? AssessmentStatusValues.class_live_homefun_inprogress
+    //       : AssessmentStatusValues.complete;
+    // }
     const _query = {
       assessment_type,
       page,
       page_size,
-      status: _status,
-      order_by: _order_by,
+      status,
+      order_by,
       query_key: query_key ? query_key : " ",
       query_type: query_key ? query_type : undefined,
     };

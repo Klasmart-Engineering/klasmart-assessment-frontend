@@ -19,9 +19,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const statusOptions = () => [
-  { label: d("All").t("assess_filter_all"), value: AssessmentStatus.all },
+  { label: d("All").t("assess_filter_all"), value: AssessmentStatus.pending },
   { label: d("Complete").t("assess_filter_complete"), value: AssessmentStatus.complete },
-  { label: d("Incomplete").t("assess_filter_in_progress"), value: AssessmentStatus.in_progress },
+  { label: d("Incomplete").t("assess_filter_in_progress"), value: AssessmentStatus.draft },
 ];
 const sortOptions = (assessment_type: AssessmentQueryCondition["assessment_type"]) => {
   const unchangedOptions = [

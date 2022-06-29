@@ -104,7 +104,7 @@ export function FirstSearchHeader() {
   const hightLightAssessment = pathname.indexOf(ListAssessment.routeBasePath) >= 0;
   return (
     <div className={css.root}>
-      <LayoutBox holderMin={40} holderBase={202} mainBase={1517}>
+      <LayoutBox holderMin={40} holderBase={80} mainBase={1760}>
         <Hidden only={["xs", "sm"]}>
           <Grid container>
             <Grid item md={3} lg={5} xl={7}>

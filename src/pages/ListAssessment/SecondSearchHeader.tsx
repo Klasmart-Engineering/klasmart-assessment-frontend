@@ -1,8 +1,8 @@
-import { Grid, Hidden, MenuItem, TextField } from "@material-ui/core";
+import { Grid, MenuItem, TextField } from "@material-ui/core";
+import produce from "immer";
 import React, { ChangeEvent } from "react";
 import { UseFormMethods } from "react-hook-form";
-import { ExectSeachType } from "../../api/type";
-import { AssessmentType, AssessmentTypeValues } from "../../components/AssessmentType";
+import { ExectSeachType, OrderByAssessmentList } from "../../api/type";
 import LayoutBox from "../../components/LayoutBox";
 import { d } from "../../locale/LocaleManager";
 import { ListSearch, SearchComProps } from "./ListSearch";
@@ -10,49 +10,63 @@ import { AssessmentQueryCondition, AssessmentQueryConditionBaseProps, SearchList
 const searchFieldList = () => {
   return [
     { label: d("All").t("assess_search_all"), value: ExectSeachType.all },
-    // { label: "CLass Name", value: ExectSeachType.class_name },
+    // { label: "Class Name", value: ExectSeachType.class_name },
     { label: d("Teacher Name").t("schedule_label_teacher_name"), value: ExectSeachType.teacher_name },
   ];
 };
+const sortOptions = () => {
+  const options = [
+    { label: d("Created On (New-Old)").t("assess_label_created_on_newtoold"), value: OrderByAssessmentList._create_at },
+    { label: d("Created On (Old-New)").t("assess_label_created_on_oldtonew"), value: OrderByAssessmentList.create_at },
+  ];
+  return options;
+};
 export interface SecondSearchHeaderProps extends AssessmentQueryConditionBaseProps {
-  onChangeAssessmentType: (assessment_type: string) => void;
   formMethods: UseFormMethods<SearchListForm>;
   onSearchTeacherName: (name: string) => void;
   teacherList?: UserEntity[];
 }
 export function SecondSearchHeader(props: SecondSearchHeaderProps) {
-  const { value, formMethods, teacherList, onChange, onChangeAssessmentType, onSearchTeacherName } = props;
+  const { value, formMethods, teacherList, onChange, onSearchTeacherName } = props;
+  
   const handleClickSearch = (searchField: SearchComProps["searchFieldDefaultValue"], searchInfo: UserEntity) => {
     const teacher_name = searchInfo.name;
     const query_key = searchInfo.id;
-    const query_type = searchField as AssessmentQueryCondition["query_type"];
+    const query_type = query_key ? searchField as AssessmentQueryCondition["query_type"] : undefined;
     onChange({ ...value, query_key, query_type, teacher_name, page: 1 });
   };
-  const handleChangeAssessmentType = (assessment_type: string) => {
-    const _assessment_type = assessment_type as AssessmentTypeValues;
-    onChangeAssessmentType(_assessment_type);
+
+  const handleChangeOrder = (order_by: string) => {
+    const _order_by = order_by as OrderByAssessmentList;
+    const newValue = produce(value, (draft) => {
+      _order_by ? (draft.order_by = _order_by) : delete draft.order_by;
+    });
+    onChange({ ...newValue, page: 1 });
   };
 
   return (
-    <div style={{ marginBottom: 20 }}>
-      <LayoutBox holderMin={40} holderBase={202} mainBase={1517}>
-          <Grid container spacing={3} style={{ marginTop: "6px" }}>
-            <Grid item md={12} lg={12} xl={12}>
-              <ListSearch
-                searchTextDefaultValue={value.query_key ?? ""}
-                searchFieldDefaultValue={ExectSeachType.teacher_name}
-                defaultTeacherName={value.teacher_name ?? ""}
-                searchFieldList={searchFieldList()}
-                onSearch={handleClickSearch}
-                formMethods={formMethods}
-                onSearchTeacherName={onSearchTeacherName}
-                usersList={teacherList}
-              />
-              <Hidden only={["xs", "sm"]}>
-                <AssessmentType type={value.assessment_type as AssessmentTypeValues} onChangeAssessmentType={handleChangeAssessmentType} />
-              </Hidden>
-            </Grid>
+    <div style={{ marginBottom: 40 }}>
+      <LayoutBox holderMin={40} holderBase={80} mainBase={1760}>
+        <Grid container spacing={3} style={{ marginTop: "6px" }}>
+          <Grid item md={12} lg={12} xl={12}>
+            <ListSearch
+              searchTextDefaultValue={value.query_key ?? ""}
+              searchFieldDefaultValue={ExectSeachType.teacher_name}
+              defaultTeacherName={value.teacher_name ?? ""}
+              searchFieldList={searchFieldList()}
+              onSearch={handleClickSearch}
+              formMethods={formMethods}
+              onSearchTeacherName={onSearchTeacherName}
+              usersList={teacherList}
+            />
+            <DropdownList
+              label={d("Sort By").t("assess_label_sort_by")}
+              value={value.order_by as OrderByAssessmentList}
+              list={sortOptions()}
+              onChange={handleChangeOrder}
+            />
           </Grid>
+        </Grid>
       </LayoutBox>
     </div>
   );
