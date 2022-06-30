@@ -1,25 +1,18 @@
-
 import { enableReviewClass } from "@api/extra";
 import { d } from "@locale/LocaleManager";
-import {
-    Box,
-    Button, Checkbox, createStyles,
-    makeStyles, MenuItem,
-    MenuList,
-    Popover,
-    Theme,
-    Typography
-} from "@material-ui/core";
+import { Box, Button, Checkbox, createStyles, makeStyles, MenuItem, MenuList, Popover, Theme, Typography } from "@material-ui/core";
 import { ArrowDropDown } from "@material-ui/icons";
 import React, { useState } from "react";
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
     menuButton: {
-        minWidth: 24,
-        paddingLeft: theme.spacing(0),
-        paddingRight: theme.spacing(0),
+      minWidth: 24,
+      paddingLeft: theme.spacing(0),
+      paddingRight: theme.spacing(0),
     },
-}));
+  })
+);
 
 export enum AssessmentTypeValues {
   class = "OfflineClass",
@@ -52,82 +45,68 @@ export const assessmentTypes = () => {
 };
 
 interface Props {
-    options: Options[];
-    checked: string[];
-    label: string;
-    onSelectOneOption: (event: React.MouseEvent<HTMLLIElement>, value: string) => void;
-    onFilter: () => void;
+  options: Options[];
+  checked: string[];
+  label: string;
+  onSelectOneOption: (event: React.MouseEvent<HTMLLIElement>, value: string) => void;
+  onFilter: () => void;
 }
 
-export default function MutipleCheckboxDropdown (props: Props) {
-    const {
-        options,
-        checked,
-        label,
-        onSelectOneOption,
-        onFilter
-    } = props;
-    const classes = useStyles();
-    const [ anchorEl, setAnchorEl ] = useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
+export default function MutipleCheckboxDropdown(props: Props) {
+  const { options, checked, label, onSelectOneOption, onFilter } = props;
+  const classes = useStyles();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-    const handleClose = () => {
-        setAnchorEl(null);
-        onFilter();
-    };
+  const handleClose = () => {
+    setAnchorEl(null);
+    onFilter();
+  };
 
-    return (
-        <Box
-            display="flex"
-            flexDirection="row"
-            justifyContent="center"
-            alignItems="center"
-        >
-            <Typography style={{ fontSize: "16px", fontWeight: 600, }}>{label}</Typography>
-            <Button
-                className={classes.menuButton}
-                onClick={handleClick}
+  return (
+    <Box display="flex" flexDirection="row" justifyContent="center" alignItems="center">
+      <Typography style={{ fontSize: "16px", fontWeight: 600 }}>{label}</Typography>
+      <Button className={classes.menuButton} onClick={handleClick}>
+        <ArrowDropDown color="action" />
+      </Button>
+      <Popover
+        keepMounted
+        anchorEl={anchorEl}
+        open={open}
+        anchorOrigin={{
+          vertical: `bottom`,
+          horizontal: `right`,
+        }}
+        transformOrigin={{
+          vertical: `top`,
+          horizontal: `right`,
+        }}
+        onClose={handleClose}
+      >
+        <MenuList>
+          {options.map((action, i) => (
+            <MenuItem
+              key={`menu-item-${i}`}
+              onClick={(e) => {
+                onSelectOneOption(e, action.value);
+                // handleClose();
+              }}
             >
-                <ArrowDropDown color="action" />
-            </Button>
-            <Popover
-                keepMounted
-                anchorEl={anchorEl}
-                open={open}
-                anchorOrigin={{
-                    vertical: `bottom`,
-                    horizontal: `right`,
+              <Checkbox
+                checked={checked.indexOf(action.value) >= 0}
+                // indeterminate={indeterminate}
+                inputProps={{
+                  "aria-label": `select all on page`,
                 }}
-                transformOrigin={{
-                    vertical: `top`,
-                    horizontal: `right`,
-                }}
-                onClose={handleClose}
-            >
-                <MenuList>
-                    {options.map((action, i) => (
-                        <MenuItem
-                            key={`menu-item-${i}`}
-                            onClick={e => {
-                                onSelectOneOption(e, action.value);
-                                // handleClose();
-                            }}
-                        >
-                            <Checkbox
-                              checked={checked.indexOf(action.value) >= 0}
-                              // indeterminate={indeterminate}
-                              inputProps={{
-                                  "aria-label": `select all on page`,
-                              }}
-                            />
-                            <Typography variant="body2">{action.label}</Typography>
-                        </MenuItem>
-                    ))}
-                </MenuList>
-            </Popover>
-        </Box>
-    );
+              />
+              <Typography variant="body2">{action.label}</Typography>
+            </MenuItem>
+          ))}
+        </MenuList>
+      </Popover>
+    </Box>
+  );
 }

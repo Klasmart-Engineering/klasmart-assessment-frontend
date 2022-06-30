@@ -1,8 +1,7 @@
 import noFeedBack from "@assets/img/noFeedback.png";
-import WidgetWrapper from "../../../WidgetWrapper";
-// import { UserAvatar } from "@kl-engineering/kidsloop-px";
-import UserAvatar from "./component/UserAvatar";
-import { Box, CircularProgress, Theme, Typography } from "@material-ui/core";
+// import WidgetWrapper from "../../../WidgetWrapper";
+import { UserAvatar, HomeScreenWidgetWrapper } from "@kl-engineering/kidsloop-px";
+import { Box, CircularProgress, Typography, Theme } from "@material-ui/core";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import React, { useEffect, useState } from "react";
 import { useBottomScrollListener } from "react-bottom-scroll-listener";
@@ -15,6 +14,8 @@ import {
 } from "react-intl";
 import { currentOrganizationState, useGlobalStateValue } from "@kl-engineering/frontend-state";
 import { dFetch } from "@components/Dashboard/tools";
+import WidgetWrapperError from "@components/Dashboard/WidgetWrapper/WidgetWrapperError";
+import WidgetWrapperNoData from "@components/Dashboard/WidgetWrapper/WidgetWrapperNoData";
 
 /** style **/
 export interface StyleProps {
@@ -144,9 +145,13 @@ export const mapAssessmentForStudentToTeacherFeedbackRow = (item: V2StudentAsses
 
 /** Teacher Feedback Widget **/
 interface TeacherFeedbackWidgetProps {
-  RowsPerPage?: number;
+  widgetContext?: any;
 }
-export default function TeacherFeedbackWidget({ RowsPerPage = 3 }: TeacherFeedbackWidgetProps) {
+const RowsPerPage = "3";
+export default function TeacherFeedbackWidget({ widgetContext }: TeacherFeedbackWidgetProps) {
+  const { editing = false, removeWidget, layouts, widgets } = widgetContext;
+  const onRemove = () => removeWidget(WidgetType.TEACHERLOAD, widgets, layouts);
+
   const intl = useIntl();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -214,15 +219,19 @@ export default function TeacherFeedbackWidget({ RowsPerPage = 3 }: TeacherFeedba
   });
 
   return (
-    <WidgetWrapper
+    <HomeScreenWidgetWrapper
       loading={!rows.length && loading}
       error={error}
+      errorScreen={<WidgetWrapperError reload={fetchStatusGroups} />}
       noData={false}
-      reload={fetchStatusGroups}
+      noDataScreen={<WidgetWrapperNoData />}
       label={intl.formatMessage({
         id: `home.student.teacherFeedbackWidget.containerTitleLabel`,
       })}
-      id={WidgetType.TEACHERLOAD}
+      editing={editing}
+      onRemove={onRemove}
+      // editing={false}
+      // onRemove={()=>{}}
     >
       <div ref={scrollRef} className={classes.widgetContent}>
         {rows && rows.length !== 0 ? (
@@ -261,6 +270,6 @@ export default function TeacherFeedbackWidget({ RowsPerPage = 3 }: TeacherFeedba
           </Box>
         )}
       </div>
-    </WidgetWrapper>
+    </HomeScreenWidgetWrapper>
   );
 }

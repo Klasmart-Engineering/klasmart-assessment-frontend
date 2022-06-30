@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) =>
     headCell: {
       fontSize: "16px",
       fontWeight: 600,
-      textAlign: "center"
+      textAlign: "center",
     },
     nameListCell: {
       maxWidth: 300,
@@ -72,18 +72,17 @@ function AssessmentRow(props: AssessmentProps) {
   const css = useStyles();
   const { assessment, onClickAssessment } = props;
   const isComplete = assessment.status === AssessmentStatus.complete;
-  const statusText = 
-  isComplete
-   ? d("Complete").t("assess_filter_complete")
-   : assessment.status === AssessmentStatus.pending
-   ? "Pending"
-   : assessment.status === AssessmentStatus.notstarted
-   ? "Not Started"
-   : assessment.status === AssessmentStatus.started
-   ? "Started"
-   : assessment.status === AssessmentStatus.draft
-   ? "Draft"
-   : "-";
+  const statusText = isComplete
+    ? d("Complete").t("assess_filter_complete")
+    : assessment.status === AssessmentStatus.pending
+    ? "Pending"
+    : assessment.status === AssessmentStatus.notstarted
+    ? "Not Started"
+    : assessment.status === AssessmentStatus.started
+    ? "Started"
+    : assessment.status === AssessmentStatus.draft
+    ? "Draft"
+    : "-";
   const isLong = useMemo(() => {
     if (statusText.length > 16) {
       return true;
@@ -93,18 +92,18 @@ function AssessmentRow(props: AssessmentProps) {
   }, [statusText.length]);
   const statusCom = <div className={clsx(css.statusCon, isComplete ? css.completeColor : css.inCompleteColor)}>{statusText}</div>;
   const assessmentTypeMap = (type?: string) => {
-    if(type === AssessmentTypeValues.class) {
-      return d("Class").t("schedule_detail_offline_class")
-    } else if(type === AssessmentTypeValues.live) {
-      return d("Live").t("schedule_detail_online_class")
-    } else if(type === AssessmentTypeValues.study) {
-      return d("Study").t("assess_study_list_study")
-    } else if(type === AssessmentTypeValues.homeFun) {
-      return d("Study / Home Fun").t("assess_class_type_homefun")
-    } else if(type === AssessmentTypeValues.review) {
-      return d("Study / Auto Review").t("assessment_list_study_review")
+    if (type === AssessmentTypeValues.class) {
+      return d("Class").t("schedule_detail_offline_class");
+    } else if (type === AssessmentTypeValues.live) {
+      return d("Live").t("schedule_detail_online_class");
+    } else if (type === AssessmentTypeValues.study) {
+      return d("Study").t("assess_study_list_study");
+    } else if (type === AssessmentTypeValues.homeFun) {
+      return d("Study / Home Fun").t("assess_class_type_homefun");
+    } else if (type === AssessmentTypeValues.review) {
+      return d("Study / Auto Review").t("assessment_list_study_review");
     }
-  }
+  };
   return (
     <TableRow onClick={(e) => onClickAssessment(assessment.id, assessment.assessment_type)}>
       <TableCell className={css.tableCell} align="center">
@@ -113,9 +112,11 @@ function AssessmentRow(props: AssessmentProps) {
       <TableCell className={css.tableCell} align="center">
         {assessment.title ?? `-`}
       </TableCell>
-     <TableCell align="center">{assessment.lesson_plan?.name ?? `-`}</TableCell>
+      <TableCell align="center">{assessment.lesson_plan?.name ?? `-`}</TableCell>
       <TableCell align="center">{assessment.program?.name ?? `-`}</TableCell>
-      <TableCell align="center">{(assessment.subjects && assessment.subjects.length) ? assessment.subjects?.map((v) => v.name).join(", ") : `-`}</TableCell>
+      <TableCell align="center">
+        {assessment.subjects && assessment.subjects.length ? assessment.subjects?.map((v) => v.name).join(", ") : `-`}
+      </TableCell>
       <TableCell align="center" className={css.statusCell}>
         {isLong ? (
           <Tooltip title={statusText} placement="top">
@@ -129,14 +130,10 @@ function AssessmentRow(props: AssessmentProps) {
         {assessment.teachers?.map((v) => v.name)?.join(" ,") ?? `-`}
       </TableCell>
       <TableCell align="center">{assessment.class_end_at ? formattedTime(assessment.class_end_at) : `-`}</TableCell>
-      <TableCell align="center">
-        {assessment.due_at ? formattedDate(assessment.due_at) : `-`}
-      </TableCell>
+      <TableCell align="center">{assessment.due_at ? formattedDate(assessment.due_at) : `-`}</TableCell>
       <TableCell align="center">{assessment.complete_at ? formattedTime(assessment.complete_at) : `-`}</TableCell>
       <TableCell align="center">{assessment.class_info?.name ?? `-`}</TableCell>
-      <TableCell align="center">
-        {assessment?.complete_rate ? `${Math.round(assessment?.complete_rate * 100)}%` : `-`}
-      </TableCell>
+      <TableCell align="center">{assessment?.complete_rate ? `${Math.round(assessment?.complete_rate * 100)}%` : `-`}</TableCell>
     </TableRow>
   );
 }
@@ -197,16 +194,16 @@ export function AssessmentTable(props: AssessmentTableProps) {
     onClickAssessment,
     onChangeAssessmentType,
     onChangeStatus,
-    onFilter
+    onFilter,
   } = props;
   const amountPerPage = 20;
   const handleChangePage = (event: object, page: number) => onChangePage(page);
   const handleChangeAssessmentType = (event: React.MouseEvent<HTMLLIElement>, value: string) => {
-    onChangeAssessmentType(event, value)
-  }
+    onChangeAssessmentType(event, value);
+  };
   const handleChangeStatus = (event: React.MouseEvent<HTMLLIElement>, value: string) => {
-    onChangeStatus(event, value)
-  }
+    onChangeStatus(event, value);
+  };
   return (
     <LayoutBox holderMin={40} holderBase={80} mainBase={1760}>
       <TableContainer>
@@ -214,7 +211,7 @@ export function AssessmentTable(props: AssessmentTableProps) {
           <TableHead>
             <TableRow className={css.tableRow}>
               <TableCell className={css.headCell}>
-                <MutipleCheckboxDropdown 
+                <MutipleCheckboxDropdown
                   options={assessmentTypeOptions()}
                   checked={assessmentTypes}
                   label={d("Class Type").t("assess_class_type")}
@@ -222,20 +219,12 @@ export function AssessmentTable(props: AssessmentTableProps) {
                   onFilter={onFilter}
                 />
               </TableCell>
+              <TableCell className={css.headCell}>{d("Assessment Title").t("assess_column_title")}</TableCell>
+              <TableCell className={css.headCell}>{d("Lesson Plan").t("library_label_lesson_plan")}</TableCell>
+              <TableCell className={css.headCell}>{d("Program").t("assess_column_program")}</TableCell>
+              <TableCell className={css.headCell}>{d("Subject").t("assess_column_subject")}</TableCell>
               <TableCell className={css.headCell}>
-                {d("Assessment Title").t("assess_column_title")}
-              </TableCell>
-              <TableCell className={css.headCell}>
-                {d("Lesson Plan").t("library_label_lesson_plan")}
-              </TableCell>
-              <TableCell className={css.headCell}>
-                {d("Program").t("assess_column_program")}
-              </TableCell>
-              <TableCell className={css.headCell}>
-                {d("Subject").t("assess_column_subject")}
-              </TableCell>
-              <TableCell className={css.headCell}>
-                <MutipleCheckboxDropdown 
+                <MutipleCheckboxDropdown
                   options={statusOptions()}
                   checked={assessmentStatus}
                   label={d("Status").t("assess_filter_column_status")}
@@ -243,24 +232,12 @@ export function AssessmentTable(props: AssessmentTableProps) {
                   onFilter={onFilter}
                 />
               </TableCell>
-              <TableCell className={css.headCell}>
-                {d("Teacher").t("assess_column_teacher")}
-              </TableCell>
-              <TableCell className={css.headCell}>
-                {d("Class End Time").t("assess_column_class_end_time")}
-              </TableCell>
-              <TableCell className={css.headCell}>
-                {d("Due Date").t("assess_column_due_date")}
-              </TableCell>
-              <TableCell className={css.headCell}>
-                {d("Complete Time").t("assess_column_complete_time")}
-              </TableCell>
-              <TableCell className={css.headCell}>
-                {d("Class Name").t("assess_detail_class_name")}
-              </TableCell>
-              <TableCell className={css.headCell}>
-                {d("Completion Rate").t("assess_list_completion_rate")}
-              </TableCell>
+              <TableCell className={css.headCell}>{d("Teacher").t("assess_column_teacher")}</TableCell>
+              <TableCell className={css.headCell}>{d("Class End Time").t("assess_column_class_end_time")}</TableCell>
+              <TableCell className={css.headCell}>{d("Due Date").t("assess_column_due_date")}</TableCell>
+              <TableCell className={css.headCell}>{d("Complete Time").t("assess_column_complete_time")}</TableCell>
+              <TableCell className={css.headCell}>{d("Class Name").t("assess_detail_class_name")}</TableCell>
+              <TableCell className={css.headCell}>{d("Completion Rate").t("assess_list_completion_rate")}</TableCell>
             </TableRow>
           </TableHead>
           {/* <PLTableHeader fields={header} style={{ height: 80, width: "100%" }} /> */}
@@ -271,14 +248,16 @@ export function AssessmentTable(props: AssessmentTableProps) {
           </TableBody>
         </Table>
       </TableContainer>
-      {(list.length > 0) && <Pagination
-        page={page}
-        className={css.pagination}
-        classes={{ ul: css.paginationUl }}
-        onChange={handleChangePage}
-        count={Math.ceil(total / amountPerPage)}
-        color="primary"
-      />}
+      {list.length > 0 && (
+        <Pagination
+          page={page}
+          className={css.pagination}
+          classes={{ ul: css.paginationUl }}
+          onChange={handleChangePage}
+          count={Math.ceil(total / amountPerPage)}
+          color="primary"
+        />
+      )}
     </LayoutBox>
   );
 }

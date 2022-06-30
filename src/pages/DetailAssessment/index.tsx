@@ -28,7 +28,14 @@ import { MaterialView, MaterialViewProps } from "./MaterialView";
 import { Dimension, MultiSelect, MultiSelectProps, Subtitle } from "./MultiSelect";
 import { OverallOutcomes, OverallOutcomesProps } from "./OverallOutcomes";
 import { StudentView } from "./StudentView";
-import { OutcomeStatus, StudentParticipate, StudentProps, StudentViewItemsProps, SubDimensionOptions, UpdateAssessmentDataOmitAction } from "./type";
+import {
+  OutcomeStatus,
+  StudentParticipate,
+  StudentProps,
+  StudentViewItemsProps,
+  SubDimensionOptions,
+  UpdateAssessmentDataOmitAction,
+} from "./type";
 
 const useQuery = () => {
   const { id, editindex, querys } = useQueryCms();
@@ -77,9 +84,7 @@ export function DetailAssessment() {
     if (students) {
       return students?.filter((student: StudentProps) => student.status === StudentParticipate.Participate);
     } else {
-      return assessmentDetailV2.students?.filter(
-        (student: StudentProps) => student.status === StudentParticipate.Participate
-      );
+      return assessmentDetailV2.students?.filter((student: StudentProps) => student.status === StudentParticipate.Participate);
     }
   }, [assessmentDetailV2.students, students]);
   const [dimension, setDimension] = useState<Dimension>(isHomefun ? Dimension.submitted : Dimension.student);
@@ -103,8 +108,8 @@ export function DetailAssessment() {
   const [subDimesion, setSubDimension] = useState<SubDimensionOptions[] | undefined>();
   const [selectedSubdimension, setSelectedSubdimension] = useState<SubDimensionOptions[] | undefined>();
   const perm = usePermission([
-    PermissionType.edit_in_progress_assessment_439, 
-    PermissionType.edit_attendance_for_in_progress_assessment_438
+    PermissionType.edit_in_progress_assessment_439,
+    PermissionType.edit_attendance_for_in_progress_assessment_438,
   ]);
   const perm_439 = Boolean(perm.edit_in_progress_assessment_439);
   const hasEditPerm = Boolean(perm_439 || perm.edit_attendance_for_in_progress_assessment_438);
@@ -233,7 +238,7 @@ export function DetailAssessment() {
       );
     }
     setComputedStudentViewItems(selectedStudents);
-    const subDimension = ModelAssessment.getInitSubDimension(dimension, selectedStudents)
+    const subDimension = ModelAssessment.getInitSubDimension(dimension, selectedStudents);
     setSubDimension(subDimension);
     setSelectedSubdimension(subDimension);
   };
@@ -244,7 +249,7 @@ export function DetailAssessment() {
       contents
     );
     setComputedStudentViewItems(selectedContents);
-    const subDimension = ModelAssessment.getInitSubDimension(dimension, selectedContents)
+    const subDimension = ModelAssessment.getInitSubDimension(dimension, selectedContents);
     setSubDimension(subDimension);
     setSelectedSubdimension(subDimension);
   };

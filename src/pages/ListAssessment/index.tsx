@@ -25,7 +25,7 @@ const useQuery = (): AssessmentQueryCondition => {
   const status = querys.get("status") || "";
   const teacher_name = (querys.get("teacher_name") as string) || "";
   return useMemo(() => {
-    return { ...clearNull({ query_key, page, order_by, query_type, teacher_name, assessment_type, status}) };
+    return { ...clearNull({ query_key, page, order_by, query_type, teacher_name, assessment_type, status }) };
   }, [query_key, page, order_by, query_type, teacher_name, assessment_type, status]);
 };
 export function ListAssessment() {
@@ -59,17 +59,17 @@ export function ListAssessment() {
   const history = useHistory();
   const dispatch = useDispatch<AppDispatch>();
   const handleChange: SecondSearchHeaderProps["onChange"] = (value) => {
-    const newValue = { ...value, assessment_type: assessmentTypes.join(","), status: assessmentStatus.join(",") }
-    history.push({ search: toQueryString({...clearNull(newValue)}) });
+    const newValue = { ...value, assessment_type: assessmentTypes.join(","), status: assessmentStatus.join(",") };
+    history.push({ search: toQueryString({ ...clearNull(newValue) }) });
   };
 
   const handleChangeAssessmentType: AssessmentTableProps["onChangeAssessmentType"] = (e, value) => {
     let newSelectedAssessmentTypes: string[] = [];
     const index = assessmentTypes.indexOf(value);
-    if(index === -1) {
-      newSelectedAssessmentTypes = newSelectedAssessmentTypes.concat(assessmentTypes, value)
+    if (index === -1) {
+      newSelectedAssessmentTypes = newSelectedAssessmentTypes.concat(assessmentTypes, value);
     } else {
-      newSelectedAssessmentTypes = assessmentTypes.filter(item => item !== value);
+      newSelectedAssessmentTypes = assessmentTypes.filter((item) => item !== value);
     }
     setAssessmentTypes(newSelectedAssessmentTypes);
     // const newValue = { ...condition, page: 1, assessment_type: newSelectedAssessmentTypes.join(",") }
@@ -79,32 +79,32 @@ export function ListAssessment() {
   const handleChangeStatus: AssessmentTableProps["onChangeStatus"] = (e, value) => {
     let newSelectedStatus: string[] = [];
     const index = assessmentStatus.indexOf(value);
-    if(index === -1) {
+    if (index === -1) {
       newSelectedStatus = newSelectedStatus.concat(assessmentStatus, value);
     } else {
-      newSelectedStatus = assessmentStatus.filter(item => item !== value);
+      newSelectedStatus = assessmentStatus.filter((item) => item !== value);
     }
     setAssessmentStatus(newSelectedStatus);
     // const newValue = { ...condition, page: 1, assessment_type: assessmentTypes.join(",") status: assessmentStatus.join(",") }
     // history.push({ search: toQueryString({...clearNull(newValue)}) });
-  }
+  };
 
   const handleFilter: AssessmentTableProps["onFilter"] = () => {
-    const newValue = { ...condition, page: 1, assessment_type: assessmentTypes.join(","), status: assessmentStatus.join(",") }
-    history.push({ search: toQueryString({...clearNull(newValue)}) });
-  }
+    const newValue = { ...condition, page: 1, assessment_type: assessmentTypes.join(","), status: assessmentStatus.join(",") };
+    history.push({ search: toQueryString({ ...clearNull(newValue) }) });
+  };
   const handleChangePage: AssessmentTableProps["onChangePage"] = (page?: number) => {
     history.push({ search: toQueryString({ ...condition, page }) });
-  }
-  
-    const handleClickAssessment: AssessmentTableProps["onClickAssessment"] = (id?: string, assessment_type?: string) => {
+  };
+
+  const handleClickAssessment: AssessmentTableProps["onClickAssessment"] = (id?: string, assessment_type?: string) => {
     history.push({ pathname: DetailAssessment.routeBasePath, search: toQueryString({ id, assessment_type }) });
   };
 
   const handleSearchTeacherName: SecondSearchHeaderProps["onSearchTeacherName"] = (name) => {
     dispatch(getUserListByName(name));
   };
-  
+
   useEffect(() => {
     dispatch(getAssessmentListV2({ ...condition, metaLoading: true }));
   }, [condition, dispatch]);
@@ -142,7 +142,7 @@ export function ListAssessment() {
               onChangeStatus={handleChangeStatus}
               onFilter={handleFilter}
             />
-            {(assessmentListV2 && assessmentListV2.length === 0) && emptyTip}
+            {assessmentListV2 && assessmentListV2.length === 0 && emptyTip}
           </>
         )
       ) : (

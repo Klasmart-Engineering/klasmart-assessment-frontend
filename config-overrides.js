@@ -48,6 +48,9 @@ function myOverrides(config) {
           singleton: true,
           requiredVersion: pkg.dependencies['fetch-intercept'],
         },
+        '@mui/styles': {
+          singleton: true,
+        },
       },
     }),
   ]);

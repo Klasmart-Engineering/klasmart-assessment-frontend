@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     display: "inline-flex",
     position: "relative",
     [theme.breakpoints.down(730)]: {
-      marginBottom: 10
+      marginBottom: 10,
     },
   },
   searchCon: {
@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     height: "40px",
     backgroundColor: "#0E78D5",
     marginLeft: "20px",
-    marginRight: "20px"
+    marginRight: "20px",
   },
   teacherListCon: {
     width: 280,
@@ -151,7 +151,7 @@ export function ListSearch(props: SearchComProps) {
     setSelectAction(false);
     setShowMask(false);
     const main = document.getElementsByTagName("main")[0];
-    if(main) {
+    if (main) {
       main.style.overflow = "auto";
     }
     setIsfocus(false);
@@ -169,9 +169,9 @@ export function ListSearch(props: SearchComProps) {
       setSelectAction(false);
       setShowMask(false);
       const main = document.getElementsByTagName("main")[0];
-    if(main) {
-      main.style.overflow = "auto";
-    }
+      if (main) {
+        main.style.overflow = "auto";
+      }
     }
   };
   // const handleKeyUp: TextFieldProps["onKeyUp"] = () => {
@@ -191,7 +191,7 @@ export function ListSearch(props: SearchComProps) {
   const handleOnFocus = () => {
     setShowMask(true);
     const main = document.getElementsByTagName("main")[0];
-    if(main) {
+    if (main) {
       main.style.overflow = "hidden";
     }
     setIsfocus(true);
@@ -204,7 +204,7 @@ export function ListSearch(props: SearchComProps) {
   const handleHideMask = () => {
     setShowMask(false);
     const main = document.getElementsByTagName("main")[0];
-    if(main) {
+    if (main) {
       main.style.overflow = "auto";
     }
     setIsfocus(false);

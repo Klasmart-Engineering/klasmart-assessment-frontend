@@ -12,13 +12,11 @@ import {
   GetUsersByNameQueryVariables,
   QueryMyUserDocument,
   QueryMyUserQuery,
-  QueryMyUserQueryVariables
+  QueryMyUserQueryVariables,
 } from "../api/api-ko.auto";
 import { EntityScheduleFeedbackView } from "../api/api.auto";
 import { ListAssessmentResult, ListAssessmentResultItem } from "../api/type";
-import {
-  AssessmentListResult, UserEntity
-} from "../pages/ListAssessment/types";
+import { AssessmentListResult, UserEntity } from "../pages/ListAssessment/types";
 import { LoadingMetaPayload } from "./middleware/loadingMiddleware";
 import { AsyncReturnType, AsyncTrunkReturned } from "./type";
 
@@ -120,7 +118,7 @@ export const getDetailAssessmentV2 = createAsyncThunk<IQueryDetailAssessmentResu
       return {
         id: item,
         name,
-      }
+      };
     });
     detail.students = diff_content_students
       ? diff_content_students.map((item) => {
@@ -241,7 +239,7 @@ export const checkResourceExist = createAsyncThunk<checkResourceExistResult, che
   ({ resource_id }) => {
     return api.contentsResources.checkResourceExist(resource_id);
   }
-)
+);
 
 const { reducer } = createSlice({
   name: "assessments",
@@ -274,7 +272,7 @@ const { reducer } = createSlice({
     [getUserListByName.pending.type]: (state, { payload }: PayloadAction<AsyncTrunkReturned<typeof getUserListByName>>) => {
       state.teacherList = initialState.teacherList;
     },
-    [getUserListByName.rejected.type]: (state, {payload}: any) => {
+    [getUserListByName.rejected.type]: (state, { payload }: any) => {
       // user service bug修好后 删掉
       state.teacherList = [];
     },
