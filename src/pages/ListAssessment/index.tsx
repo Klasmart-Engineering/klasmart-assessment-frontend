@@ -18,15 +18,15 @@ import { AssessmentQueryCondition, SearchListForm } from "./types";
 
 const useQuery = (): AssessmentQueryCondition => {
   const { page, querys } = useQueryCms();
-  // const assessment_type = querys.get("assessment_type") || "";
+  const assessment_type = querys.get("assessment_type") || "";
   const query_type = (querys.get("query_type") as ExectSeachType) || ExectSeachType.all;
   const query_key = querys.get("query_key") || "";
   const order_by = (querys.get("order_by") as OrderByAssessmentList) || OrderByAssessmentList._create_at;
-  // const status = (querys.get("status") as AssessmentStatus) || "";
+  const status = querys.get("status") || "";
   const teacher_name = (querys.get("teacher_name") as string) || "";
   return useMemo(() => {
-    return { ...clearNull({ query_key, page, order_by, query_type, teacher_name }) };
-  }, [query_key, page, order_by, query_type, teacher_name]);
+    return { ...clearNull({ query_key, page, order_by, query_type, teacher_name, assessment_type, status }) };
+  }, [query_key, page, order_by, query_type, teacher_name, assessment_type, status]);
 };
 export function ListAssessment() {
   const perm = usePermission([
@@ -52,8 +52,8 @@ export function ListAssessment() {
 
   const { assessmentListV2, total, teacherList } = useSelector<RootState, RootState["assessments"]>((state) => state.assessments);
   const condition = useQuery();
-  const [assessmentTypes, setAssessmentTypes] = useState<string[]>([]);
-  const [assessmentStatus, setAssessmentStatus] = useState<string[]>([]);
+  const [assessmentTypes, setAssessmentTypes] = useState<string[]>(condition.assessment_type?.split(",") ?? []);
+  const [assessmentStatus, setAssessmentStatus] = useState<string[]>(condition.status?.split(",") ?? []);
   const formMethods = useForm<SearchListForm>();
   // const { reset } = formMethods;
   const history = useHistory();
@@ -72,15 +72,8 @@ export function ListAssessment() {
       newSelectedAssessmentTypes = assessmentTypes.filter((item) => item !== value);
     }
     setAssessmentTypes(newSelectedAssessmentTypes);
-    dispatch(
-      getAssessmentListV2({
-        ...condition,
-        page: 1,
-        assessment_type: newSelectedAssessmentTypes.join(","),
-        status: assessmentStatus.join(","),
-        metaLoading: true,
-      })
-    );
+    // const newValue = { ...condition, page: 1, assessment_type: newSelectedAssessmentTypes.join(",") }
+    // history.push({ search: toQueryString({...clearNull(newValue)}) });
   };
 
   const handleChangeStatus: AssessmentTableProps["onChangeStatus"] = (e, value) => {
@@ -92,21 +85,16 @@ export function ListAssessment() {
       newSelectedStatus = assessmentStatus.filter((item) => item !== value);
     }
     setAssessmentStatus(newSelectedStatus);
-    dispatch(
-      getAssessmentListV2({
-        ...condition,
-        page: 1,
-        assessment_type: assessmentTypes.join(","),
-        status: newSelectedStatus.join(","),
-        metaLoading: true,
-      })
-    );
+    // const newValue = { ...condition, page: 1, assessment_type: assessmentTypes.join(",") status: assessmentStatus.join(",") }
+    // history.push({ search: toQueryString({...clearNull(newValue)}) });
   };
 
+  const handleFilter: AssessmentTableProps["onFilter"] = () => {
+    const newValue = { ...condition, page: 1, assessment_type: assessmentTypes.join(","), status: assessmentStatus.join(",") };
+    history.push({ search: toQueryString({ ...clearNull(newValue) }) });
+  };
   const handleChangePage: AssessmentTableProps["onChangePage"] = (page?: number) => {
-    history.push({
-      search: toQueryString({ ...condition, page, assessment_type: assessmentTypes.join(","), status: assessmentStatus.join(",") }),
-    });
+    history.push({ search: toQueryString({ ...condition, page }) });
   };
 
   const handleClickAssessment: AssessmentTableProps["onClickAssessment"] = (id?: string, assessment_type?: string) => {
@@ -118,15 +106,7 @@ export function ListAssessment() {
   };
 
   useEffect(() => {
-    dispatch(
-      getAssessmentListV2({
-        ...condition,
-        assessment_type: assessmentTypes.join(","),
-        status: assessmentStatus.join(","),
-        metaLoading: true,
-      })
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    dispatch(getAssessmentListV2({ ...condition, metaLoading: true }));
   }, [condition, dispatch]);
   return (
     <>
@@ -152,14 +132,15 @@ export function ListAssessment() {
           <>
             <AssessmentTable
               queryCondition={condition}
-              assessmentTypes={assessmentTypes}
-              assessmentStatus={assessmentStatus}
               list={assessmentListV2}
               total={total || 0}
+              assessmentTypes={assessmentTypes}
+              assessmentStatus={assessmentStatus}
               onChangePage={handleChangePage}
               onClickAssessment={handleClickAssessment}
               onChangeAssessmentType={handleChangeAssessmentType}
               onChangeStatus={handleChangeStatus}
+              onFilter={handleFilter}
             />
             {assessmentListV2 && assessmentListV2.length === 0 && emptyTip}
           </>

@@ -49,10 +49,11 @@ interface Props {
   checked: string[];
   label: string;
   onSelectOneOption: (event: React.MouseEvent<HTMLLIElement>, value: string) => void;
+  onFilter: () => void;
 }
 
 export default function MutipleCheckboxDropdown(props: Props) {
-  const { options, checked, label, onSelectOneOption } = props;
+  const { options, checked, label, onSelectOneOption, onFilter } = props;
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -62,6 +63,7 @@ export default function MutipleCheckboxDropdown(props: Props) {
 
   const handleClose = () => {
     setAnchorEl(null);
+    onFilter();
   };
 
   return (
@@ -90,7 +92,7 @@ export default function MutipleCheckboxDropdown(props: Props) {
               key={`menu-item-${i}`}
               onClick={(e) => {
                 onSelectOneOption(e, action.value);
-                handleClose();
+                // handleClose();
               }}
             >
               <Checkbox
