@@ -30,16 +30,6 @@ import { OverallOutcomes, OverallOutcomesProps } from "./OverallOutcomes";
 import { StudentView } from "./StudentView";
 import { OutcomeStatus, StudentParticipate, StudentProps, StudentViewItemsProps, SubDimensionOptions, UpdateAssessmentDataOmitAction } from "./type";
 
-// export const setQuery = (search: string, hash: Record<string, string | number | boolean>): string => {
-//   const query = new URLSearchParams(search);
-//   Object.keys(hash).forEach((key) => query.set(key, String(hash[key])));
-//   return query.toString();
-// };
-// export const toQueryString = (hash: Record<string, any>): string => {
-//   const search = new URLSearchParams(hash);
-//   return `?${search.toString()}`;
-// };
-
 const useQuery = () => {
   const { id, editindex, querys } = useQueryCms();
   const assessment_type = (querys.get("assessment_type") as AssessmentTypeValues) || AssessmentTypeValues.live;

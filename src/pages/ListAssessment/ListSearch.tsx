@@ -205,7 +205,7 @@ export function ListSearch(props: SearchComProps) {
     setShowMask(false);
     const main = document.getElementsByTagName("main")[0];
     if(main) {
-      main.style.overflow = "hidden";
+      main.style.overflow = "auto";
     }
     setIsfocus(false);
     setValue(SEARCHINPUT, defaultTeacherName);

@@ -26,6 +26,8 @@ const useStyles = makeStyles((theme) =>
       minWidth: 104,
       maxWidth: 200,
       textAlign: "center",
+      wordWrap: "break-word",
+      boxSizing: "border-box",
     },
     headCell: {
       fontSize: "16px",
@@ -64,7 +66,7 @@ const useStyles = makeStyles((theme) =>
 interface AssessmentProps {
   assessment: AssessmentListResult[0];
   onClickAssessment: AssessmentTableProps["onClickAssessment"];
-  assessmentType: AssessmentQueryCondition["assessment_type"];
+  // assessmentType: AssessmentQueryCondition["assessment_type"];
 }
 function AssessmentRow(props: AssessmentProps) {
   const css = useStyles();
@@ -181,11 +183,12 @@ export interface AssessmentTableProps {
   onClickAssessment: (id: string | undefined, assessment_type: string | undefined) => any;
   onChangeAssessmentType: (event: React.MouseEvent<HTMLLIElement>, value: string) => void;
   onChangeStatus: (event: React.MouseEvent<HTMLLIElement>, value: string) => void;
+  onFilter: () => void;
 }
 export function AssessmentTable(props: AssessmentTableProps) {
   const css = useStyles();
   const {
-    queryCondition: { assessment_type, page },
+    queryCondition: { page },
     total,
     list,
     assessmentTypes,
@@ -193,10 +196,10 @@ export function AssessmentTable(props: AssessmentTableProps) {
     onChangePage,
     onClickAssessment,
     onChangeAssessmentType,
-    onChangeStatus
+    onChangeStatus,
+    onFilter
   } = props;
   const amountPerPage = 20;
-  // const header = assessmentHeader(assessment_type);
   const handleChangePage = (event: object, page: number) => onChangePage(page);
   const handleChangeAssessmentType = (event: React.MouseEvent<HTMLLIElement>, value: string) => {
     onChangeAssessmentType(event, value)
@@ -216,6 +219,7 @@ export function AssessmentTable(props: AssessmentTableProps) {
                   checked={assessmentTypes}
                   label={d("Class Type").t("assess_class_type")}
                   onSelectOneOption={handleChangeAssessmentType}
+                  onFilter={onFilter}
                 />
               </TableCell>
               <TableCell className={css.headCell}>
@@ -236,6 +240,7 @@ export function AssessmentTable(props: AssessmentTableProps) {
                   checked={assessmentStatus}
                   label={d("Status").t("assess_filter_column_status")}
                   onSelectOneOption={handleChangeStatus}
+                  onFilter={onFilter}
                 />
               </TableCell>
               <TableCell className={css.headCell}>
@@ -261,7 +266,7 @@ export function AssessmentTable(props: AssessmentTableProps) {
           {/* <PLTableHeader fields={header} style={{ height: 80, width: "100%" }} /> */}
           <TableBody>
             {list.map((item) => (
-              <AssessmentRow key={item.id} assessment={item} assessmentType={assessment_type} onClickAssessment={onClickAssessment} />
+              <AssessmentRow key={item.id} assessment={item} onClickAssessment={onClickAssessment} />
             ))}
           </TableBody>
         </Table>

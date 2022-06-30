@@ -7,7 +7,7 @@ on:
     branches: 
       - main
       - hotfix/*
-      - assessment-mfe
+      - dev/KLA-501
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
