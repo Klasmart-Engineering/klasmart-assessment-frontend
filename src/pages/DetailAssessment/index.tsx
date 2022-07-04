@@ -34,7 +34,7 @@ import {
   StudentProps,
   StudentViewItemsProps,
   SubDimensionOptions,
-  UpdateAssessmentDataOmitAction,
+  UpdateAssessmentDataOmitAction
 } from "./type";
 
 const useQuery = () => {
@@ -117,10 +117,11 @@ export function DetailAssessment() {
   const isMyAssessment = Boolean(isMyAssessmentlist && isMyAssessmentlist.length > 0);
   const hasRemainTime = assessmentDetailV2.remaining_time ? assessmentDetailV2.remaining_time > 0 : false;
   const isComplete = assessmentDetailV2.status === AssessmentStatus.complete;
+  const isPendingOrNotStarted = assessmentDetailV2.status === AssessmentStatus.pending || assessmentDetailV2.status === AssessmentStatus.notstarted;
   const editable =
     isStudy || isReview || isHomefun
-      ? isMyAssessment && perm_439 && !hasRemainTime && !isComplete
-      : isMyAssessment && perm_439 && !isComplete && !hasRemainTime;
+      ? isMyAssessment && perm_439 && !hasRemainTime && !isComplete && !isPendingOrNotStarted
+      : isMyAssessment && perm_439 && !isComplete && !isPendingOrNotStarted && !hasRemainTime;
   const completeRate = useMemo(() => {
     const { all, attempt } = ModelAssessment.getCompleteRateV2(computedStudentViewItems ? computedStudentViewItems : initStudentViewItems);
     if (all === 0) return d("N/A").t("assess_column_n_a");

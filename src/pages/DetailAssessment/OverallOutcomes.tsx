@@ -45,6 +45,9 @@ const useStyles = makeStyles({
       boxShadow: "0 0 2px #ababab",
     },
   },
+  typeTableCell: {
+    wordBreak: "normal"
+  }
 });
 export interface OverallOutcomesProps {
   attendanceList: DetailAssessmentProps["students"];
@@ -122,7 +125,7 @@ export function OverallOutcomes(props: OverallOutcomesProps) {
       <TableCell className={css.tableCellLine} align="center">
         &ensp; {outcome.outcome_name} &ensp;
       </TableCell>
-      <TableCell className={css.tableCellLine} align="center">
+      <TableCell className={css.typeTableCell} align="center">
         &ensp;{" "}
         {outcome.assigned_to?.map((a) => (
           <div key={a}>
