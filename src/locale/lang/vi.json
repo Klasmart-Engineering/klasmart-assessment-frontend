@@ -1192,5 +1192,9 @@
   "assessment_lo_bulk_upload_discard": "Loại bỏ",
   "assessment_lo_bulk_upload_discard_warning": "Bạn có muốn loại bỏ tất cả dữ liệu đã chọn và rời khỏi trang?",
   "home_student_teacherFeedbackWidget_containerTitleLabel": "Phản hồi của giáo viên",
-  "home_student_teacherFeedbackWidget_noFeedBack": "Không có phản hồi của giáo viên"
+  "home_student_teacherFeedbackWidget_noFeedBack": "Không có phản hồi của giáo viên",
+  "assessment_status_pending": "Đang chờ xử lý",
+  "assessment_status_not_started": "NotStarted",
+  "assessment_status_started": "Started",
+  "assessment_status_draft": "Draft"
 }

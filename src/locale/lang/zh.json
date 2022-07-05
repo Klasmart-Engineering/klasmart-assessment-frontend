@@ -165,7 +165,7 @@
   "assess_text_search teacher": "搜索老师",
   "assess_filter_column_status": "状态",
   "assess_filter_all": "查看所有",
-  "assess_filter_complete": "仅查看已完成的",
+  "assess_filter_complete": "已完成",
   "assess_filter_in_progress": "仅查看未完成的",
   "assess_sort_by": "排序",
   "assess_class_end_time_new_old": "课程结束时间 (新到旧）",
@@ -1192,5 +1192,9 @@
   "assessment_lo_bulk_upload_discard": "丢弃",
   "assessment_lo_bulk_upload_discard_warning": "确定上传另一个CSV文件，并不保存当前数据么？",
   "home_student_teacherFeedbackWidget_containerTitleLabel": "老师的反馈",
-  "home_student_teacherFeedbackWidget_noFeedBack": "没有老师的反馈"
+  "home_student_teacherFeedbackWidget_noFeedBack": "没有老师的反馈",
+  "assessment_status_pending": "已创建",
+  "assessment_status_not_started": "未开始",
+  "assessment_status_started": "已开始",
+  "assessment_status_draft": "已保存"
 }

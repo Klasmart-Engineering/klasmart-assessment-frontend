@@ -1192,5 +1192,9 @@
   "assessment_lo_bulk_upload_discard": "DISCARD",
   "assessment_lo_bulk_upload_discard_warning": "Are you discarding current data and leave?",
   "home_student_teacherFeedbackWidget_containerTitleLabel": "ดูสถานะเนื้อหาทั้งหมด",
-  "home_student_teacherFeedbackWidget_noFeedBack": "ไม่มีคำติชมของครู"
+  "home_student_teacherFeedbackWidget_noFeedBack": "ไม่มีคำติชมของครู",
+  "assessment_status_pending": "รอดำเนินการ",
+  "assessment_status_not_started": "NotStarted",
+  "assessment_status_started": "Started",
+  "assessment_status_draft": "Draft"
 }

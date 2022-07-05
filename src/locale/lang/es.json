@@ -1192,5 +1192,9 @@
   "assessment_lo_bulk_upload_discard": "DISCARD",
   "assessment_lo_bulk_upload_discard_warning": "Are you discarding current data and leave?",
   "home_student_teacherFeedbackWidget_containerTitleLabel": "Comentarios del docente",
-  "home_student_teacherFeedbackWidget_noFeedBack": "No hay comentarios del docente."
+  "home_student_teacherFeedbackWidget_noFeedBack": "No hay comentarios del docente.",
+  "assessment_status_pending": "Pendiente",
+  "assessment_status_not_started": "NotStarted",
+  "assessment_status_started": "Started",
+  "assessment_status_draft": "Draft"
 }
