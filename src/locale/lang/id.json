@@ -1192,5 +1192,9 @@
   "assessment_lo_bulk_upload_discard": "BUANG",
   "assessment_lo_bulk_upload_discard_warning": "Buang data ini dan keluar?",
   "home_student_teacherFeedbackWidget_containerTitleLabel": "Masukan guru",
-  "home_student_teacherFeedbackWidget_noFeedBack": "Belum ada umpan balik dari guru"
+  "home_student_teacherFeedbackWidget_noFeedBack": "Belum ada umpan balik dari guru",
+  "assessment_status_pending": "Draf",
+  "assessment_status_not_started": "NotStarted",
+  "assessment_status_started": "Started",
+  "assessment_status_draft": "Draft"
 }
