@@ -148,5 +148,5 @@ export function ListAssessment() {
   );
 }
 
-ListAssessment.routeBasePath = `/assessments/assessment-list?page=1&status=${AssessmentStatusValues.class_live_homefun_all}`;
+ListAssessment.routeBasePath = `/assessments/assessment-list`;
 ListAssessment.routeRedirectDefault = `/assessments/assessment-list?page=1&status=${AssessmentStatusValues.class_live_homefun_all}`;

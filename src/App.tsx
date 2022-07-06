@@ -1,20 +1,20 @@
 import { ApolloProvider } from "@apollo/client";
+import { ConfirmDialog } from "@components/ConfirmDialog";
+import { Loading } from "@components/Loading";
+import { Locale } from "@components/Locale";
+import { Notification } from "@components/Notification";
 import { createGenerateClassName, StylesProvider, ThemeProvider } from "@material-ui/core";
+import { DetailAssessment } from "@pages/DetailAssessment";
+import { ListAssessment } from "@pages/ListAssessment";
+import { OutcomeList } from "@pages/OutcomeList";
 import { SnackbarProvider } from "notistack";
 import React from "react";
 import { Provider } from "react-redux";
 import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
 import { gqlapi } from "./api";
-import { ConfirmDialog } from "@components/ConfirmDialog";
-import { Loading } from "@components/Loading";
-import { Locale } from "@components/Locale";
-import { Notification } from "@components/Notification";
-import { DetailAssessment } from "@pages/DetailAssessment";
-import { ListAssessment } from "@pages/ListAssessment";
 import MilestoneEdit from "./pages/MilestoneEdit";
 import MilestonesList from "./pages/MilestoneList";
 import { default as CreateOutcome, default as CreateOutcomings } from "./pages/OutcomeEdit";
-import { OutcomeList } from "@pages/OutcomeList";
 import { store } from "./reducers";
 import theme from "./theme";
 // import { Test } from "@pages/test";
@@ -55,7 +55,7 @@ function App() {
                     {/*  <Test />*/}
                     {/*</Route>*/}
                     <Route path="/">
-                      <Redirect to={ListAssessment.routeBasePath} />
+                      <Redirect to={ListAssessment.routeRedirectDefault} />
                     </Route>
                   </Switch>
                   <Notification />
