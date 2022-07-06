@@ -14,11 +14,11 @@ import { AppDispatch, RootState } from "../../reducers";
 import { getAssessmentListV2, getUserListByName } from "../../reducers/assessments";
 import { AssessmentTable, AssessmentTableProps } from "./AssessmentTable";
 import { SecondSearchHeader, SecondSearchHeaderProps } from "./SecondSearchHeader";
-import { AssessmentQueryCondition, SearchListForm } from "./types";
+import { AssessmentQueryCondition, AssessmentStatusValues, SearchListForm } from "./types";
 
 const useQuery = (): AssessmentQueryCondition => {
   const { page, querys } = useQueryCms();
-  const assessment_type = querys.get("assessment_type") || "";
+  const assessment_type = querys.get("assessment_type") || AssessmentStatusValues.class_live_homefun_all;
   const query_type = (querys.get("query_type") as ExectSeachType) || ExectSeachType.all;
   const query_key = querys.get("query_key") || "";
   const order_by = (querys.get("order_by") as OrderByAssessmentList) || OrderByAssessmentList._create_at;
@@ -153,4 +153,4 @@ export function ListAssessment() {
 }
 
 ListAssessment.routeBasePath = "/assessments/assessment-list";
-ListAssessment.routeRedirectDefault = `/assessments/assessment-list?page=1`;
+ListAssessment.routeRedirectDefault = `/assessments/assessment-list?page=1&status=${AssessmentStatusValues.class_live_homefun_all}`;

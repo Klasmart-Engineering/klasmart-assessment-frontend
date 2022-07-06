@@ -1881,7 +1881,7 @@ A new ‘Auto review’ lesson will appear on students’ calendar once our plat
   | { id: "assessment_lo_bulk_upload_check_notice"; description: `Check all learning outcomes to upload.`; values: undefined }
   | {
       id: "assessment_lo_bulk_upload_result";
-      description: `(There are {count1} to upload, {count2}to create, {count3}to modify.)`;
+      description: `(There are {count1} to upload, {count2} to create, {count3} to modify.)`;
       values: { count1: string | number; count2: string | number; count3: string | number };
     }
   | {
@@ -1896,7 +1896,11 @@ A new ‘Auto review’ lesson will appear on students’ calendar once our plat
   | { id: "assessment_lo_bulk_upload_discard"; description: `DISCARD`; values: undefined }
   | { id: "assessment_lo_bulk_upload_discard_warning"; description: `Are you discarding current data and leave?`; values: undefined }
   | { id: "home_student_teacherFeedbackWidget_containerTitleLabel"; description: `Teacher’s feedback`; values: undefined }
-  | { id: "home_student_teacherFeedbackWidget_noFeedBack"; description: `There is no teacher's feedback`; values: undefined };
+  | { id: "home_student_teacherFeedbackWidget_noFeedBack"; description: `There is no teacher's feedback`; values: undefined }
+  | { id: "assessment_status_pending"; description: `Pending`; values: undefined }
+  | { id: "assessment_status_not_started"; description: `NotStarted`; values: undefined }
+  | { id: "assessment_status_started"; description: `Started`; values: undefined }
+  | { id: "assessment_status_draft"; description: `Draft`; values: undefined };
 
 export type LangRecordId = LangRecord["id"];
 export type LangRecodeDescription = LangRecord["description"];

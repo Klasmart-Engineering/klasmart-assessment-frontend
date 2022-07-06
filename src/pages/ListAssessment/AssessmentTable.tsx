@@ -162,10 +162,10 @@ export const assessmentTypeOptions = () => {
 };
 const statusOptions = () => {
   const options = [
-    { label: "Pending", value: AssessmentStatus.pending },
-    { label: "Not Started", value: AssessmentStatus.notstarted },
-    { label: "Started", value: AssessmentStatus.started },
-    { label: "Draft", value: AssessmentStatus.draft },
+    { label: d("Pending").t("assess_label_pending"), value: AssessmentStatus.pending },
+    { label: d("NotStarted").t("assessment_status_not_started"), value: AssessmentStatus.notstarted },
+    { label: d("Started").t("assessment_status_started"), value: AssessmentStatus.started },
+    { label: d("Draft").t("assess_label_draft"), value: AssessmentStatus.draft },
     { label: d("Complete").t("assess_filter_complete"), value: AssessmentStatus.complete },
   ];
   return options;
