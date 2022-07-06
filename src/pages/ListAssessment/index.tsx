@@ -22,7 +22,7 @@ const useQuery = (): AssessmentQueryCondition => {
   const query_type = (querys.get("query_type") as ExectSeachType) || ExectSeachType.all;
   const query_key = querys.get("query_key") || "";
   const order_by = (querys.get("order_by") as OrderByAssessmentList) || OrderByAssessmentList._create_at;
-  const status = querys.get("status") || AssessmentStatusValues.class_live_homefun_all;
+  const status = querys.get("status");
   const teacher_name = (querys.get("teacher_name") as string) || "";
   return useMemo(() => {
     return { ...clearNull({ query_key, page, order_by, query_type, teacher_name, assessment_type, status }) };
@@ -72,8 +72,6 @@ export function ListAssessment() {
       newSelectedAssessmentTypes = assessmentTypes.filter((item) => item !== value);
     }
     setAssessmentTypes(newSelectedAssessmentTypes);
-    // const newValue = { ...condition, page: 1, assessment_type: newSelectedAssessmentTypes.join(",") }
-    // history.push({ search: toQueryString({...clearNull(newValue)}) });
   };
 
   const handleChangeStatus: AssessmentTableProps["onChangeStatus"] = (e, value) => {
@@ -85,8 +83,6 @@ export function ListAssessment() {
       newSelectedStatus = assessmentStatus.filter((item) => item !== value);
     }
     setAssessmentStatus(newSelectedStatus);
-    // const newValue = { ...condition, page: 1, assessment_type: assessmentTypes.join(",") status: assessmentStatus.join(",") }
-    // history.push({ search: toQueryString({...clearNull(newValue)}) });
   };
 
   const handleFilter: AssessmentTableProps["onFilter"] = () => {
@@ -152,5 +148,5 @@ export function ListAssessment() {
   );
 }
 
-ListAssessment.routeBasePath = "/assessments/assessment-list";
+ListAssessment.routeBasePath = `/assessments/assessment-list?page=1&status=${AssessmentStatusValues.class_live_homefun_all}`;
 ListAssessment.routeRedirectDefault = `/assessments/assessment-list?page=1&status=${AssessmentStatusValues.class_live_homefun_all}`;
