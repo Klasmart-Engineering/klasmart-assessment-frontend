@@ -18,11 +18,11 @@ import { AssessmentQueryCondition, AssessmentStatusValues, SearchListForm } from
 
 const useQuery = (): AssessmentQueryCondition => {
   const { page, querys } = useQueryCms();
-  const assessment_type = querys.get("assessment_type") || AssessmentStatusValues.class_live_homefun_all;
+  const assessment_type = querys.get("assessment_type") || "";
   const query_type = (querys.get("query_type") as ExectSeachType) || ExectSeachType.all;
   const query_key = querys.get("query_key") || "";
   const order_by = (querys.get("order_by") as OrderByAssessmentList) || OrderByAssessmentList._create_at;
-  const status = querys.get("status") || "";
+  const status = querys.get("status") || AssessmentStatusValues.class_live_homefun_all;
   const teacher_name = (querys.get("teacher_name") as string) || "";
   return useMemo(() => {
     return { ...clearNull({ query_key, page, order_by, query_type, teacher_name, assessment_type, status }) };
