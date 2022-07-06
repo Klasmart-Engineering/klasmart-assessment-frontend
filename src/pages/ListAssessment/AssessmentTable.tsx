@@ -75,13 +75,13 @@ function AssessmentRow(props: AssessmentProps) {
   const statusText = isComplete
     ? d("Complete").t("assess_filter_complete")
     : assessment.status === AssessmentStatus.pending
-    ? "Pending"
+    ? d("Pending").t("assess_label_pending")
     : assessment.status === AssessmentStatus.notstarted
-    ? "Not Started"
+    ? d("NotStarted").t("assessment_status_not_started")
     : assessment.status === AssessmentStatus.started
-    ? "Started"
+    ? d("Started").t("assessment_status_started")
     : assessment.status === AssessmentStatus.draft
-    ? "Draft"
+    ? d("Draft").t("assess_label_draft")
     : "-";
   const isLong = useMemo(() => {
     if (statusText.length > 16) {
