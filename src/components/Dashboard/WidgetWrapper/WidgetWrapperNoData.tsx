@@ -1,9 +1,9 @@
-import NoDataSvg from "./img/nodata.svg";
-import { Theme } from "@material-ui/core";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
-
+import { Theme } from "@mui/material";
+import { createStyles, makeStyles } from "@mui/styles";
 import React from "react";
 import { FormattedMessage } from "react-intl";
+import NoDataSvg from "./img/nodata.svg";
+
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

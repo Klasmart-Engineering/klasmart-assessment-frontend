@@ -1,5 +1,5 @@
 import { enableReviewClass } from "@api/extra";
-import { MenuItem, TextField } from "@material-ui/core";
+import { MenuItem, TextField } from "@mui/material";
 import React, { ChangeEvent } from "react";
 import { d } from "../../locale/LocaleManager";
 export enum AssessmentTypeValues {

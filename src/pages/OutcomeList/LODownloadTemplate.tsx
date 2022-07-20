@@ -1,9 +1,9 @@
 import { d } from "@locale/LocaleManager";
-import { createStyles, makeStyles } from "@material-ui/core";
 import { formattedMonthDay } from "@models/ModelOutcomeDetailForm";
+import { createStyles, makeStyles } from "@mui/styles";
 import { useMemo } from "react";
 import { FieldsProps } from "./types";
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     downloadA: {
       fontSize: "14px",

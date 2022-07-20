@@ -1,6 +1,6 @@
-import { Person } from "@material-ui/icons";
-import { Avatar, Tooltip, useTheme } from "@material-ui/core";
-import { createStyles, makeStyles } from "@material-ui/core/styles";
+import { Person } from "@mui/icons-material";
+import { Avatar, Theme, Tooltip, useTheme } from "@mui/material";
+import { createStyles, makeStyles } from "@mui/styles";
 import clsx from "clsx";
 import React from "react";
 import stringToColor from "./stringToColor";
@@ -16,7 +16,7 @@ const nameToInitials = (name: string, maxLength = Number.MAX_SAFE_INTEGER): stri
     .substring(0, maxLength);
 };
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     avatar: {
       color: `white`,

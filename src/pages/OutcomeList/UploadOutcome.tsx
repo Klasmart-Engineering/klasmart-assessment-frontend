@@ -2,20 +2,20 @@ import { FixedTable } from "@components/FixedTable";
 import { emptyTip } from "@components/TipImages";
 import { CSVObjProps, UploadCSV } from "@components/UploadCSV";
 import { d, t } from "@locale/LocaleManager";
+import { Close } from "@mui/icons-material";
 import {
   Button,
-  createStyles,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
   IconButton,
-  makeStyles,
   Tab,
-  Tabs
-} from "@material-ui/core";
-import { Close } from "@material-ui/icons";
+  Tabs,
+  Theme
+} from "@mui/material";
+import { createStyles, makeStyles } from "@mui/styles";
 import { actAsyncConfirm } from "@reducers/confirm";
 import { AppDispatch } from "@reducers/index";
 import { actError } from "@reducers/notify";
@@ -24,7 +24,7 @@ import { useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { LODownloadTemplate } from "./LODownloadTemplate";
 import { ErrorsInfoProps, OutcomeHeadersProps, UploadTab } from "./types";
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     title: {
       borderBottom: "1px solid #eeeeee",

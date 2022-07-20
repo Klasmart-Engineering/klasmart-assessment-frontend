@@ -1,6 +1,6 @@
-import { Button, Checkbox, Chip, FormControlLabel, makeStyles, TextField, Typography } from "@material-ui/core";
-import { Search } from "@material-ui/icons";
-import ClearRoundedIcon from "@material-ui/icons/ClearRounded";
+import { ClearRounded as ClearRoundedIcon, Search } from "@mui/icons-material";
+import { Button, Checkbox, Chip, FormControlLabel, TextField, Theme, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
 import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -9,7 +9,7 @@ import { OutcomeSetResult } from "../../api/type";
 import { d } from "../../locale/LocaleManager";
 import { CheckboxGroup } from "../CheckboxGroup";
 import { LButton } from "../LButton";
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   addSetsCon: {
     fontSize: 18,
     color: "#666666",
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 5,
     background: "#fff",
 
-    "& .assessment-MuiFormControlLabel-root": {
+    "& .MuiFormControlLabel-root": {
       marginTop: 10,
       fontSize: 16,
       lineHeight: "19px",
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     borderTop: "1px solid #eeeeee",
     height: 56,
     lineHeight: "56px",
-    "& .assessment-MuiButton-containedPrimary": {
+    "& .MuiButton-containedPrimary": {
       marginRight: 10,
     },
   },

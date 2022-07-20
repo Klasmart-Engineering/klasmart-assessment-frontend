@@ -1,7 +1,8 @@
 import { enableReviewClass } from "@api/extra";
 import { d } from "@locale/LocaleManager";
-import { Box, Button, Checkbox, createStyles, makeStyles, MenuItem, MenuList, Popover, Theme, Typography } from "@material-ui/core";
-import { ArrowDropDown } from "@material-ui/icons";
+import { ArrowDropDown } from "@mui/icons-material";
+import { Box, Button, Checkbox, MenuItem, MenuList, Popover, Theme, Typography } from "@mui/material";
+import { createStyles, makeStyles } from "@mui/styles";
 import React, { useState } from "react";
 
 const useStyles = makeStyles((theme: Theme) =>

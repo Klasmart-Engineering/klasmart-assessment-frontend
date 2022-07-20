@@ -1,5 +1,6 @@
-import { Button, makeStyles, TextField, TextFieldProps } from "@material-ui/core";
-import { Search } from "@material-ui/icons";
+import { Search } from "@mui/icons-material";
+import { Button, TextField, TextFieldProps, Theme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
 import React, { ChangeEvent, useMemo, useState } from "react";
 import { Controller, useForm, UseFormMethods } from "react-hook-form";
@@ -8,17 +9,13 @@ import { SearchListForm, UserEntity } from "./types";
 
 const SEARCHINPUT = "SEARCH_NAME";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   searchText: {
     position: "relative",
     backgroundColor: "#fff",
     zIndex: 200,
     width: "280px",
     borderRadius: "4px",
-    // "& .assessment-MuiOutlinedInput-notchedOutline": {
-    //   border: 0,
-    //   borderRadius: 0,
-    // },
   },
   exectSearchInput: {
     maxWidth: 128,

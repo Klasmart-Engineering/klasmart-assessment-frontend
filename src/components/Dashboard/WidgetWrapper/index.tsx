@@ -1,12 +1,11 @@
+import { Cancel, PlayArrow } from "@mui/icons-material";
+import { Box, Card, CircularProgress, IconButton, Link, Theme, Typography } from "@mui/material";
+import { createStyles, makeStyles } from "@mui/styles";
+import React, { useContext } from "react";
 import { WidgetType } from "../models/widget.model";
 import WidgetContext from "./widgetContext";
 import WidgetWrapperError from "./WidgetWrapperError";
 import WidgetWrapperNoData from "./WidgetWrapperNoData";
-import { Cancel, PlayArrow } from "@material-ui/icons";
-import { Box, Card, CircularProgress, IconButton, Link, Typography } from "@material-ui/core";
-import { Theme } from "@material-ui/core/styles";
-import { createStyles, makeStyles } from "@material-ui/core/styles";
-import React, { useContext } from "react";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

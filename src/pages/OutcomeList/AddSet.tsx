@@ -1,4 +1,5 @@
-import { Button, createStyles, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles } from "@material-ui/core";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Theme } from "@mui/material";
+import { createStyles, makeStyles } from "@mui/styles";
 import React, { useMemo, useState } from "react";
 import { ApiPullOutcomeSetResponse } from "../../api/api.auto";
 import { OutcomeSetResult } from "../../api/type";
@@ -6,7 +7,7 @@ import { LButton, LButtonProps } from "../../components/LButton";
 import { OutcomeSet } from "../../components/OutSet";
 import { d } from "../../locale/LocaleManager";
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     okBtn: {
       marginLeft: "40px !important",

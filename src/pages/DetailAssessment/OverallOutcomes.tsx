@@ -1,4 +1,5 @@
-import { Box, Checkbox, FormControlLabel, makeStyles, Table, TableBody, TableCell, TableContainer, TableRow } from "@material-ui/core";
+import { Box, Checkbox, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import React, { ChangeEvent, useMemo } from "react";
 import { PLField, PLTableHeader } from "../../components/PLTable";
 import { d } from "../../locale/LocaleManager";

@@ -1,4 +1,4 @@
-import { Button, TextField, useMediaQuery, useTheme } from "@material-ui/core";
+import { Button, TextField, useMediaQuery, useTheme } from "@mui/material";
 import React from "react";
 import { d } from "../../locale/LocaleManager";
 

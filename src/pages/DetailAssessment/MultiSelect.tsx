@@ -1,10 +1,10 @@
 import { AssessmentTypeValues } from "@components/AssessmentType";
-import { makeStyles, MenuItem, TextField, Typography, useMediaQuery, useTheme } from "@material-ui/core";
-import { Autocomplete } from "@material-ui/lab";
+import { Autocomplete, MenuItem, TextField, Theme, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import React, { ChangeEvent, useState } from "react";
 import { d } from "../../locale/LocaleManager";
 import { MainDimensionOptions, SubDimensionOptions } from "./type";
-const useStyles = makeStyles(({ palette, breakpoints }) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   lps_title: {
     fontWeight: "bolder",
     marginBottom: 10,
@@ -94,7 +94,8 @@ export function MultiSelect(props: MultiSelectProps) {
           id="tags-outlined"
           options={[...initOption, ...subDimension]}
           getOptionLabel={(option) => option.name}
-          getOptionSelected={(option, value) => option.id === value.id}
+          isOptionEqualToValue={(option: SubDimensionOptions, value: SubDimensionOptions) => option.id === value.id}
+          // getOptionSelected={(option: SubDimensionOptions, value: SubDimensionOptions) => option.id === value.id}
           value={subValue}
           onChange={(e, value, reasopn) => handleChangeAutoComplete(e, value, reasopn)}
           renderInput={(params) => (

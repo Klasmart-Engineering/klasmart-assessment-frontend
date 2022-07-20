@@ -1,20 +1,18 @@
 import { AssessmentTypeValues } from "@components/AssessmentType";
+import { AccountCircle as AccountCircleIcon, ArrowDropDown as ArrowDropDownIcon, ArrowDropUp as ArrowDropUpIcon } from "@mui/icons-material";
 import {
   Box,
   Checkbox,
   Collapse,
   FormControlLabel,
-  makeStyles,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableRow,
   Tooltip
-} from "@material-ui/core";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { DetailAssessmentResult } from "@pages/ListAssessment/types";
 import { cloneDeep } from "lodash";
 import React, { ChangeEvent, Fragment, useMemo, useState } from "react";

@@ -156,7 +156,7 @@ export function OutcomeList() {
       const exect_search = getValues()[BulkListFormKey.EXECT_SEARCH];
       draft.exect_search = exect_search;
     });
-    history.push({ search: toQueryString(clearNull(newValue)) });
+    history.push({ search: toQueryString((newValue)) });
   };
 
   const handleBulkApprove: ThirdSearchHeaderProps["onBulkApprove"] = () => {

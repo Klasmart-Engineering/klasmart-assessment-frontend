@@ -1,9 +1,10 @@
-import { Backdrop, CircularProgress, createStyles, makeStyles } from "@material-ui/core";
+import { Backdrop, CircularProgress, Theme } from "@mui/material";
+import { createStyles, makeStyles } from "@mui/styles";
 import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../reducers";
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     backdrop: {
       zIndex: theme.zIndex.drawer + 300,

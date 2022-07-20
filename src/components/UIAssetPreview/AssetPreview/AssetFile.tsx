@@ -1,11 +1,12 @@
-import { makeStyles } from "@material-ui/core";
+import { Theme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { getDownloadPath } from "@reducers/assessments";
 import { AsyncTrunkReturned } from "@reducers/type";
 import { PayloadAction } from "@reduxjs/toolkit";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   assetsContent: {
     height: "100%",
     width: "90%",

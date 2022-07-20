@@ -1,13 +1,6 @@
-import { Grid } from "@material-ui/core";
-import AppBar from "@material-ui/core/AppBar/AppBar";
-import Button from "@material-ui/core/Button";
-import Hidden from "@material-ui/core/Hidden";
-import { makeStyles } from "@material-ui/core/styles";
-import Tab from "@material-ui/core/Tab";
-import Tabs from "@material-ui/core/Tabs";
-import FlagOutlinedIcon from "@material-ui/icons/FlagOutlined";
-import TimelineOutlinedIcon from "@material-ui/icons/TimelineOutlined";
-import TuneOutlinedIcon from "@material-ui/icons/TuneOutlined";
+import { FlagOutlined as FlagOutlinedIcon, TimelineOutlined as TimelineOutlinedIcon, TuneOutlined as TuneOutlinedIcon } from "@mui/icons-material";
+import { AppBar, Button, Grid, Hidden, Tab, Tabs, Theme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import CreateOutcomings from "@pages/OutcomeEdit";
 import { resetSelectedIds } from "@reducers/outcome";
 import clsx from "clsx";
@@ -17,18 +10,15 @@ import { useHistory } from "react-router-dom";
 import PermissionType from "../../api/PermissionType";
 import { usePermission } from "../../hooks/usePermission";
 import { d } from "../../locale/LocaleManager";
-// import { AssessmentList } from "../../pages/AssesmentList";
-// import { HomeFunAssessmentList } from "../../pages/HomeFunAssessmentList";
 import { ListAssessment } from "../../pages/ListAssessment";
 import MilestoneEdit from "../../pages/MilestoneEdit";
 import MilestonesList from "../../pages/MilestoneList";
 import { OutcomeList } from "../../pages/OutcomeList";
 import { LoBlueIcon, LoIcon } from "../../pages/OutcomeList/Icons";
-// import { StudyAssessmentList } from "../../pages/StudyAssessmentList";
 import LayoutBox from "../LayoutBox";
 import { Permission } from "../Permission";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     marginTop: 20,
     flexGrow: 1,
@@ -42,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "capitalize",
   },
   nav: {
+    color: "rgba(0,0,0,0.87)",
     cursor: "pointer",
     fontWeight: "bold",
     marginRight: "3px",
@@ -102,6 +93,8 @@ export function FirstSearchHeader() {
   const dispatch = useDispatch();
   const pathname = history.location.pathname;
   const hightLightAssessment = pathname.indexOf(ListAssessment.routeBasePath) >= 0;
+  const hightLightOutcomeList = pathname.indexOf(OutcomeList.routeBasePath) >= 0;
+  const hightLightMilestoneList = pathname.indexOf(MilestonesList.routeBasePath) >= 0;
   return (
     <div className={css.root}>
       <LayoutBox holderMin={40} holderBase={80} mainBase={1760}>
@@ -135,8 +128,8 @@ export function FirstSearchHeader() {
               <Permission value={PermissionType.learning_outcome_page_404}>
                 <Button
                   onClick={() => history.push(OutcomeList.routeRedirectDefault)}
-                  className={clsx(css.nav, { [css.actives]: pathname.indexOf(OutcomeList.routeBasePath) >= 0 })}
-                  startIcon={pathname.indexOf(OutcomeList.routeBasePath) >= 0 ? <LoBlueIcon /> : <LoIcon />}
+                  className={clsx(css.nav, hightLightOutcomeList ? css.actives : "")}
+                  startIcon={hightLightOutcomeList ? <LoBlueIcon /> : <LoIcon />}
                 >
                   {d("Learning Outcomes").t("assess_column_lo")}
                 </Button>
@@ -147,14 +140,14 @@ export function FirstSearchHeader() {
                     dispatch(resetSelectedIds({}));
                     history.push(MilestonesList.routeRedirectDefault);
                   }}
-                  className={clsx(css.nav, { [css.actives]: pathname.indexOf(MilestonesList.routeBasePath) >= 0 })}
+                  className={clsx(css.nav, hightLightMilestoneList ? css.actives : "" )}
                   startIcon={<FlagOutlinedIcon />}
                 >
                   {d("Milestones").t("assess_label_milestone")}
                 </Button>
               </Permission>
               <Permission value={PermissionType.milestones_page_405}>
-                <Button className={clsx(css.nav, { [css.actives]: false })} startIcon={<TuneOutlinedIcon />}>
+                <Button className={clsx(css.nav)} startIcon={<TuneOutlinedIcon />}>
                   {d("Standards").t("assess_label_Standard")}
                 </Button>
               </Permission>
@@ -164,7 +157,7 @@ export function FirstSearchHeader() {
                     dispatch(resetSelectedIds({}));
                     history.push(ListAssessment.routeRedirectDefault);
                   }}
-                  className={clsx(css.nav, { [css.actives]: hightLightAssessment })}
+                  className={clsx(css.nav, hightLightAssessment ? css.actives : "")}
                   startIcon={<TimelineOutlinedIcon />}
                 >
                   {d("Assessments").t("assess_label_assessments")}
@@ -197,7 +190,7 @@ export function FirstSearchHeaderMb() {
               <Tabs
                 value={pathname}
                 variant="scrollable"
-                scrollButtons="on"
+                scrollButtons="auto"
                 indicatorColor="primary"
                 textColor="primary"
                 aria-label="scrollable force tabs example"

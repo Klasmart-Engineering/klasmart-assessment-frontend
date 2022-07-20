@@ -1,13 +1,14 @@
-import { Button, makeStyles, MenuItem, TextField, TextFieldProps } from "@material-ui/core";
-import { Search } from "@material-ui/icons";
+import { Search } from "@mui/icons-material";
+import { Button, MenuItem, TextField, TextFieldProps, Theme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import React from "react";
 import { Controller, UseFormMethods } from "react-hook-form";
 import { d } from "../../locale/LocaleManager";
 import { BulkListForm } from "./types";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   searchText: {
-    "& .assessment-MuiOutlinedInput-notchedOutline": {
+    "& .MuiOutlinedInput-notchedOutline": {
       border: 0,
       borderRadius: 0,
     },
@@ -18,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     height: 40,
     boxSizing: "border-box",
     background: "#F0F0F0",
-    "& .assessment-MuiOutlinedInput-notchedOutline": {
+    "& .MuiOutlinedInput-notchedOutline": {
       border: 0,
     },
   },
@@ -80,8 +81,8 @@ export function ListSearch(props: SearchComProps) {
           SelectProps={{
             MenuProps: {
               transformOrigin: {
-                vertical: -40,
-                horizontal: "left",
+                vertical: 0,
+                horizontal: 32,
               },
             },
           }}

@@ -1,8 +1,9 @@
-import { createStyles, makeStyles, Tooltip, withStyles } from "@material-ui/core";
-import ErrorIcon from '@material-ui/icons/Error';
+import { Error as ErrorIcon } from '@mui/icons-material';
+import { Theme, Tooltip } from "@mui/material";
+import { createStyles, makeStyles, withStyles } from "@mui/styles";
 import { ErrorsInfoProps } from "@pages/OutcomeList/types";
 import clsx from "clsx";
-const useStyles = makeStyles((theme) => createStyles({
+const useStyles = makeStyles((theme: Theme) => createStyles({
   tableCon: {
     backgroundColor: theme.palette.common.white,
     width: `100%`,

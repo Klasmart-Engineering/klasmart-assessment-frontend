@@ -1,8 +1,6 @@
-import { Checkbox, FormControlLabel, Grid, Menu, MenuItem } from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import Hidden from "@material-ui/core/Hidden";
-import { makeStyles } from "@material-ui/core/styles";
-import LocalBarOutlinedIcon from "@material-ui/icons/LocalBarOutlined";
+import { LocalBarOutlined as LocalBarOutlinedIcon } from "@mui/icons-material";
+import { Button, Checkbox, FormControlLabel, Grid, Hidden, Menu, MenuItem, Theme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import produce from "immer";
 import React, { ChangeEvent, MouseEventHandler, useEffect, useState } from "react";
 import { useForm, UseFormMethods } from "react-hook-form";
@@ -15,7 +13,7 @@ import CreateOutcomings from "../OutcomeEdit";
 import { ListSearch } from "./ListSearch";
 import { BulkListForm, OutcomeListExectSearch, OutcomeQueryCondition, OutcomeQueryConditionBaseProps } from "./types";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     flexGrow: 1,
     marginBottom: "20px",
@@ -134,7 +132,7 @@ export function SecondSearchHeaderMb(props: SecondSearchHeaderProps) {
   }, [value.search_key, reset]);
   return (
     <div className={classes.root}>
-      <LayoutBox holderMin={40} holderBase={202} mainBase={1517}>
+      <LayoutBox holderMin={40} holderBase={80} mainBase={1760}>
         <Hidden only={["md", "lg", "xl"]}>
           <Grid container spacing={3}>
             <Grid item xs={8} sm={8}>
@@ -196,7 +194,7 @@ export function SecondSearchHeader(props: SecondSearchHeaderProps) {
   }, [value.search_key, reset]);
   return (
     <div className={classes.root}>
-      <LayoutBox holderMin={40} holderBase={202} mainBase={1517}>
+      <LayoutBox holderMin={40} holderBase={80} mainBase={1760}>
         <Hidden only={["xs", "sm"]}>
           <Grid container spacing={3} style={{ marginTop: "6px" }}>
             <Grid item md={10} lg={8} xl={8}>

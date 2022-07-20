@@ -1,17 +1,11 @@
-import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-
-import { PLTableHeader } from "./PLTableHeader";
-
-import { PLField, PLTableProps, PLSortType, PLGridRowData } from "./PLTableTypes";
-import { cloneDeep, sortBy } from "lodash";
+import { Paper, Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
+import { cloneDeep, sortBy } from "lodash";
+import React, { useState } from "react";
+import { PLTableHeader } from "./PLTableHeader";
+import { PLField, PLGridRowData, PLSortType, PLTableProps } from "./PLTableTypes";
+
 
 const useStyles = makeStyles({
   table: {

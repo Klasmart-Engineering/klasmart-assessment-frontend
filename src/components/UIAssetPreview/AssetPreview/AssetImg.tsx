@@ -1,8 +1,9 @@
-import { makeStyles } from "@material-ui/core";
+import { Theme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import React, { useReducer } from "react";
 import AssetLoading from "./AssetLoading";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   assetsContent: {
     maxWidth: "100%",
     maxHeight: "100%",

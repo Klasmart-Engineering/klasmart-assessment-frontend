@@ -1,4 +1,5 @@
-import { Box, makeStyles, Typography } from "@material-ui/core";
+import { Box, Theme, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import React, { Fragment, ReactNode } from "react";
 import AnyTimeNoData from "../../assets/icons/any_time_no_data.png";
 import comingsoonIconUrl from "../../assets/icons/coming soon.svg";
@@ -9,12 +10,12 @@ import noReportUrl from "../../assets/icons/noReport.svg";
 import noPermissionUrl from "../../assets/icons/permission.jpg";
 import { d, t } from "../../locale/LocaleManager";
 
-const useStyles = makeStyles(({ breakpoints }) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   emptyImage: {
     marginTop: 200,
     marginBottom: 40,
     display: "inline-block",
-    [breakpoints.down("md")]: {
+    [theme.breakpoints.down("md")]: {
       marginTop: 40,
       marginBottom: 20,
     },

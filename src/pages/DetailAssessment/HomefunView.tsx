@@ -1,12 +1,10 @@
 import { DownloadButton } from "@components/DownloadButton";
 import { PLField, PLTableHeader } from "@components/PLTable";
 import { d } from "@locale/LocaleManager";
-import { Box, Checkbox, Collapse, FormControl, FormControlLabel, FormGroup, IconButton, makeStyles, Radio, RadioGroup, RadioGroupProps, SvgIcon, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@material-ui/core";
-import { GetApp, SvgIconComponent } from "@material-ui/icons";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import { formattedTime } from "@models/ModelOutcomeDetailForm";
-// import FactCheckOutlinedIcon from '@material-ui/icons/FactCheckOutlined';
+import { ArrowDropDown as ArrowDropDownIcon, ArrowDropUp as ArrowDropUpIcon, GetApp, SvgIconComponent } from "@mui/icons-material";
+import { Box, Checkbox, Collapse, FormControl, FormControlLabel, FormGroup, IconButton, Radio, RadioGroup, RadioGroupProps, SvgIcon, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { DetailAssessmentResultAssignment, DetailAssessmentResultFeedback } from "@pages/ListAssessment/types";
 import { actAsyncConfirm } from "@reducers/confirm";
 import { AppDispatch } from "@reducers/index";

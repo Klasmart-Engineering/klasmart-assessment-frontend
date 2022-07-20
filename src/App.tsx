@@ -3,7 +3,8 @@ import { ConfirmDialog } from "@components/ConfirmDialog";
 import { Loading } from "@components/Loading";
 import { Locale } from "@components/Locale";
 import { Notification } from "@components/Notification";
-import { createGenerateClassName, StylesProvider, ThemeProvider } from "@material-ui/core";
+import { StyledEngineProvider, ThemeProvider } from "@mui/material";
+import { createGenerateClassName, StylesProvider } from "@mui/styles";
 import { DetailAssessment } from "@pages/DetailAssessment";
 import { ListAssessment } from "@pages/ListAssessment";
 import { OutcomeList } from "@pages/OutcomeList";
@@ -25,6 +26,7 @@ const generateClassName = createGenerateClassName({
 function App() {
   return (
     <ApolloProvider client={gqlapi}>
+      <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <StylesProvider generateClassName={generateClassName}>
           <HashRouter>
@@ -66,6 +68,7 @@ function App() {
           </HashRouter>
         </StylesProvider>
       </ThemeProvider>
+      </StyledEngineProvider>
     </ApolloProvider>
   );
 }

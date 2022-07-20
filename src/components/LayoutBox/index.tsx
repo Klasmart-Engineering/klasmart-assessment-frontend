@@ -1,4 +1,5 @@
-import { Box, BoxProps, makeStyles } from "@material-ui/core";
+import { Box } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import React, { ReactNode } from "react";
 
 interface LayoutBoxProps {
@@ -6,7 +7,7 @@ interface LayoutBoxProps {
   mainBase: number;
   holderMin: number;
   holderBase: number;
-  overflowX?: BoxProps["overflow"];
+  overflowX?: string;
   children: ReactNode;
 }
 
@@ -21,7 +22,7 @@ const useStyles = makeStyles({
     flexGrow: 1,
     flexShrink: 1,
     flexBasis: props.mainBase,
-    overflowX: props.overflowX || "visible",
+    overflowX: "auto",
   }),
 });
 

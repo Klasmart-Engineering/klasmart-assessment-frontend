@@ -1,3 +1,4 @@
+import { ArrowBack, Cancel, CancelOutlined, Check, Save } from "@mui/icons-material";
 import {
   alpha,
   Box,
@@ -7,14 +8,10 @@ import {
   DialogActions,
   DialogContent,
   Hidden,
-  IconButton,
-  makeStyles,
-  Typography,
-  useMediaQuery,
+  IconButton, Palette, PaletteColor, Theme, Typography, useMediaQuery,
   useTheme
-} from "@material-ui/core";
-import { Palette, PaletteColor } from "@material-ui/core/styles/createPalette";
-import { ArrowBack, Cancel, CancelOutlined, Check, Save } from "@material-ui/icons";
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
 import React, { Fragment, useCallback, useReducer } from "react";
 import { LButton, LButtonProps } from "../../components/LButton";
@@ -37,11 +34,11 @@ const createOutlinedColor = (paletteColor: PaletteColor, palette: Palette) => ({
   },
 });
 
-const useStyles = makeStyles(({ palette, breakpoints }) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   arrowBack: {
-    color: palette.common.black,
+    color: theme.palette.common.black,
     marginRight: 28,
-    [breakpoints.down("sm")]: {
+    [theme.breakpoints.down("sm")]: {
       marginRight: 16,
     },
   },
@@ -51,7 +48,7 @@ const useStyles = makeStyles(({ palette, breakpoints }) => ({
   },
   title: {
     marginRight: "auto",
-    [breakpoints.down("sm")]: {
+    [theme.breakpoints.down("sm")]: {
       fontSize: 16,
     },
   },
@@ -65,10 +62,10 @@ const useStyles = makeStyles(({ palette, breakpoints }) => ({
     padding: 5,
     border: "thin solid currentColor",
   },
-  redButton: createContainedColor(palette.error, palette),
-  redOutlinedButton: createOutlinedColor(palette.error, palette),
-  greenButton: createContainedColor(palette.success, palette),
-  primaryIconButton: createContainedColor(palette.primary, palette),
+  redButton: createContainedColor(theme.palette.error, theme.palette),
+  redOutlinedButton: createOutlinedColor(theme.palette.error, theme.palette),
+  greenButton: createContainedColor(theme.palette.success, theme.palette),
+  primaryIconButton: createContainedColor(theme.palette.primary, theme.palette),
   dialogContentRemoveborder: {
     borderBottom: "none",
   },

@@ -1,18 +1,16 @@
+import { ModelAssessment } from "@models/ModelAssessment";
+import { ArrowDropDown as ArrowDropDownIcon, ArrowDropUp as ArrowDropUpIcon } from "@mui/icons-material";
 import {
   Box,
   Checkbox,
   Collapse,
-  FormControlLabel,
-  makeStyles,
-  Table,
+  FormControlLabel, Table,
   TableBody,
   TableCell,
   TableContainer,
   TableRow
-} from "@material-ui/core";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
-import { ModelAssessment } from "@models/ModelAssessment";
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { cloneDeep } from "lodash";
 import React, { ChangeEvent, Fragment, useMemo, useState } from "react";
 import { PLField, PLTableHeader } from "../../components/PLTable";

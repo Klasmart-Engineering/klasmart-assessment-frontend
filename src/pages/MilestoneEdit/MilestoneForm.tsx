@@ -1,13 +1,14 @@
 import { MilestoneDetailResult, MilestoneStatus } from "@api/type";
 import { decodeOneItemArray, encodeOneItemArray, FormattedTextField, frontTrim } from "@components/FormattedTextField";
 import { d } from "@locale/LocaleManager";
-import React, { Box, Grid, makeStyles, MenuItem, TextField } from "@material-ui/core";
 import { CreateDefaultValueAndKeyResult } from "@models/ModelMilestone";
 import { formattedTime } from "@models/ModelOutcomeDetailForm";
+import { Box, Grid, MenuItem, TextField } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { LinkedMockOptions, LinkedMockOptionsItem } from "@reducers/contentEdit/programsHandler";
 import { Controller, UseFormMethods } from "react-hook-form";
 import { GENERALMILESTONE } from "../MilestoneList/MilestoneTable";
-const useStyles = makeStyles(({ palette }) => ({
+const useStyles = makeStyles(() => ({
   fieldset: {
     marginTop: 32,
     "& .assessment-MuiInputBase-input": {

@@ -1,6 +1,6 @@
-import { Checkbox, FormControlLabel, makeStyles, Tooltip } from "@material-ui/core";
-import { Theme, withStyles } from "@material-ui/core/styles";
-import { InfoOutlined } from "@material-ui/icons";
+import { InfoOutlined } from "@mui/icons-material";
+import { Checkbox, FormControlLabel, Theme, Tooltip } from "@mui/material";
+import { makeStyles, withStyles } from "@mui/styles";
 import React from "react";
 import { d } from "../../locale/LocaleManager";
 

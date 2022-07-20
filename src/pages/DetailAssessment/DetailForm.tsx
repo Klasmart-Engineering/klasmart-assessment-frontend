@@ -1,5 +1,6 @@
-import { Box, makeStyles, Paper, TextField, Typography, useMediaQuery, useTheme } from "@material-ui/core";
 import { formattedTime } from "@models/ModelOutcomeDetailForm";
+import { Box, Paper, TextField, Theme, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import React, { useMemo } from "react";
 import { UseFormMethods } from "react-hook-form";
 import { AssessmentTypeValues } from "../../components/AssessmentType";
@@ -8,12 +9,12 @@ import { DetailAssessmentResult } from "../ListAssessment/types";
 import { MaterialEdit } from "./MaterialEdit";
 import { StudentEdit } from "./StudentEdit";
 import { DetailAssessmentProps, UpdateAssessmentDataOmitAction } from "./type";
-const useStyles = makeStyles(({ palette, spacing }) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   classSummaryHeader: {
     height: 64,
     width: "100%",
-    backgroundColor: palette.primary.main,
-    color: palette.common.white,
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.common.white,
     paddingLeft: 24,
     paddingRight: 24,
     boxSizing: "border-box",

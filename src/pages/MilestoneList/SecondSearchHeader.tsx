@@ -1,5 +1,6 @@
-import { Button, Checkbox, FormControlLabel, Grid, Hidden, makeStyles, Menu, MenuItem } from "@material-ui/core";
-import LocalBarOutlinedIcon from "@material-ui/icons/LocalBarOutlined";
+import { LocalBarOutlined as LocalBarOutlinedIcon } from "@mui/icons-material";
+import { Button, Checkbox, FormControlLabel, Grid, Hidden, Menu, MenuItem, Theme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import produce from "immer";
 import React, { ChangeEvent, MouseEventHandler, useMemo, useState } from "react";
 import { useHistory } from "react-router-dom";
@@ -34,7 +35,7 @@ const getMilestoneListSearchCondition = () => {
   ];
 };
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   createBtn: {
     width: "125px",
     borderRadius: "23px",
@@ -119,7 +120,7 @@ export default function SeacondSearchHeader(props: SecondSearchHeaderProps) {
   };
   return (
     <>
-      <LayoutBox holderMin={40} holderBase={202} mainBase={1517}>
+      <LayoutBox holderMin={40} holderBase={80} mainBase={1760}>
         <Hidden only={["xs", "sm"]}>
           <div style={{ marginBottom: 20 }}>
             <Grid container spacing={3}>

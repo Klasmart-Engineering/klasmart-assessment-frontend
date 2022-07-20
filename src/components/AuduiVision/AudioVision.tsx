@@ -1,11 +1,11 @@
-import { createStyles, makeStyles, Slider } from "@material-ui/core";
-import PauseCircleFilledIcon from "@material-ui/icons/PauseCircleFilled";
-import PlayCircleFilledOutlinedIcon from "@material-ui/icons/PlayCircleFilledOutlined";
+import { PauseCircleFilled as PauseCircleFilledIcon, PlayCircleFilledOutlined as PlayCircleFilledOutlinedIcon } from "@mui/icons-material";
+import { Slider, Theme } from "@mui/material";
+import { createStyles, makeStyles } from "@mui/styles";
 import { useEffect, useReducer, useRef, useState } from "react";
 import getDrawMethod from "./draw";
 import Visualizer from "./visualizer";
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     progress: {
       flex: 1,

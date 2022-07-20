@@ -1,3 +1,4 @@
+import { BorderColorOutlined as BorderColorOutlinedIcon, Close, MessageOutlined as MessageOutlinedIcon } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -9,13 +10,9 @@ import {
   FormControlLabel,
   IconButton,
   InputAdornment,
-  makeStyles,
-  TextField,
-  Typography
-} from "@material-ui/core";
-import { Close } from "@material-ui/icons";
-import BorderColorOutlinedIcon from "@material-ui/icons/BorderColorOutlined";
-import MessageOutlinedIcon from "@material-ui/icons/MessageOutlined";
+  TextField, Theme, Typography
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { actWarning } from "@reducers/notify";
 import clsx from "clsx";
 import { cloneDeep } from "lodash";
@@ -26,19 +23,19 @@ import { AssessmentStatus } from "../../api/type";
 import { d } from "../../locale/LocaleManager";
 import { DetailAssessmentResult } from "../ListAssessment/types";
 import { UpdateAssessmentDataOmitAction } from "./type";
-const useStyles = makeStyles(({ palette, spacing }) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   editBox: {
     width: "100%",
     marginTop: 30,
     position: "relative",
   },
   materialEditBox: {
-    "& .assessment-MuiOutlinedInput-multiline": {
+    "& .MuiOutlinedInput-multiline": {
       padding: "18.5px 14px 40px 14px",
     },
   },
   fieldset: {
-    "& .assessment-MuiInputBase-input": {
+    "& .MuiInputBase-input": {
       color: "rgba(0,0,0,1)",
     },
     "&:not(:first-child)": {
@@ -46,7 +43,7 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
     },
   },
   blockEle: {
-    "& .assessment-MuiInputBase-root": {
+    "& .MuiInputBase-root": {
       display: "block",
       minHeight: 120,
     },
@@ -72,7 +69,7 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
     },
   },
   title: {
-    "& .assessment-MuiTypography-root": {
+    "& .MuiTypography-root": {
       fontSize: "24px !important",
       fontWeight: 700,
     },
@@ -80,8 +77,8 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
   closeBtn: {
     color: "#000",
     position: "absolute",
-    top: spacing(1),
-    right: spacing(1),
+    top: theme.spacing(1),
+    right: theme.spacing(1),
   },
   okBtn: {
     marginLeft: "40px !important",
@@ -92,20 +89,20 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
     marginBottom: 10,
   },
   checkBoxCon: {
-    "& .assessment-MuiFormControlLabel-label": {
+    "& .MuiFormControlLabel-label": {
       fontSize: 18,
     },
-    "& .assessment-MuiTypography-root": {
+    "& .MuiTypography-root": {
       wordBreak: "break-all",
     },
   },
   commentCon: {
     marginLeft: 10,
     width: "100%",
-    "& .assessment-MuiInputBase-root": {
+    "& .MuiInputBase-root": {
       height: "100%",
     },
-    "& .assessment-MuiOutlinedInput-notchedOutline": {
+    "& .MuiOutlinedInput-notchedOutline": {
       border: "none",
     },
   },

@@ -1,11 +1,12 @@
-import { makeStyles } from "@material-ui/core";
+import { Theme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import React, { useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import ReportPagination from "../../ReportPagination/ReportPagination";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 const ROWSPERPAGE = 100;
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   assetsContent: {
     height: "calc(100% - 32px)",
     width: "90%",

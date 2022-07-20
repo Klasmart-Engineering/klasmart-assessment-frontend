@@ -7,10 +7,9 @@ import {
   DialogContent,
   DialogTitle,
   FormControlLabel,
-  makeStyles,
-  TextField,
-  Typography
-} from "@material-ui/core";
+  TextField, Theme, Typography
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { actWarning } from "@reducers/notify";
 import clsx from "clsx";
 import { cloneDeep } from "lodash";
@@ -21,7 +20,7 @@ import { PermissionOr } from "../../components/Permission";
 import { d } from "../../locale/LocaleManager";
 import { DetailFormProps } from "./DetailForm";
 import { StudentParticipate } from "./type";
-const useStyles = makeStyles(({ palette, spacing }) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   editBox: {
     width: "100%",
     marginTop: 30,

@@ -1,5 +1,6 @@
-import { makeStyles, Paper, Tab, Tabs, Theme, useMediaQuery, useTheme } from "@material-ui/core";
-import { TabContext } from "@material-ui/lab";
+import { TabContext } from "@mui/lab";
+import { Paper, Tab, Tabs, Theme, useMediaQuery, useTheme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
 import React, { Children, ReactNode } from "react";
 import { FieldError } from "react-hook-form";

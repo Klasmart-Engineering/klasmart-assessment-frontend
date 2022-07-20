@@ -4,21 +4,7 @@ import { ApolloProvider } from "@apollo/client";
 import AssetImg from "@components/UIAssetPreview/AssetPreview/AssetImg";
 import { SketchChangeProps, UiSketch } from "@components/UISketch";
 import {
-  Button,
-  createStyles,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  InputAdornment,
-  makeStyles,
-  TextField,
-  useMediaQuery,
-  useTheme
-} from "@material-ui/core";
-import {
-  Close,
+  BorderColor as BorderColorIcon, Close,
   ExitToAppOutlined,
   ImageOutlined,
   SaveOutlined,
@@ -26,8 +12,19 @@ import {
   SentimentSatisfiedOutlined,
   SentimentVeryDissatisfiedOutlined,
   SentimentVerySatisfiedOutlined
-} from "@material-ui/icons";
-import BorderColorIcon from "@material-ui/icons/BorderColor";
+} from "@mui/icons-material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  InputAdornment,
+  TextField, Theme, useMediaQuery,
+  useTheme
+} from "@mui/material";
+import { createStyles, makeStyles } from "@mui/styles";
 import { DetailAssessmentResultAssignment, DetailAssessmentResultFeedback } from "@pages/ListAssessment/types";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -36,7 +33,7 @@ import AudioView from "./AudioView";
 import { ImgSelect, ScoreInput } from "./HomefunView";
 import { ScreenShorts } from "./ScreenShorts";
 import { ResourceViewTypeValues, StudenmtViewItemResultProps } from "./type";
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     closeBtn: {
       position: "absolute",

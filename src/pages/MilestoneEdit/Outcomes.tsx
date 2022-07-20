@@ -1,12 +1,12 @@
-import { makeStyles } from "@material-ui/core";
-import { Pagination } from "@material-ui/lab";
+import Pagination from "@mui/material/Pagination";
+import { makeStyles } from "@mui/styles";
 import React, { forwardRef } from "react";
 import { MilestoneCondition } from ".";
 import { GetOutcomeDetail, GetOutcomeList } from "../../api/type";
 import { resultsTip } from "../../components/TipImages";
 import OutcomeSearch, { OutcomeSearchProps } from "./OutcomeSearch";
 import OutcomeTable from "./OutcomeTable";
-const useStyles = makeStyles(({ breakpoints, palette }) => ({
+const useStyles = makeStyles(() => ({
   pagination: {},
   paginationUl: {
     justifyContent: "center",

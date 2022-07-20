@@ -1,10 +1,9 @@
-import OopsSvg from "./img/oops.svg";
-import ReplayIcon from "@material-ui/icons/Replay";
-import { styled, Theme } from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
+import { Replay as ReplayIcon } from "@mui/icons-material";
+import { Button, styled, Theme } from "@mui/material";
+import { createStyles, makeStyles } from "@mui/styles";
 import React from "react";
 import { FormattedMessage } from "react-intl";
+import OopsSvg from "./img/oops.svg";
 
 const ReloadIcon = styled(ReplayIcon)(() => ({
   "&.reload-transform": {

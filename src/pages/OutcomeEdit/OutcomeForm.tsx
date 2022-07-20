@@ -3,15 +3,16 @@ import { GetOutcomeDetail, OutcomeSetResult } from "@api/type";
 import { decodeArray, decodeOneItemArray, encodeOneItemArray, FormattedTextField } from "@components/FormattedTextField";
 import { OutcomeSet } from "@components/OutSet";
 import { d, t } from "@locale/LocaleManager";
-import { Box, Checkbox, CheckboxProps, Chip, Grid, InputAdornment, makeStyles, MenuItem, TextField } from "@material-ui/core";
-import ClearRoundedIcon from "@material-ui/icons/ClearRounded";
 import { timestampToTime } from "@models/ModelOutcomeDetailForm";
+import { ClearRounded as ClearRoundedIcon } from "@mui/icons-material";
+import { Box, Checkbox, CheckboxProps, Chip, Grid, InputAdornment, MenuItem, TextField, Theme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { LinkedMockOptionsItem } from "@reducers/contentEdit/programsHandler";
 import { ResultGetNewOptions } from "@reducers/outcome";
 import { useMemo, useState } from "react";
 import { Controller, UseFormMethods } from "react-hook-form";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   outcomings_container: {
     width: "100%",
     // padding: "70px 22%",

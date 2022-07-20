@@ -1,5 +1,10 @@
-import { createTheme } from "@material-ui/core";
+import { createTheme } from "@mui/material";
+import { Theme } from "@mui/material/styles";
 
+declare module '@mui/styles/defaultTheme' {
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    interface DefaultTheme extends Theme { }
+}
 export default createTheme({
   palette: {
     primary: {
@@ -23,16 +28,18 @@ export default createTheme({
       textTransform: "none",
     },
   },
-  props: {
+  components: {
     MuiTextField: {
-      variant: "outlined",
-    },
-  },
-  overrides: {
-    MuiFormLabel: {
-      asterisk: {
-        color: "#D32F2F",
+      defaultProps: {
+        variant: "outlined",
       },
+    },
+    MuiFormLabel: {
+      styleOverrides: {
+        asterisk: {
+          root: { color: "#D32F2F", },
+        },
+      }
     },
   },
 });

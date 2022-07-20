@@ -1,6 +1,6 @@
-import { makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
-import { Palette, PaletteColor } from "@material-ui/core/styles/createPalette";
-import { AddCircle, RemoveCircle } from "@material-ui/icons";
+import { AddCircle, RemoveCircle } from "@mui/icons-material";
+import { Palette, PaletteColor, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Theme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { cloneDeep } from "lodash";
 import React from "react";
 import { GetOutcomeDetail, GetOutcomeList } from "../../api/type";
@@ -12,9 +12,9 @@ const createColor = (paletteColor: PaletteColor, palette: Palette) => ({
     color: paletteColor.dark,
   },
 });
-const useStyles = makeStyles(({ breakpoints, palette }) => ({
-  addGreen: createColor(palette.success, palette),
-  removeRead: createColor(palette.error, palette),
+const useStyles = makeStyles((theme: Theme) => ({
+  addGreen: createColor(theme.palette.success, theme.palette),
+  removeRead: createColor(theme.palette.error, theme.palette),
   tableContainer: {
     marginTop: 5,
     maxHeight: 790,

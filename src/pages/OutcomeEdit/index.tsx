@@ -3,7 +3,8 @@ import PermissionType from "@api/PermissionType";
 import { OutcomeSetResult } from "@api/type";
 import { usePermission } from "@hooks/usePermission";
 import useQueryCms from "@hooks/useQueryCms";
-import { Box, makeStyles } from "@material-ui/core";
+import { Box } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { RootState } from "@reducers/index";
 import { actSuccess } from "@reducers/notify";
 import {
@@ -20,7 +21,7 @@ import {
   reject,
   resetShortCode,
   save,
-  updateOutcome,
+  updateOutcome
 } from "@reducers/outcome";
 import { AsyncTrunkReturned } from "@reducers/type";
 import { PayloadAction } from "@reduxjs/toolkit";

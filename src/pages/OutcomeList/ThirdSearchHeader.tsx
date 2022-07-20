@@ -1,10 +1,7 @@
 import { isEnableUpload } from "@api/extra";
-import { Button, Divider, Grid, Grow, Menu, MenuItem, MenuList, Paper, Popper, TextField } from "@material-ui/core";
-import Hidden from "@material-ui/core/Hidden";
-import { makeStyles } from "@material-ui/core/styles";
-import { MoreHoriz } from "@material-ui/icons";
-import ArrowDropDownOutlinedIcon from "@material-ui/icons/ArrowDropDownOutlined";
-import ImportExportIcon from "@material-ui/icons/ImportExport";
+import { ArrowDropDownOutlined as ArrowDropDownOutlinedIcon, ImportExport as ImportExportIcon, MoreHoriz } from "@mui/icons-material";
+import { Button, Divider, Grid, Hidden, Menu, MenuItem, MenuList, Paper, Popover, TextField, Theme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
 import produce from "immer";
 import React, { ChangeEvent } from "react";
@@ -16,7 +13,7 @@ import { usePermission } from "../../hooks/usePermission";
 import { d, t } from "../../locale/LocaleManager";
 import { OutcomeQueryCondition, OutcomeQueryConditionBaseProps } from "./types";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     flexGrow: 1,
     marginBottom: 20 + 10,
@@ -90,6 +87,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "264px",
     minWidth: "130px",
     borderRadius: 0,
+    color: "rgba(0, 0, 0, 0.87)"
   },
   active: {
     color: "#0E78D5",
@@ -118,7 +116,7 @@ function SubLearningOutcome(props: OutcomeQueryConditionBaseProps) {
   const classes = useStyles();
   const { value, onChange } = props;
   const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef<HTMLButtonElement>(null);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
   const handleClickStatus = (publish_status: OutcomeQueryCondition["publish_status"]) => () => {
     if (publish_status === OutcomePublishStatus.draft || publish_status === OutcomePublishStatus.rejected) return;
     onChange({ ...value, publish_status, page: 1, is_unpub: "" });
@@ -130,7 +128,8 @@ function SubLearningOutcome(props: OutcomeQueryConditionBaseProps) {
       { label: d("Rejected").t("assess_label_rejected"), value: OutcomePublishStatus.rejected },
     ];
   };
-  const showDropdown = (event: any) => {
+  const showDropdown = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
     setOpen(true);
   };
   const handleClose = () => {
@@ -163,16 +162,26 @@ function SubLearningOutcome(props: OutcomeQueryConditionBaseProps) {
           </Permission>
           <Permission value={PermissionType.unpublished_page_402}>
             <Button
-              ref={anchorRef}
               className={clsx(classes.button, { [classes.active]: value.is_unpub === UNPUB })}
               endIcon={<ArrowDropDownOutlinedIcon />}
               onMouseEnter={showDropdown}
               onMouseLeave={handleClose}
             >
               {d("Unpublished").t("assess_label_unpublished")}
-              <Popper open={open} anchorEl={anchorRef.current} transition disablePortal>
-                {({ TransitionProps, placement }) => (
-                  <Grow {...TransitionProps} style={{ transformOrigin: placement === "bottom" ? "center top" : "center bottom" }}>
+              <Popover 
+                open={open} 
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center',
+                }} 
+                disableRestoreFocus
+              >
                     <Paper>
                       <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleClose}>
                         {unpublished().map((item) => (
@@ -190,9 +199,7 @@ function SubLearningOutcome(props: OutcomeQueryConditionBaseProps) {
                         ))}
                       </MenuList>
                     </Paper>
-                  </Grow>
-                )}
-              </Popper>
+              </Popover>
             </Button>
           </Permission>
         </PermissionsWrapper>
@@ -328,7 +335,7 @@ export function ThirdSearchHeader(props: ThirdSearchHeaderProps) {
   ));
   return (
     <div className={classes.root}>
-      <LayoutBox holderMin={40} holderBase={202} mainBase={1517}>
+      <LayoutBox holderMin={40} holderBase={80} mainBase={1760}>
         <Hidden only={["xs", "sm"]}>
           <Divider />
           <Grid container spacing={3} alignItems="center" style={{ marginTop: "6px" }}>
@@ -341,7 +348,7 @@ export function ThirdSearchHeader(props: ThirdSearchHeaderProps) {
                   label={d("Bulk Actions").t("assess_label_bulk_actions")}
                   value=""
                   select
-                  SelectProps={{ MenuProps: { transformOrigin: { vertical: -40, horizontal: "left" } } }}
+                  SelectProps={{ MenuProps: { transformOrigin: { vertical: 0, horizontal: "center" } } }}
                 >
                   {bulkOptions}
                 </TextField>
@@ -359,7 +366,7 @@ export function ThirdSearchHeader(props: ThirdSearchHeaderProps) {
                 value={value.order_by || OutcomeOrderBy._updated_at}
                 label={d("Sort By").t("assess_label_sort_by")}
                 select
-                SelectProps={{ MenuProps: { transformOrigin: { vertical: -40, horizontal: "left" } } }}
+                SelectProps={{ MenuProps: { transformOrigin: { vertical: 0, horizontal: "center" } } }}
               >
                 {orderbyOptions}
               </TextField>

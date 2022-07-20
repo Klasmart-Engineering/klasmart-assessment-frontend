@@ -1,11 +1,12 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles } from "@material-ui/core";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Theme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { FileLike } from "@rpldy/shared";
 import "cropperjs/dist/cropper.css";
 import React, { ReactNode, useCallback, useMemo, useState } from "react";
 import Cropper from "react-cropper";
 import { d } from "../../locale/LocaleManager";
 
-const useStyles = makeStyles(({ breakpoints }) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   cropper: {
     width: "100%",
   },

@@ -1,8 +1,5 @@
-import { LinearProgress, TableSortLabel } from "@material-ui/core";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
+import { LinearProgress, TableCell, TableHead, TableRow, TableSortLabel, Theme } from "@mui/material";
+import { createStyles, makeStyles } from "@mui/styles";
 import clsx from "clsx";
 import React from "react";
 import { PLTableHeaderProps } from "./PLTableTypes";

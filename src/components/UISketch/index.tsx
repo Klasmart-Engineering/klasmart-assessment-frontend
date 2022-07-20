@@ -1,24 +1,20 @@
-import { Box } from "@material-ui/core";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Divider from "@material-ui/core/Divider";
-import Slider from "@material-ui/core/Slider";
-import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Tooltip from "@material-ui/core/Tooltip";
-import Typography from "@material-ui/core/Typography";
-import CheckIcon from "@material-ui/icons/Check";
-import CloseIcon from "@material-ui/icons/Close";
-import CreateIcon from "@material-ui/icons/Create";
-import DeleteIcon from "@material-ui/icons/Delete";
-import OpenWithIcon from "@material-ui/icons/OpenWith";
-import RedoIcon from "@material-ui/icons/Redo";
-import TextFieldsIcon from "@material-ui/icons/TextFields";
-import TouchAppIcon from "@material-ui/icons/TouchApp";
-import UndoIcon from "@material-ui/icons/Undo";
+import {
+  Check as CheckIcon,
+  Close as CloseIcon,
+  Create as CreateIcon,
+  Delete as DeleteIcon,
+  OpenWith as OpenWithIcon,
+  Redo as RedoIcon,
+  TextFields as TextFieldsIcon,
+  TouchApp as TouchAppIcon,
+  Undo as UndoIcon
+} from "@mui/icons-material";
+import { Box, CircularProgress, Divider, Slider, TextField, Tooltip, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import React, { forwardRef, useImperativeHandle, useMemo, useRef } from "react";
 import { SketchField, Tools } from "react-sketch-master";
 
-const useStyles = makeStyles(({ shadows }) => ({
+const useStyles = makeStyles(() => ({
   sliderBox: {
     width: 180,
   },

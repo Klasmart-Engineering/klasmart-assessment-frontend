@@ -1,5 +1,6 @@
-import { Box, BoxProps, makeStyles } from "@material-ui/core";
 import { Breakpoint } from "@material-ui/core/styles/createBreakpoints";
+import { Box, BoxProps, Theme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
 import React, { Children, ReactNode } from "react";
 
@@ -11,14 +12,14 @@ const maxRightWidth = (props: LayoutPairProps) => {
   return `calc((100% - ${props.spacing}px) * ${props.rightWidth / (props.leftWidth + props.rightWidth)})`;
 };
 
-const useStyles = makeStyles(({ breakpoints }) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   layoutPair: (props: LayoutPairProps) => ({
     display: "flex",
     padding: props.padding,
-    [breakpoints.down(props.breakpoint)]: {
+    [theme.breakpoints.down(props.breakpoint)]: {
       flexDirection: "column",
     },
-    [breakpoints.down("sm")]: {
+    [theme.breakpoints.down("sm")]: {
       padding: props.basePadding,
     },
   }),
@@ -28,7 +29,7 @@ const useStyles = makeStyles(({ breakpoints }) => ({
     flexGrow: 1,
     flexShrink: 1,
     marginRight: props.spacing,
-    [breakpoints.down(props.breakpoint)]: {
+    [theme.breakpoints.down(props.breakpoint)]: {
       marginRight: 0,
       marginBottom: 40,
       flexBasis: "100%",
@@ -40,7 +41,7 @@ const useStyles = makeStyles(({ breakpoints }) => ({
     maxWidth: maxRightWidth(props),
     flexGrow: 1,
     flexShrink: 1,
-    [breakpoints.down(props.breakpoint)]: {
+    [theme.breakpoints.down(props.breakpoint)]: {
       marginBottom: 40,
       flexBasis: "100%",
       maxWidth: "none",

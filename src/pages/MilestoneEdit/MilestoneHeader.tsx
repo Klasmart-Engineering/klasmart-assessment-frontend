@@ -1,11 +1,8 @@
-import { alpha, Box, Button, ButtonProps, Hidden, IconButton, makeStyles, Typography, useMediaQuery, useTheme } from "@material-ui/core";
-import { Palette, PaletteColor } from "@material-ui/core/styles/createPalette";
-import { ArrowBack, CancelOutlined, Check, Clear, ClearSharp, Create, Delete, Publish, Save } from "@material-ui/icons";
-import CancelOutlinedIcon from "@material-ui/icons/CancelOutlined";
-import CreateOutlinedIcon from "@material-ui/icons/CreateOutlined";
-import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
-import PublishOutlinedIcon from "@material-ui/icons/PublishOutlined";
-import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
+import {
+  ArrowBack, CancelOutlined, CancelOutlined as CancelOutlinedIcon, Check, Clear, ClearSharp, Create, CreateOutlined as CreateOutlinedIcon, Delete, DeleteOutlined as DeleteOutlinedIcon, Publish, PublishOutlined as PublishOutlinedIcon, Save, SaveOutlined as SaveOutlinedIcon
+} from "@mui/icons-material";
+import { alpha, Box, Button, ButtonProps, Hidden, IconButton, Palette, PaletteColor, Theme, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
 import React from "react";
 import { UseFormMethods } from "react-hook-form";
@@ -32,11 +29,11 @@ const createOutlinedColor = (paletteColor: PaletteColor, palette: Palette) => ({
   },
 });
 
-const useStyles = makeStyles(({ palette, breakpoints }) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   arrowBack: {
-    color: palette.common.black,
+    color: theme.palette.common.black,
     marginRight: 28,
-    [breakpoints.down("sm")]: {
+    [theme.breakpoints.down("sm")]: {
       marginRight: 16,
     },
   },
@@ -46,7 +43,7 @@ const useStyles = makeStyles(({ palette, breakpoints }) => ({
   },
   title: {
     marginRight: "auto",
-    [breakpoints.down("sm")]: {
+    [theme.breakpoints.down("sm")]: {
       fontSize: 16,
     },
   },
@@ -60,10 +57,10 @@ const useStyles = makeStyles(({ palette, breakpoints }) => ({
     padding: 5,
     border: "thin solid currentColor",
   },
-  redButton: createContainedColor(palette.error, palette),
-  redOutlinedButton: createOutlinedColor(palette.error, palette),
-  greenButton: createContainedColor(palette.success, palette),
-  primaryIconButton: createContainedColor(palette.primary, palette),
+  redButton: createContainedColor(theme.palette.error, theme.palette),
+  redOutlinedButton: createOutlinedColor(theme.palette.error, theme.palette),
+  greenButton: createContainedColor(theme.palette.success, theme.palette),
+  primaryIconButton: createContainedColor(theme.palette.primary, theme.palette),
   radioGroup: {
     flexDirection: "row",
     padding: "7px 0",
@@ -73,7 +70,7 @@ const useStyles = makeStyles(({ palette, breakpoints }) => ({
     "&:not(:first-child)": {
       marginLeft: 64,
     },
-    [breakpoints.down("sm")]: {
+    [theme.breakpoints.down("sm")]: {
       marginRight: 0,
     },
   },

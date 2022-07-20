@@ -1,12 +1,13 @@
 import { CheckboxGroup, CheckboxGroupContext } from "@components/CheckboxGroup";
 import { d, t } from "@locale/LocaleManager";
-import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, IconButton, makeStyles, Typography } from "@material-ui/core";
-import { Close } from "@material-ui/icons";
 import { formattedNowOrTime, timestampToTime } from "@models/ModelOutcomeDetailForm";
+import { Close } from "@mui/icons-material";
+import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, IconButton, Theme, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { ChangeEvent, DOMAttributes, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { DownloadOutcomeItemResult, DownloadOutcomeListResult, FieldsProps } from "./types";
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   fieldsCon: {
     width: "100%",
     display: "flex",

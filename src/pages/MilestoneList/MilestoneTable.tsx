@@ -1,23 +1,17 @@
+import { formattedTime, formatTimeToEng } from "@models/ModelOutcomeDetailForm";
+import { CheckBox, CheckBoxOutlineBlank, Clear as ClearIcon, DeleteOutline as DeleteOutlineIcon, Done as DoneIcon, LockOutlined as LockOutlinedIcon } from "@mui/icons-material";
 import {
   Checkbox,
-  createStyles,
   IconButton,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
-  TableRow,
-  Tooltip
-} from "@material-ui/core";
-import { makeStyles, Theme, withStyles } from "@material-ui/core/styles";
-import { CheckBox, CheckBoxOutlineBlank } from "@material-ui/icons";
-import ClearIcon from "@material-ui/icons/Clear";
-import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
-import DoneIcon from "@material-ui/icons/Done";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import { Pagination } from "@material-ui/lab";
-import { formattedTime, formatTimeToEng } from "@models/ModelOutcomeDetailForm";
+  TableRow, Theme, Tooltip
+} from "@mui/material";
+import Pagination from "@mui/material/Pagination";
+import { createStyles, makeStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
 import React, { useMemo } from "react";
 import { Controller, UseFormMethods } from "react-hook-form";
@@ -37,7 +31,7 @@ const LightTooltip = withStyles((theme: Theme) => ({
     fontSize: 12,
   },
 }))(Tooltip);
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     iconColor: {
       color: "#D32F2F",
@@ -357,7 +351,7 @@ export function MilestoneTable(props: MilestoneTableProps) {
   const { control } = formMethods;
   const handleChangePage = (event: object, page: number) => onChangePage(page);
   return (
-    <LayoutBox holderMin={40} holderBase={202} mainBase={1517} overflowX="auto">
+    <LayoutBox holderMin={40} holderBase={80} mainBase={1760} overflowX="auto">
       <Controller
         name={BulkListFormKey.CHECKED_BULK_IDS}
         control={control}

@@ -1,6 +1,6 @@
-import { createGenerateClassName, StylesProvider } from "@material-ui/core";
-import React from "react";
 import { buildTheme, ThemeProvider } from "@kl-engineering/kidsloop-px";
+import { createGenerateClassName, StylesProvider } from "@mui/styles";
+import React from "react";
 
 const generateClassName = createGenerateClassName({
   productionPrefix: "assessment",

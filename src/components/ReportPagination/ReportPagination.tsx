@@ -1,5 +1,6 @@
-import { createStyles, IconButton, makeStyles } from "@material-ui/core";
-import { ChevronLeft, ChevronRight, FirstPage, LastPage } from "@material-ui/icons";
+import { ChevronLeft, ChevronRight, FirstPage, LastPage } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
+import { createStyles, makeStyles } from "@mui/styles";
 import React from "react";
 import { t } from "../../locale/LocaleManager";
 const useStyles = makeStyles(() =>

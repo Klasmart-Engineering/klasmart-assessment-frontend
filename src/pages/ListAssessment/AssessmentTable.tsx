@@ -1,17 +1,17 @@
 import { enableReviewClass } from "@api/extra";
 import { AssessmentTypeValues } from "@components/AssessmentType";
 import MutipleCheckboxDropdown from "@components/MutipleCheckboxDropdown";
-import { createStyles, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from "@material-ui/core";
-import { Pagination } from "@material-ui/lab";
 import { formattedDate, formattedTime } from "@models/ModelOutcomeDetailForm";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Theme, Tooltip } from "@mui/material";
+import Pagination from "@mui/material/Pagination";
+import { createStyles, makeStyles } from "@mui/styles";
 import clsx from "clsx";
 import React, { useMemo } from "react";
 import LayoutBox from "../../components/LayoutBox";
 import { d } from "../../locale/LocaleManager";
 import { AssessmentListResult, AssessmentQueryCondition, AssessmentStatus } from "./types";
 
-const useStyles = makeStyles((theme) =>
-  createStyles({
+const useStyles = makeStyles((theme: Theme) => createStyles({
     pagination: {
       marginBottom: 40,
     },
@@ -60,8 +60,7 @@ const useStyles = makeStyles((theme) =>
     inCompleteColor: {
       backgroundColor: "#f1c621",
     },
-  })
-);
+}));
 
 interface AssessmentProps {
   assessment: AssessmentListResult[0];

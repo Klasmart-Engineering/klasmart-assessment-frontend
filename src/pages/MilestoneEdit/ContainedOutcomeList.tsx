@@ -1,20 +1,20 @@
-import { Button, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
-import { Palette, PaletteColor } from "@material-ui/core/styles/createPalette";
-import { RemoveCircle } from "@material-ui/icons";
-import { Pagination } from "@material-ui/lab";
+import { RemoveCircle } from "@mui/icons-material";
+import { Button, PaletteColor, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Theme } from "@mui/material";
+import Pagination from "@mui/material/Pagination";
+import { makeStyles } from "@mui/styles";
 import { cloneDeep } from "lodash";
 import React, { useMemo, useState } from "react";
 import { GetOutcomeDetail, GetOutcomeList } from "../../api/type";
 import { d } from "../../locale/LocaleManager";
 
-const createColor = (paletteColor: PaletteColor, palette: Palette) => ({
+const createColor = (paletteColor: PaletteColor) => ({
   color: paletteColor.main,
   cursor: "pointer",
   "&:hover": {
     color: paletteColor.dark,
   },
 });
-const useStyles = makeStyles(({ breakpoints, palette }) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   tableContainer: {
     marginTop: 5,
     maxHeight: 900,
@@ -39,8 +39,8 @@ const useStyles = makeStyles(({ breakpoints, palette }) => ({
     whiteSpace: "nowrap",
     listStylePosition: "inside",
   },
-  addGreen: createColor(palette.success, palette),
-  removeRead: createColor(palette.error, palette),
+  addGreen: createColor(theme.palette.success),
+  removeRead: createColor(theme.palette.error),
   pagination: {},
   paginationUl: {
     justifyContent: "center",
@@ -108,7 +108,7 @@ export default function ContainedOutcomeList(props: ContainedOutcomeListProps) {
         {d("Contained Learning Outcomes").t("assess_milestone_contained_lo")} {`(${outcomeList.length})`}
       </h1>
       <TableContainer className={css.tableContainer}>
-        <Table className={css.table} stickyHeader>
+        <Table className={css.table}>
           <TableHead className={css.tableHead}>
             <TableRow>
               <TableCell className={css.tableCell}>{d("Learning Outcomes").t("library_label_learning_outcomes")}</TableCell>
