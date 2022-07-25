@@ -2153,6 +2153,7 @@ export interface V2AssessmentQueryReply {
 
   /** onlineClass,offlineClass */
   program?: EntityIDName;
+  schedule_id?: string;
   status?: string;
   subjects?: EntityIDName[];
 
@@ -2552,6 +2553,8 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
         query_key?: string;
         query_type?: "TeacherID";
         assessment_type?: string;
+        due_at_le?: number;
+        class_id?: string;
         page?: number;
         page_size?: number;
         order_by?: "class_end_at" | "-class_end_at" | "complete_at" | "-complete_at" | "create_at" | "-create_at";
