@@ -1,8 +1,8 @@
 import { V2StudentAssessment, V2StudentAssessmentAttachment } from "@api/api.auto";
 import { WidgetType } from "@components/Dashboard/models/widget.model";
 import { dFetch, formatDate } from "@components/Dashboard/tools";
-import WidgetWrapperError from "@components/Dashboard/WidgetWrapper/WidgetWrapperError";
-import WidgetWrapperNoData from "@components/Dashboard/WidgetWrapper/WidgetWrapperNoData";
+import WidgetWrapperError from "@components/Dashboard/WidgetManagement/WidgetWrapperError";
+import WidgetWrapperNoData from "@components/Dashboard/WidgetManagement/WidgetWrapperNoData";
 import { currentOrganizationState, useGlobalStateValue } from "@kl-engineering/frontend-state";
 import { HomeScreenWidgetWrapper, UserAvatar } from "@kl-engineering/kidsloop-px";
 import { Box, CircularProgress, Theme, Typography } from "@mui/material";
@@ -15,7 +15,7 @@ import {
   useIntl,
 } from "react-intl";
 import { d } from "@locale/LocaleManager";
-import NoDataMask from "@components/Dashboard/Components/NoDataMask";
+import NoDataMask from "@components/Dashboard/WidgetManagement/NoDataMask";
 
 /** style **/
 export interface StyleProps {

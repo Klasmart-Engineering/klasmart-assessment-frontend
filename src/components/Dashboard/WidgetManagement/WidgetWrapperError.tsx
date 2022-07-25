@@ -3,7 +3,7 @@ import { Button, styled, Theme } from "@mui/material";
 import { createStyles, makeStyles } from "@mui/styles";
 import React from "react";
 import { FormattedMessage } from "react-intl";
-import OopsSvg from "./img/oops.svg";
+import OopsSvg from "../assets/img/oops.svg";
 
 const ReloadIcon = styled(ReplayIcon)(() => ({
   "&.reload-transform": {

@@ -2,8 +2,7 @@ import { Theme } from "@mui/material";
 import { createStyles, makeStyles } from "@mui/styles";
 import React from "react";
 import { FormattedMessage } from "react-intl";
-import NoDataSvg from "./img/nodata.svg";
-
+import NoDataSvg from "../assets/img/nodata.svg";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
