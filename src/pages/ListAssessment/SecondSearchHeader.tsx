@@ -28,7 +28,6 @@ export interface SecondSearchHeaderProps extends AssessmentQueryConditionBasePro
 }
 export function SecondSearchHeader(props: SecondSearchHeaderProps) {
   const { value, formMethods, teacherList, onChange, onSearchTeacherName } = props;
-
   const handleClickSearch = (searchField: SearchComProps["searchFieldDefaultValue"], searchInfo: UserEntity) => {
     const teacher_name = searchInfo.name;
     const query_key = searchInfo.id;

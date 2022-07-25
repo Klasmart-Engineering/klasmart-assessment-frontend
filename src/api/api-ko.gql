@@ -853,9 +853,3 @@ query getProgramIdByName( $filter: ProgramFilter!) {
     }
   }
 }
-
-query getCategories($filter: CategoryFilter) {
-  categoriesConnection(filter: $filter, direction: FORWARD) {
-    
-  }
-}

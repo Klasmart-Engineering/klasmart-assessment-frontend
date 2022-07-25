@@ -404,6 +404,18 @@
           },
           {
             "type": "integer",
+            "description": "get less than due_at data",
+            "name": "due_at_le",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "query by class id",
+            "name": "class_id",
+            "in": "query"
+          },
+          {
+            "type": "integer",
             "default": 1,
             "description": "page number",
             "name": "page",
@@ -15684,6 +15696,9 @@
         "program": {
           "description": "onlineClass,offlineClass",
           "$ref": "#/definitions/entity.IDName"
+        },
+        "schedule_id": {
+          "type": "string"
         },
         "status": {
           "type": "string"
