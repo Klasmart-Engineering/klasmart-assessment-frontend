@@ -40,3 +40,20 @@ export async function dFetch(path: string, query: any, method?: "get" | "post") 
     return data;
   });
 }
+
+// formats a date time to a string
+export function formatDate(date: Date): string {
+  let dateString = "";
+  // if date is today return 'Today'
+  if (date.toDateString() === new Date().toDateString()) {
+    dateString = "Today";
+  } else if (date.toDateString() === new Date(Date.now() - 86400000).toDateString()) {
+    dateString = "Yesterday";
+  } else {
+    dateString = date.toLocaleDateString(undefined, {
+      month: "short",
+      day: "numeric",
+    });
+  }
+  return `${date.toLocaleTimeString().slice(0, 5)},${dateString}`;
+}

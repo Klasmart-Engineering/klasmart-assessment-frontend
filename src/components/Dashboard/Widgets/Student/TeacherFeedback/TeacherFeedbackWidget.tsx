@@ -1,21 +1,21 @@
 import { V2StudentAssessment, V2StudentAssessmentAttachment } from "@api/api.auto";
-import noFeedBack from "@assets/img/noFeedback.png";
 import { WidgetType } from "@components/Dashboard/models/widget.model";
-import { dFetch } from "@components/Dashboard/tools";
+import { dFetch, formatDate } from "@components/Dashboard/tools";
 import WidgetWrapperError from "@components/Dashboard/WidgetWrapper/WidgetWrapperError";
 import WidgetWrapperNoData from "@components/Dashboard/WidgetWrapper/WidgetWrapperNoData";
 import { currentOrganizationState, useGlobalStateValue } from "@kl-engineering/frontend-state";
-// import WidgetWrapper from "../../../WidgetWrapper";
 import { HomeScreenWidgetWrapper, UserAvatar } from "@kl-engineering/kidsloop-px";
 import { Box, CircularProgress, Theme, Typography } from "@mui/material";
 import { createStyles, makeStyles } from "@mui/styles";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useBottomScrollListener } from "react-bottom-scroll-listener";
 import {
   // FormattedDate,
-  FormattedMessage,
-  useIntl
+  // FormattedMessage,
+  useIntl,
 } from "react-intl";
+import { d } from "@locale/LocaleManager";
+import NoDataMask from "@components/Dashboard/Components/NoDataMask";
 
 /** style **/
 export interface StyleProps {
@@ -24,6 +24,7 @@ export interface StyleProps {
 const useStyles = makeStyles<Theme, StyleProps>((theme: Theme) =>
   createStyles({
     widgetContent: {
+      position: "relative",
       height: `100%`,
       display: `flex`,
       flexDirection: `column`,
@@ -123,13 +124,43 @@ export interface TeacherFeedbackRow {
   teacherName: string;
   teacherAvatar: string;
   feedback: string;
-  date: Date;
+  date: string;
   files: V2StudentAssessmentAttachment[];
 }
+
+// no data to display
+const MockRows: TeacherFeedbackRow[] = [
+  {
+    id: "1",
+    title: "Butterfly class",
+    type: "",
+    score: 10,
+    teacherName: "Alex",
+    teacherAvatar: "",
+    feedback:
+      "That’s a really great start, but perhaps you could play with your friends using English for 10 minutes. It will be good fun!",
+    date: "14:21,Yesterday",
+    files: [],
+  },
+  {
+    id: "2",
+    title: "Butterfly class",
+    type: "",
+    score: 10,
+    teacherName: "Christina",
+    teacherAvatar: "",
+    feedback:
+      "You had a great job! Repeat mant times as you review the learning outcome like vocabulary. Try reading more books also as a review!",
+    date: "15:30,Jan 20",
+    files: [],
+  },
+];
+
 export const mapAssessmentForStudentToTeacherFeedbackRow = (item: V2StudentAssessment): TeacherFeedbackRow => {
   const lastTeacherComment = item.teacher_comments?.slice(-1)[0];
   const classTitle = item.title?.split(`-`)[0];
   const date = new Date((item.complete_at ?? 0) * 1000);
+  const dateString = formatDate(date);
   return {
     id: item.id ?? "",
     feedback: lastTeacherComment?.comment ?? ``,
@@ -138,7 +169,7 @@ export const mapAssessmentForStudentToTeacherFeedbackRow = (item: V2StudentAsses
     teacherName: lastTeacherComment ? `${lastTeacherComment?.teacher?.given_name}`?.trim() : ``,
     teacherAvatar: lastTeacherComment?.teacher?.avatar ?? "",
     title: classTitle ?? ``,
-    date: date,
+    date: dateString,
     type: mapAssessmentScheduleServerToClientType(item?.schedule?.type),
   };
 };
@@ -208,6 +239,7 @@ export default function TeacherFeedbackWidget({ widgetContext }: TeacherFeedback
     setLoading(false);
   };
 
+  const showRows = useMemo(() => (rows.length > 0 ? rows : MockRows), [rows]);
   useEffect(() => {
     fetchStatusGroups();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -234,9 +266,9 @@ export default function TeacherFeedbackWidget({ widgetContext }: TeacherFeedback
       // onRemove={()=>{}}
     >
       <div ref={scrollRef} className={classes.widgetContent}>
-        {rows && rows.length !== 0 ? (
+        {
           <>
-            {rows.map((item) => (
+            {showRows.map((item) => (
               <div key={item.id} className={classes.feedbackOuterWrapper}>
                 <div className={classes.iconWrapper}>
                   <div className={classes.icon}>
@@ -248,7 +280,7 @@ export default function TeacherFeedbackWidget({ widgetContext }: TeacherFeedback
                     <Typography className={classes.name}>
                       <b>{item.teacherName}</b>, {item.title}
                     </Typography>
-                    {/* <Typography className={classes.date}>{formatDate(item.date)}</Typography> */}
+                    <Typography className={classes.date}>{item.date}</Typography>
                   </div>
                   <Typography className={classes.feedback}>{item.feedback}</Typography>
                 </div>
@@ -260,16 +292,11 @@ export default function TeacherFeedbackWidget({ widgetContext }: TeacherFeedback
               </Box>
             )}
           </>
-        ) : (
-          <Box className={classes.noFeedBackPage}>
-            <img src={noFeedBack} className={classes.noFeedBackIcon} alt="no feedback" />
-            <Typography gutterBottom variant="body2" className={classes.noFeedBack}>
-              {/*{d("There is no teacher's feedback").t("home_student_teacherFeedbackWidget_noFeedBack")}*/}
-              <FormattedMessage id={`home.student.teacherFeedbackWidget.noFeedBack`} />
-            </Typography>
-          </Box>
-        )}
+        }
       </div>
+      {rows.length === 0 && (
+        <NoDataMask text={d("Monitor your attendance in within a two week period.").t("widget_student_teacher_feedback_no_data_tip")} />
+      )}
     </HomeScreenWidgetWrapper>
   );
 }

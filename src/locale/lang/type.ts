@@ -1897,6 +1897,11 @@ A new ‘Auto review’ lesson will appear on students’ calendar once our plat
   | { id: "assessment_lo_bulk_upload_discard_warning"; description: `Are you discarding current data and leave?`; values: undefined }
   | { id: "home_student_teacherFeedbackWidget_containerTitleLabel"; description: `Teacher’s feedback`; values: undefined }
   | { id: "home_student_teacherFeedbackWidget_noFeedBack"; description: `There is no teacher's feedback`; values: undefined }
+  | {
+      id: "widget_student_teacher_feedback_no_data_tip";
+      description: `Monitor your attendance in within a two week period.`;
+      values: undefined;
+    }
   | { id: "assessment_status_pending"; description: `Pending`; values: undefined }
   | { id: "assessment_status_not_started"; description: `NotStarted`; values: undefined }
   | { id: "assessment_status_started"; description: `Started`; values: undefined }
