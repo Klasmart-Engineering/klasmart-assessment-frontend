@@ -1,5 +1,9 @@
-import { KeyboardArrowDown } from "@mui/icons-material";
-import { Button, Grid, MenuItem, Select, SelectChangeEvent, Theme } from "@mui/material";
+import { WidgetType } from "@components/Dashboard/models/widget.model";
+import WidgetWrapperError from "@components/Dashboard/WidgetWrapper/WidgetWrapperError";
+import WidgetWrapperNoData from "@components/Dashboard/WidgetWrapper/WidgetWrapperNoData";
+import { HomeScreenWidgetWrapper } from "@kl-engineering/kidsloop-px";
+import { t } from "@locale/LocaleManager";
+import { Button, Grid, SelectChangeEvent, Theme } from "@mui/material";
 import { createStyles, makeStyles } from "@mui/styles";
 import { RootState } from "@reducers/index";
 import { getClassesByOrg, getClassWidget } from "@reducers/myclasseswidget";
@@ -9,26 +13,15 @@ import clsx from "clsx";
 import moment from "moment";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import SelectClass from "./component/SelectClass";
+
+interface IMyClassesWidgetProps {
+  widgetContext?: any;
+}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     widgetContent: {
-      width: 430,
-      height: 400,
-      margin: "100px auto",
-      border: "1px solid red",
-      padding: 20,
-      background: "#ccc",
-    },
-    widgetTitle: {},
-    widgetBody: {
-      marginTop: 5,
-      width: 378,
-      height: 240,
-      background: "#fff",
-      borderRadius: 12,
-    },
-    widgetMain: {
       width: "100%",
       height: "100%",
       padding: 20,
@@ -36,19 +29,6 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       flexDirection: "column",
       justifyContent: "space-between",
-    },
-    selectClasses: {
-      borderRadius: 10,
-      background: "#fff",
-      position: "relative",
-      "&>div": {
-        "&>span": {
-          fontSize: 14,
-        },
-        "&>span:nth-child(2)": {
-          display: "none",
-        },
-      },
     },
     mask: {
       width: "100%",
@@ -60,41 +40,9 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRadius: 12,
       display: "none",
       zIndex: 99,
-      "&.isShow": {
+      "&.isOpen": {
         display: "block",
       },
-    },
-    menuItem: {
-      justifyContent: "space-between",
-      "&>span:nth-child(1)": {
-        marginRight: 10,
-      },
-      "&>span": {
-        fontSize: 14,
-      },
-      "&.Mui-selected": {
-        background: "none",
-      },
-      "&.Mui-disabled": {
-        opacity: 1,
-        "&>span:nth-child(1)": {
-          opacity: 0.3,
-        },
-      },
-    },
-    arrowDownBox: {
-      position: "absolute",
-      height: "100%",
-      right: 10,
-      display: "flex",
-      alignItems: "center",
-      cursor: "pointer",
-      "&>svg": {
-        transition: "transform .5s ease",
-      },
-    },
-    arrowDown: {
-      transform: "rotate(-180deg)",
     },
     widgetInfo: {
       alignItems: "flex-start",
@@ -140,28 +88,16 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function MyClassesWidget() {
+export default function MyClassesWidget({ widgetContext }: IMyClassesWidgetProps) {
   const { classList, classWidget } = useSelector<RootState, RootState["myclasseswidget"]>((state) => state.myclasseswidget);
+  const { editing = false, removeWidget, layouts, widgets } = widgetContext;
+  const onRemove = () => removeWidget(WidgetType.TEACHERLOAD, widgets, layouts);
   const dispatch = useDispatch();
   const classes = useStyles();
-  const [isShow, setIsShow] = React.useState<boolean>(false);
-  const [currentClass, setCurrentClass] = React.useState("no_class");
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState<boolean>(true);
+  const [currentClass, setCurrentClass] = React.useState<string>("no_class");
   const host = window.location.origin;
-
-  console.log(
-    "myclasses:",
-    classList,
-    "start_day:",
-    moment().startOf("day").unix(),
-    "end_day:",
-    moment().endOf("day").unix() + 1,
-    "start_week:",
-    moment().startOf("isoWeek").unix(),
-    "end_week:",
-    moment().endOf("isoWeek").unix() + 1,
-    "classWidget",
-    classWidget
-  );
 
   const getClassCount = async (class_id: string) => {
     await dispatch(
@@ -177,10 +113,12 @@ export default function MyClassesWidget() {
   };
 
   const getMyClasses = async () => {
+    setLoading(true);
     const { payload } = (await dispatch(getClassesByOrg())) as unknown as PayloadAction<AsyncTrunkReturned<typeof getClassesByOrg>>;
     if (payload && payload.length > 0 && payload[0]?.class_id) {
       getClassCount(payload[0]?.class_id);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -229,86 +167,67 @@ export default function MyClassesWidget() {
   };
 
   return (
-    <div className={classes.widgetContent}>
-      <div className={classes.widgetTitle}>my classess</div>
-      <div className={classes.widgetBody}>
-        <div className={classes.widgetMain}>
-          <div className={clsx(classes.mask, { isShow })} />
-          <Select
-            size="small"
-            fullWidth
-            open={isShow}
-            className={classes.selectClasses}
-            onOpen={() => setIsShow(true)}
-            onClose={() => setIsShow(false)}
-            value={currentClass}
-            onChange={handleSelectClass}
-            IconComponent={() => (
-              <div className={classes.arrowDownBox} onClick={() => setIsShow(!isShow)}>
-                <KeyboardArrowDown className={isShow ? classes.arrowDown : undefined} />
-              </div>
-            )}
-          >
-            {classList && classList.length > 0 && currentClass !== "no_class" ? (
-              classList.map((item) => (
-                <MenuItem
-                  disabled={item?.class_id === currentClass}
-                  className={classes.menuItem}
-                  key={item?.class_id}
-                  value={item?.class_id}
-                >
-                  <span>{item?.class_name}</span>
-                  {item?.schools && item?.schools.length > 0 && <span>{item.schools[0]?.school_name}</span>}
-                </MenuItem>
-              ))
-            ) : (
-              <MenuItem value="no_class" disabled>
-                No Class
-              </MenuItem>
-            )}
-          </Select>
-          <Grid className={classes.widgetInfo} container spacing={2}>
-            <Grid item xs={4}>
-              <span>{classWidget?.lesson_count ?? 0}</span>
-              <span>Lessons to teacher today</span>
-            </Grid>
-            <Grid item xs={4}>
-              <span>{classWidget?.study_count ?? 0}</span>
-              <span>homework due today</span>
-            </Grid>
-            <Grid item xs={4}>
-              <span>{classWidget?.assessment_count ?? 0}</span>
-              <span>Assessments to finish this week</span>
-            </Grid>
+    <HomeScreenWidgetWrapper
+      loading={loading}
+      error={false}
+      errorScreen={<WidgetWrapperError />}
+      noData={false}
+      noDataScreen={<WidgetWrapperNoData />}
+      label={t("widget_my_class_name")}
+      editing={editing}
+      onRemove={onRemove}
+    >
+      <div className={classes.widgetContent}>
+        <div className={clsx(classes.mask, { isOpen })} />
+        <SelectClass
+          isOpen={isOpen}
+          classList={classList}
+          currentClass={currentClass}
+          noClassLabel={t("widget_my_class_no_class")}
+          onChange={handleSelectClass}
+          onOpen={setIsOpen}
+        />
+        <Grid className={classes.widgetInfo} container spacing={2}>
+          <Grid item xs={4}>
+            <span>{classWidget?.lesson_count ?? 0}</span>
+            <span>{t("widget_my_class_lesson_today_sum")}</span>
           </Grid>
-          <Grid className={classes.widgetBtns} container spacing={2}>
-            <Grid item xs={4}>
-              <Button variant="contained" onClick={() => handleSkipPage("create")}>
-                Create +
-              </Button>
-              <Button variant="contained" className={classes.widgeBtn} onClick={() => handleSkipPage("lesson")}>
-                view schedule
-              </Button>
-            </Grid>
-            <Grid item xs={4}>
-              <Button variant="contained" onClick={() => handleSkipPage("assign")}>
-                Assign +
-              </Button>
-              <Button variant="contained" className={classes.widgeBtn} onClick={() => handleSkipPage("homework")}>
-                view schedule
-              </Button>
-            </Grid>
-            <Grid item xs={4}>
-              <Button variant="contained" className={classes.widgeBtn} onClick={() => handleSkipPage("assessment")}>
-                view assesment
-              </Button>
-              <Button variant="contained" className={classes.widgeBtn} onClick={() => handleSkipPage("report")}>
-                view report
-              </Button>
-            </Grid>
+          <Grid item xs={4}>
+            <span>{classWidget?.study_count ?? 0}</span>
+            <span>{t("widget_my_class_homework_due_today")}</span>
           </Grid>
-        </div>
+          <Grid item xs={4}>
+            <span>{classWidget?.assessment_count ?? 0}</span>
+            <span>{t("widget_my_class_assessment_due_this_week")}</span>
+          </Grid>
+        </Grid>
+        <Grid className={classes.widgetBtns} container spacing={2}>
+          <Grid item xs={4}>
+            <Button variant="contained" onClick={() => handleSkipPage("create")}>
+              {t("widget_my_class_create_lesson")}
+            </Button>
+            <Button variant="contained" className={classes.widgeBtn} onClick={() => handleSkipPage("lesson")}>
+              {t("widget_my_class_view_lesson")}
+            </Button>
+          </Grid>
+          <Grid item xs={4}>
+            <Button variant="contained" onClick={() => handleSkipPage("assign")}>
+              {t("widget_my_class_assign_homework")}
+            </Button>
+            <Button variant="contained" className={classes.widgeBtn} onClick={() => handleSkipPage("homework")}>
+              {t("widget_my_class_view_homework")}
+            </Button>
+          </Grid>
+          <Grid item xs={4}>
+            <Button variant="contained" className={classes.widgeBtn} onClick={() => handleSkipPage("assessment")}>
+              {t("widget_my_class_view_assessment")}
+            </Button>
+            <Button variant="contained" className={classes.widgeBtn} onClick={() => handleSkipPage("report")}>
+              {t("widget_my_class_view_reports")}
+            </Button>
+          </Grid>
+        </Grid>
       </div>
-    </div>
+    </HomeScreenWidgetWrapper>
   );
 }

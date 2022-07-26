@@ -12,7 +12,7 @@ interface schoolItem {
   school_name?: string;
 }
 
-interface classItem {
+export interface classItem {
   class_id?: string;
   class_name?: string;
   schools?: schoolItem[];

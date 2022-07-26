@@ -1,15 +1,13 @@
 import CssProvider from "@components/CssProvider";
 import MyClassesWidget from "./MyClassesWidget";
-// import {Context} from "../../../WidgetWrapper/widgetContext";
 
-// interface WidgetProps {
-//   widgetContext: any; // reduce fault tolerance.more to see "../../../WidgetWrapper/widgetContext" or hub `widgetContext`
-//   // widgetContext: Context;
-// }
-export default function Index() {
+interface WidgetProps {
+  widgetContext: any; // reduce fault tolerance.more to see "../../../WidgetWrapper/widgetContext" or hub `widgetContext`
+}
+export default function Index({ widgetContext }: WidgetProps) {
   return (
     <CssProvider>
-      <MyClassesWidget />
+      <MyClassesWidget widgetContext={widgetContext} />
     </CssProvider>
   );
 }

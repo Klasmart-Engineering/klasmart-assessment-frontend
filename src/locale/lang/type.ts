@@ -1902,7 +1902,7 @@ A new ‘Auto review’ lesson will appear on students’ calendar once our plat
   | { id: "assessment_status_started"; description: `Started`; values: undefined }
   | { id: "assessment_status_draft"; description: `Draft`; values: undefined }
   | { id: "widget_my_class_name"; description: `My Classes`; values: undefined }
-  | { id: "widget_my_class_no_class"; description: `widget_my_class_no_class`; values: undefined }
+  | { id: "widget_my_class_no_class"; description: `No Class`; values: undefined }
   | { id: "widget_my_class_lesson_today_sum"; description: `Lessons to teach today`; values: undefined }
   | { id: "widget_my_class_create_lesson"; description: `Create +`; values: undefined }
   | { id: "widget_my_class_view_lesson"; description: `View schedule`; values: undefined }
