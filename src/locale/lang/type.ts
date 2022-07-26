@@ -1900,7 +1900,18 @@ A new ‘Auto review’ lesson will appear on students’ calendar once our plat
   | { id: "assessment_status_pending"; description: `Pending`; values: undefined }
   | { id: "assessment_status_not_started"; description: `NotStarted`; values: undefined }
   | { id: "assessment_status_started"; description: `Started`; values: undefined }
-  | { id: "assessment_status_draft"; description: `Draft`; values: undefined };
+  | { id: "assessment_status_draft"; description: `Draft`; values: undefined }
+  | { id: "widget_my_class_name"; description: `My Classes`; values: undefined }
+  | { id: "widget_my_class_no_class"; description: `widget_my_class_no_class`; values: undefined }
+  | { id: "widget_my_class_lesson_today_sum"; description: `Lessons to teach today`; values: undefined }
+  | { id: "widget_my_class_create_lesson"; description: `Create +`; values: undefined }
+  | { id: "widget_my_class_view_lesson"; description: `View schedule`; values: undefined }
+  | { id: "widget_my_class_homework_due_today"; description: `Homework due today`; values: undefined }
+  | { id: "widget_my_class_assign_homework"; description: `Assign +`; values: undefined }
+  | { id: "widget_my_class_view_homework"; description: `View schedule`; values: undefined }
+  | { id: "widget_my_class_assessment_due_this_week"; description: `Assessments to finish this week`; values: undefined }
+  | { id: "widget_my_class_view_assessment"; description: `View assessments`; values: undefined }
+  | { id: "widget_my_class_view_reports"; description: `View reports`; values: undefined };
 
 export type LangRecordId = LangRecord["id"];
 export type LangRecodeDescription = LangRecord["description"];

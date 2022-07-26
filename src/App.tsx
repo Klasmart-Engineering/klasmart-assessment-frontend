@@ -18,7 +18,7 @@ import MilestonesList from "./pages/MilestoneList";
 import { default as CreateOutcome, default as CreateOutcomings } from "./pages/OutcomeEdit";
 import { store } from "./reducers";
 import theme from "./theme";
-// import { Test } from "@pages/test";
+import Test from "@pages/Test";
 const generateClassName = createGenerateClassName({
   productionPrefix: "assessment",
   seed: "assessment",
@@ -27,47 +27,47 @@ function App() {
   return (
     <ApolloProvider client={gqlapi}>
       <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={theme}>
-        <StylesProvider generateClassName={generateClassName}>
-          <HashRouter>
-            <Provider store={store}>
-              <Locale>
-                <Loading />
-                <SnackbarProvider>
-                  <Switch>
-                    <Route path={OutcomeList.routeBasePath}>
-                      <OutcomeList />
-                    </Route>
-                    <Route path={ListAssessment.routeBasePath}>
-                      <ListAssessment />
-                    </Route>
-                    <Route path={DetailAssessment.routeBasePath}>
-                      <DetailAssessment />
-                    </Route>
-                    <Route path={CreateOutcomings.routeBasePath}>
-                      <CreateOutcome />
-                    </Route>
-                    <Route path={MilestonesList.routeBasePath}>
-                      <MilestonesList />
-                    </Route>
-                    <Route path={MilestoneEdit.routeMatchPath}>
-                      <MilestoneEdit />
-                    </Route>
-                    {/*<Route path={Test.routeBasePath}>*/}
-                    {/*  <Test />*/}
-                    {/*</Route>*/}
-                    <Route path="/">
-                      <Redirect to={ListAssessment.routeRedirectDefault} />
-                    </Route>
-                  </Switch>
-                  <Notification />
-                  <ConfirmDialog />
-                </SnackbarProvider>
-              </Locale>
-            </Provider>
-          </HashRouter>
-        </StylesProvider>
-      </ThemeProvider>
+        <ThemeProvider theme={theme}>
+          <StylesProvider generateClassName={generateClassName}>
+            <HashRouter>
+              <Provider store={store}>
+                <Locale>
+                  <Loading />
+                  <SnackbarProvider>
+                    <Switch>
+                      <Route path={OutcomeList.routeBasePath}>
+                        <OutcomeList />
+                      </Route>
+                      <Route path={ListAssessment.routeBasePath}>
+                        <ListAssessment />
+                      </Route>
+                      <Route path={DetailAssessment.routeBasePath}>
+                        <DetailAssessment />
+                      </Route>
+                      <Route path={CreateOutcomings.routeBasePath}>
+                        <CreateOutcome />
+                      </Route>
+                      <Route path={MilestonesList.routeBasePath}>
+                        <MilestonesList />
+                      </Route>
+                      <Route path={MilestoneEdit.routeMatchPath}>
+                        <MilestoneEdit />
+                      </Route>
+                      <Route path={Test.routeBasePath}>
+                        <Test />
+                      </Route>
+                      <Route path="/">
+                        <Redirect to={ListAssessment.routeRedirectDefault} />
+                      </Route>
+                    </Switch>
+                    <Notification />
+                    <ConfirmDialog />
+                  </SnackbarProvider>
+                </Locale>
+              </Provider>
+            </HashRouter>
+          </StylesProvider>
+        </ThemeProvider>
       </StyledEngineProvider>
     </ApolloProvider>
   );

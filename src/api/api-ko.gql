@@ -854,6 +854,19 @@ query getProgramIdByName( $filter: ProgramFilter!) {
   }
 }
 
+query getClassesList($organization_id: ID!) {
+  organization(organization_id: $organization_id) {
+    classes {
+      class_id
+      class_name
+      schools {
+        school_id
+        school_name
+      }
+    }
+  }
+}
+
 query getCategories($filter: CategoryFilter) {
   categoriesConnection(filter: $filter, direction: FORWARD) {
     

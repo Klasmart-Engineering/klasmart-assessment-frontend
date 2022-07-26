@@ -5,6 +5,7 @@ import confirm from "./confirm";
 import loading, { actSetLoading } from "./loading";
 import { createLoadingMiddleware } from "./middleware/loadingMiddleware";
 import milestone from "./milestone";
+import myclasseswidget from "./myclasseswidget";
 import notify from "./notify";
 import outcome from "./outcome";
 
@@ -22,6 +23,7 @@ export const store = configureStore({
     assessments,
     milestone,
     common,
+    myclasseswidget,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(loadingMiddleware),
 });

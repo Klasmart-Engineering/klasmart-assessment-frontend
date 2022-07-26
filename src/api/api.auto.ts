@@ -1045,6 +1045,12 @@ export interface EntityRepeatYearly {
   on_week_seq?: "first" | "second" | "third" | "fourth" | "last";
 }
 
+export interface EntityReportClassWidgetResponse {
+  assessment_count?: number;
+  lesson_count?: number;
+  study_count?: number;
+}
+
 export interface EntityReportListTeachingLoadArgs {
   class_ids?: string[];
   teacher_ids?: string[];
@@ -2153,6 +2159,7 @@ export interface V2AssessmentQueryReply {
 
   /** onlineClass,offlineClass */
   program?: EntityIDName;
+  schedule_id?: string;
   status?: string;
   subjects?: EntityIDName[];
 
@@ -2552,6 +2559,8 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
         query_key?: string;
         query_type?: "TeacherID";
         assessment_type?: string;
+        due_at_le?: number;
+        class_id?: string;
         page?: number;
         page_size?: number;
         order_by?: "class_end_at" | "-class_end_at" | "complete_at" | "-complete_at" | "create_at" | "-create_at";
@@ -4040,6 +4049,29 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
       >(`/published_learning_outcomes`, "POST", params, order_by),
   };
   reports = {
+    /**
+     * @tags reports
+     * @name getClassWidget
+     * @summary getClassWidget
+     * @request GET:/reports/class_widget
+     */
+    getClassWidget: (
+      query: {
+        class_id: string;
+        schedule_start_at_gte: number;
+        schedule_start_at_lt: number;
+        schedule_due_at_gte: number;
+        schedule_due_at_lt: number;
+        assessment_due_at_le: number;
+      },
+      params?: RequestParams
+    ) =>
+      this.request<EntityReportClassWidgetResponse, ApiBadRequestResponse | ApiForbiddenResponse | ApiInternalServerErrorResponse>(
+        `/reports/class_widget${this.addQueryParams(query)}`,
+        "GET",
+        params
+      ),
+
     /**
      * @tags reports
      * @name getLearnerMonthlyReportOverview
