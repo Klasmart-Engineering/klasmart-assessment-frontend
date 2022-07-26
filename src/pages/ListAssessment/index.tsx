@@ -1,6 +1,8 @@
 import { usePermission } from "@hooks/usePermission";
 import useQueryCms from "@hooks/useQueryCms";
 import { DetailAssessment } from "@pages/DetailAssessment";
+import { AsyncTrunkReturned } from "@reducers/type";
+import { PayloadAction } from "@reduxjs/toolkit";
 import { clearNull, toQueryString } from "@utilities/urlUtilities";
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -11,7 +13,7 @@ import { ExectSeachType, OrderByAssessmentList } from "../../api/type";
 import { FirstSearchHeader, FirstSearchHeaderMb } from "../../components/AssessmentFirsetHearder/FirstSearchHeader";
 import { emptyTip, permissionTip } from "../../components/TipImages";
 import { AppDispatch, RootState } from "../../reducers";
-import { getAssessmentListV2, getUserListByName } from "../../reducers/assessments";
+import { getAssessmentListV2, getCurrentUserInfo, getUserListByName } from "../../reducers/assessments";
 import { AssessmentTable, AssessmentTableProps } from "./AssessmentTable";
 import { SecondSearchHeader, SecondSearchHeaderProps } from "./SecondSearchHeader";
 import { AssessmentQueryCondition, AssessmentStatusValues, SearchListForm } from "./types";
@@ -24,9 +26,25 @@ const useQuery = (): AssessmentQueryCondition => {
   const order_by = (querys.get("order_by") as OrderByAssessmentList) || OrderByAssessmentList._create_at;
   const status = querys.get("status");
   const teacher_name = (querys.get("teacher_name") as string) || "";
+  const class_id = querys.get("class_id");
+  const due_at_le = querys.get("due_at_le");
+  const only_current_user = querys.get("only_current_user");
   return useMemo(() => {
-    return { ...clearNull({ query_key, page, order_by, query_type, teacher_name, assessment_type, status }) };
-  }, [query_key, page, order_by, query_type, teacher_name, assessment_type, status]);
+    return {
+      ...clearNull({
+        query_key,
+        page,
+        order_by,
+        query_type,
+        teacher_name,
+        assessment_type,
+        status,
+        class_id,
+        due_at_le,
+        only_current_user,
+      }),
+    };
+  }, [query_key, page, order_by, query_type, teacher_name, assessment_type, status, class_id, due_at_le, only_current_user]);
 };
 export function ListAssessment() {
   const perm = usePermission([
@@ -55,7 +73,6 @@ export function ListAssessment() {
   const [assessmentTypes, setAssessmentTypes] = useState<string[]>(condition.assessment_type?.split(",") ?? []);
   const [assessmentStatus, setAssessmentStatus] = useState<string[]>(condition.status?.split(",") ?? []);
   const formMethods = useForm<SearchListForm>();
-  // const { reset } = formMethods;
   const history = useHistory();
   const dispatch = useDispatch<AppDispatch>();
   const handleChange: SecondSearchHeaderProps["onChange"] = (value) => {
@@ -100,9 +117,23 @@ export function ListAssessment() {
   const handleSearchTeacherName: SecondSearchHeaderProps["onSearchTeacherName"] = (name) => {
     dispatch(getUserListByName(name));
   };
-
   useEffect(() => {
-    dispatch(getAssessmentListV2({ ...condition, metaLoading: true }));
+    const { only_current_user } = condition;
+    if (only_current_user === "true") {
+      (async () => {
+        const { payload } = (await dispatch(getCurrentUserInfo())) as unknown as PayloadAction<
+          AsyncTrunkReturned<typeof getCurrentUserInfo>
+        >;
+        const { only_current_user, ...rest } = condition;
+        history.replace({ search: toQueryString({ ...rest, query_type: "TeacherID", query_key: payload.id, teacher_name: payload.name }) });
+      })();
+    }
+  }, [condition, dispatch, history]);
+  useEffect(() => {
+    const { only_current_user } = condition;
+    if (!only_current_user) {
+      dispatch(getAssessmentListV2({ ...condition, metaLoading: true }));
+    }
   }, [condition, dispatch]);
   return (
     <>

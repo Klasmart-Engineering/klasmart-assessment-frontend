@@ -22,7 +22,7 @@ const useStyles = makeStyles({
     flexGrow: 1,
     flexShrink: 1,
     flexBasis: props.mainBase,
-    overflowX: "auto",
+    "overflow-x": props.overflowX ? (props.overflowX as unknown as string) : "visible",
   }),
 });
 

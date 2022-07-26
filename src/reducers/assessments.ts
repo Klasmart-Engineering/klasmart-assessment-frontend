@@ -31,6 +31,10 @@ export interface IAssessmentState {
   attachment_path: string;
   attachment_id: string;
   teacherList: UserEntity[] | undefined;
+  myUserInfo: {
+    id: string;
+    name: string;
+  };
 }
 
 // interface RootState {
@@ -48,6 +52,7 @@ const initialState: IAssessmentState = {
   attachment_path: "",
   attachment_id: "",
   teacherList: undefined,
+  myUserInfo: { id: "", name: "" },
 };
 
 type IQueryAssessmentV2Params = Parameters<typeof api.assessmentsV2.queryAssessmentV2>[0] & LoadingMetaPayload;
@@ -55,7 +60,7 @@ type IQueryAssessmentV2Result = AsyncReturnType<typeof api.assessmentsV2.queryAs
 export const getAssessmentListV2 = createAsyncThunk<IQueryAssessmentV2Result, IQueryAssessmentV2Params>(
   "assessments/getAssessmentListV2",
   async ({ metaLoading, ...query }) => {
-    const { status, assessment_type, order_by, query_key, query_type, page, page_size } = query;
+    const { status, assessment_type, order_by, query_key, query_type, page, page_size, class_id, due_at_le } = query;
     // const isStudy = assessment_type === AssessmentTypeValues.study;
     // const isReview = assessment_type === AssessmentTypeValues.review;
     // const isHomefun = assessment_type === AssessmentTypeValues.homeFun;
@@ -84,6 +89,8 @@ export const getAssessmentListV2 = createAsyncThunk<IQueryAssessmentV2Result, IQ
       page_size,
       status,
       order_by,
+      class_id,
+      due_at_le,
       query_key: query_key ? query_key : " ",
       query_type: query_key ? query_type : undefined,
     };
@@ -91,6 +98,17 @@ export const getAssessmentListV2 = createAsyncThunk<IQueryAssessmentV2Result, IQ
     return { assessments, total };
   }
 );
+export const getCurrentUserInfo = createAsyncThunk<{ id: string; name: string }>("assessments/getCurrentUserInfo", async () => {
+  const {
+    data: { myUser },
+  } = await gqlapi.query<QueryMyUserQuery, QueryMyUserQueryVariables>({
+    query: QueryMyUserDocument,
+  });
+  return {
+    id: myUser?.node?.id!,
+    name: `${myUser?.node?.givenName} ${myUser?.node?.familyName}`,
+  };
+});
 type IQueryDetailAssessmentResult = {
   detail: DetailAssessmentProps;
   my_id: string;
@@ -275,6 +293,9 @@ const { reducer } = createSlice({
     [getUserListByName.rejected.type]: (state, { payload }: any) => {
       // user service bug修好后 删掉
       state.teacherList = [];
+    },
+    [getCurrentUserInfo.fulfilled.type]: (state, { payload }: any) => {
+      state.myUserInfo = payload;
     },
   },
 });

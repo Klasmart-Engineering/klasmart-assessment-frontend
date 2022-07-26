@@ -2,7 +2,7 @@ import { Search } from "@mui/icons-material";
 import { Button, TextField, TextFieldProps, Theme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
-import React, { ChangeEvent, useMemo, useState } from "react";
+import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { Controller, useForm, UseFormMethods } from "react-hook-form";
 import { d } from "../../locale/LocaleManager";
 import { SearchListForm, UserEntity } from "./types";
@@ -219,6 +219,11 @@ export function ListSearch(props: SearchComProps) {
     setTimer(curTimer);
   };
 
+  useEffect(() => {
+    if (defaultTeacherName) {
+      setValue(SEARCHINPUT, defaultTeacherName);
+    }
+  }, [setValue, defaultTeacherName]);
   return (
     <div className={clsx(css.searchWrap, isFocus ? css.bigZindex : "")}>
       {showMask && <MaskCom onHideMask={handleHideMask} />}

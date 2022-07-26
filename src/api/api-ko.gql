@@ -866,9 +866,3 @@ query getClassesList($organization_id: ID!) {
     }
   }
 }
-
-query getCategories($filter: CategoryFilter) {
-  categoriesConnection(filter: $filter, direction: FORWARD) {
-    
-  }
-}
