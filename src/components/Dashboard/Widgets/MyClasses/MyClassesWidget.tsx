@@ -1,6 +1,4 @@
 import { WidgetType } from "@components/Dashboard/models/widget.model";
-import WidgetWrapperError from "@components/Dashboard/WidgetWrapper/WidgetWrapperError";
-import WidgetWrapperNoData from "@components/Dashboard/WidgetWrapper/WidgetWrapperNoData";
 import { HomeScreenWidgetWrapper } from "@kl-engineering/kidsloop-px";
 import { t } from "@locale/LocaleManager";
 import { Button, Grid, SelectChangeEvent, Theme } from "@mui/material";
@@ -24,20 +22,19 @@ const useStyles = makeStyles((theme: Theme) =>
     widgetContent: {
       width: "100%",
       height: "100%",
-      padding: 20,
       position: "relative",
       display: "flex",
       flexDirection: "column",
       justifyContent: "space-between",
     },
     mask: {
-      width: "100%",
-      height: "100%",
+      width: "calc(100% + 30px)",
+      height: "calc(100% + 30px)",
       background: "rgba(3,3,3,.7)",
       position: "absolute",
-      top: 0,
-      left: 0,
-      borderRadius: 12,
+      top: -15,
+      left: -15,
+      borderRadius: 10,
       display: "none",
       zIndex: 99,
       "&.isOpen": {
@@ -171,9 +168,9 @@ export default function MyClassesWidget({ widgetContext }: IMyClassesWidgetProps
     <HomeScreenWidgetWrapper
       loading={loading}
       error={false}
-      errorScreen={<WidgetWrapperError />}
+      errorScreen={<></>}
       noData={false}
-      noDataScreen={<WidgetWrapperNoData />}
+      noDataScreen={<></>}
       label={t("widget_my_class_name")}
       editing={editing}
       onRemove={onRemove}
