@@ -139,18 +139,19 @@ export default function MyClassesWidget({ widgetContext }: IMyClassesWidgetProps
 
   const handleSkipPage = (type: string) => {
     let routerParams = "";
+    let class_name = classList?.find((item) => item.class_id === currentClass)?.class_name ?? "";
     switch (type) {
-      case "create":
-        routerParams = `schedule/edit?class_id=${currentClass}&class_type=OfflineClass`;
+      case "create": // create +
+        routerParams = `schedule/edit?class_id=${currentClass}&class_name=${class_name}&class_type=OfflineClass`;
         break;
-      case "lesson":
-        routerParams = `schedule?class_id=${currentClass}&class_type=OfflineClass,OnlineClass`;
+      case "lesson": // view schedule
+        routerParams = `schedule?class_id=${currentClass}&class_name=${class_name}&class_type=OfflineClass,OnlineClass`;
         break;
-      case "assign":
-        routerParams = `schedule/edit?class_id=${currentClass}&class_type=homework`;
+      case "assign": // assign +
+        routerParams = `schedule/edit?class_id=${currentClass}&class_name=${class_name}&class_type=Homework`;
         break;
-      case "homework":
-        routerParams = `schedule?class_id=${currentClass}&class_type=homework`;
+      case "homework": // view schedule
+        routerParams = `schedule?class_id=${currentClass}&class_name=${class_name}&class_type=Homework`;
         break;
       case "assessment":
         routerParams = `assessments/assessment-list?page=1&status=Started,Draft,Complete&class_id=${currentClass}&due_at_le=${
