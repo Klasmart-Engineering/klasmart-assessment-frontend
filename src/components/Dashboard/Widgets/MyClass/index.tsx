@@ -1,5 +1,5 @@
 import CssProvider from "@components/CssProvider";
-import MyClassesWidget from "./MyClassesWidget";
+import MyClassWidget from "./MyClassWidget";
 
 interface WidgetProps {
   widgetContext: any; // reduce fault tolerance.more to see "../../../WidgetWrapper/widgetContext" or hub `widgetContext`
@@ -7,7 +7,7 @@ interface WidgetProps {
 export default function Index({ widgetContext }: WidgetProps) {
   return (
     <CssProvider>
-      <MyClassesWidget widgetContext={widgetContext} />
+      <MyClassWidget widgetContext={widgetContext} />
     </CssProvider>
   );
 }

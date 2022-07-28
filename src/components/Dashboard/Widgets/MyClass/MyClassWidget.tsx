@@ -85,10 +85,10 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function MyClassesWidget({ widgetContext }: IMyClassesWidgetProps) {
+export default function MyClassWidget({ widgetContext }: IMyClassesWidgetProps) {
   const { classList, classWidget } = useSelector<RootState, RootState["myclasseswidget"]>((state) => state.myclasseswidget);
   const { editing = false, removeWidget, layouts, widgets } = widgetContext;
-  const onRemove = () => removeWidget(WidgetType.TEACHERLOAD, widgets, layouts);
+  const onRemove = () => removeWidget(WidgetType.MYCLASS, widgets, layouts);
   const dispatch = useDispatch();
   const classes = useStyles();
   const [isOpen, setIsOpen] = React.useState<boolean>(false);

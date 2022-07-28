@@ -24,7 +24,7 @@ function myOverrides(config) {
       exposes: {
         "./Assessment": "./src/main.tsx",
         "./TeacherFeedbackWidget": "./src/components/Dashboard/Widgets/Student/TeacherFeedback/index.tsx",
-        "./MyClassWidget": "./src/components/Dashboard/Widgets/MyClasses/index.tsx",
+        "./MyClassWidget": "./src/components/Dashboard/Widgets/MyClass/index.tsx",
       },
       shared: {
         'react-intl': {
