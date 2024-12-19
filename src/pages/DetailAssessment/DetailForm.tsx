@@ -111,11 +111,10 @@ export function DetailForm(props: DetailFormProps) {
         <Box className={css.classSummaryHeader} boxShadow={3}>
           <Typography variant="h6">{summaryTitle.summary}</Typography>
           {!isHomefun && (
-            /*
             <div className={css.roomId}>
               {d("Room ID").t("assess_detail_room_id")}:{assessmentDetail.room_id}
             </div>
-            */
+            /*
             <div>
               <a
                 href={`https://academic.klasmart.id/id/dashboard/download-assesment?search=0&maxdata=50&page=1&roomid=${assessmentDetail.room_id}`}
@@ -137,6 +136,7 @@ export function DetailForm(props: DetailFormProps) {
                 Download
               </a>
             </div>
+            */
           )}
         </Box>
         <Box px={5} py={5}>
