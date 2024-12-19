@@ -111,32 +111,39 @@ export function DetailForm(props: DetailFormProps) {
         <Box className={css.classSummaryHeader} boxShadow={3}>
           <Typography variant="h6">{summaryTitle.summary}</Typography>
           {!isHomefun && (
-            <div className={css.roomId}>
-              {d("Room ID").t("assess_detail_room_id")}:{assessmentDetail.room_id}
-            </div>
-            /*
-            <div>
-              <a
-                href={`https://academic.klasmart.id/id/dashboard/download-assesment?search=0&maxdata=50&page=1&roomid=${assessmentDetail.room_id}`}
-                style={{
-                  display: "inline-block",
-                  backgroundColor: "rgb(27, 129, 27)",
-                  color: "#fff",
-                  padding: "5px 10px",
-                  textAlign: "center",
-                  textDecoration: "none",
-                  borderRadius: "5px",
-                  border: "none",
-                  cursor: "pointer",
-                  fontSize: "12px",
-                }}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Download
-              </a>
-            </div>
-            */
+            <>
+              {/* Log untuk memeriksa data assessmentDetail */}
+              {console.log("Assessment Detail:", assessmentDetail)}
+              {console.log("Room ID:", assessmentDetail?.room_id)}
+
+              {assessmentDetail?.room_id ? (
+                <div>
+                  <a
+                    href={`https://academic.klasmart.id/id/dashboard/download-assesment?search=0&maxdata=50&page=1&roomid=${assessmentDetail.room_id}`}
+                    style={{
+                      display: "inline-block",
+                      backgroundColor: "rgb(27, 129, 27)",
+                      color: "#fff",
+                      padding: "5px 10px",
+                      textAlign: "center",
+                      textDecoration: "none",
+                      borderRadius: "5px",
+                      border: "none",
+                      cursor: "pointer",
+                      fontSize: "12px",
+                    }}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Download
+                  </a>
+                </div>
+              ) : (
+                <div style={{ color: "red" }}>
+                  Room ID tidak tersedia. Periksa data assessmentDetail.
+                </div>
+              )}
+            </>
           )}
         </Box>
         <Box px={5} py={5}>
