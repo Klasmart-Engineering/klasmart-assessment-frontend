@@ -116,18 +116,18 @@ export function DetailForm(props: DetailFormProps) {
                 href={`https://academic.klasmart.id/id/dashboard/download-assesment?search=0&maxdata=50&page=1&roomid=${assessmentDetail.room_id}`}
                 style={{
                   display: "inline-block",
-                  backgroundColor: "rgb(27, 129, 27)",
-                  color: "#fff",
+                  backgroundColor: "yellow",
+                  color: "black",
                   padding: "5px 10px",
                   textAlign: "center",
                   textDecoration: "none",
                   borderRadius: "5px",
                   border: "none",
                   cursor: "pointer",
-                  fontSize: "12px",
+                  fontSize: "16px",
                 }}
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noopener"
               >
                 Download
               </a>
